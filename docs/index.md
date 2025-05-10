@@ -14,7 +14,7 @@ Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan
 
 Subpopulation shifts arise when subgroup distributions differ between training and deployment. We introduce **Diversified Prototypical Ensemble (DPE)**, a technique that augments any pretrained feature extractor with a set of prototype classifiers optimized for diversity. DPE significantly outperforms state-of-the-art robust methods across **nine real-world datasets** without requiring subgroup labels.
 
-![Overview](../figures/embeddings_figure.png)
+
 
 ---
 
