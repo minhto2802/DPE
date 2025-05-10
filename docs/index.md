@@ -5,7 +5,6 @@
 Minh Nguyen Nhat To, Paul F R Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper,  
 Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan
 
-[Paper (PDF)](../_ICML2025__Shift_Happens_.pdf)  
 [Code (Anonymous Link)](https://anonymous.4open.science/r/prototypical_ensembles-BCB3)
 
 ---
