@@ -23,3 +23,5 @@ Subpopulation shifts arise when subgroup distributions differ between training a
 - No subgroup annotations required
 - Improves worst-group accuracy (WGA) across vision, language, and healthcare
 - Scalable and modular: can be applied post hoc to any trained model
+
+...
