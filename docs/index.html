@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DPE: ICML 2025</title>
+  <title>DPE: Diverse Prototypical Ensembles (ICML 2025)</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -13,8 +13,7 @@
       color: #222;
       line-height: 1.6;
     }
-    h1 {
-      font-size: 2rem;
+    h1, h2, h3 {
       text-align: center;
     }
     .authors, .links {
@@ -30,27 +29,6 @@
       border-radius: 20px;
       text-decoration: none;
       font-size: 14px;
-      transition: background 0.2s;
-    }
-    .button:hover {
-      background-color: #555;
-    }
-    .logo {
-      text-align: center;
-      margin: 30px;
-    }
-    .logo img {
-      width: 300px;
-      max-width: 100%;
-    }
-    .code-block {
-      text-align: center;
-      background-color: #fbeaea;
-      padding: 10px;
-      border-radius: 5px;
-      font-family: monospace;
-      display: inline-block;
-      margin-bottom: 20px;
     }
     .summary {
       background-color: #eef6fb;
@@ -58,41 +36,315 @@
       border-radius: 12px;
       margin-top: 30px;
     }
-    .summary h2 {
-      text-align: center;
+    .section {
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
-<h1>Diversified Prototypical Ensembles (DPE)</h1>
-<p style="text-align:center;">Accepted at the International Conference on Machine Learning (ICML) 2025</p>
-
+<h1>Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift</h1>
 <div class="authors">
   <p>Minh Nguyen Nhat To, Paul F R Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper</p>
   <p>Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan</p>
 </div>
 
 <div class="links">
-  <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
+  <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 PDF</a>
   <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Code</a>
-  <a href="https://arxiv.org/abs/placeholder" class="button">📝 arXiv</a>
 </div>
-
-<div class="logo">
-  <img src="../figures/motivation.png" alt="DPE Logo or Visual Summary">
-</div>
-
-<p class="code-block">pip install dpe</p>
 
 <div class="summary">
-  <h2>Summary</h2>
+  <h2>Abstract</h2>
   <p>
-    Subpopulation shifts—discrepancies in the distribution of subgroups between training and test data—can severely degrade model performance. We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a method that replaces the linear classifier with a set of prototype-based classifiers trained to capture diverse latent structures.
+    Subpopulation shifts, characterized by disparities in subpopulation distributions between training and target datasets,
+    can significantly degrade the performance of machine learning models. Current solutions often modify empirical risk
+    minimization (ERM) with re-weighting strategies, but these rely on assumptions about the number and nature of
+    subpopulations and annotations of membership, which are unavailable in many real-world datasets.
   </p>
   <p>
-    DPE is trained in two stages: first using ERM to learn representations, then fine-tuning diversified prototype heads using bootstrapped data subsets and a cosine-based diversity loss (IPS). Our approach improves worst-group accuracy (WGA) across 9 challenging datasets—without needing subgroup labels.
+    We propose a new solution: train many classifiers while enforcing diversification to promote the discovery and correct
+    classification of new subpopulations without requiring prior knowledge. We replace the standard linear classifier with
+    a mixture of prototypical classifiers, each focusing on different features and samples. We demonstrate that our method
+    outperforms state-of-the-art models on worst-group accuracy across nine real-world datasets covering diverse domains
+    and subpopulation shift types.
   </p>
+</div>
+
+<div class="section">
+  <h2>1. Introduction</h2>
+  <p>
+    The performance of machine learning models is known to degrade substantially in the presence of distribution shifts between
+    training and deployment (Koh et al., 2021). One common form of distribution shift is <strong>subpopulation shift</strong>
+    (Yang et al., 2023), where the proportions of subgroups vary between training and target distributions. Yang et al. categorized
+    subpopulation shifts into four types:
+    </p>
+    <ul>
+      <li><strong>Spurious Correlations:</strong> non-causal features mistakenly influence predictions</li>
+      <li><strong>Attribute Imbalance:</strong> certain attribute values appear more frequently</li>
+      <li><strong>Class Imbalance:</strong> some labels are underrepresented</li>
+      <li><strong>Attribute Generalization:</strong> models encounter previously unseen attribute values at test time</li>
+    </ul>
+    <p>
+    These challenges motivate approaches that improve worst-group performance. Naive ERM training can result in models that generalize
+    poorly to underrepresented subpopulations. This can be catastrophic in high-stakes domains like medical diagnostics, autonomous
+    driving, and insurance. Models often learn spurious features — e.g., using hospital-specific markers to predict pneumonia — and fail
+    to generalize without them.
+  </p>
+</div>
+<div class="section">
+  <h2>2. Related Work</h2>
+  <p>
+    Subpopulation shift has been studied in a variety of contexts, including covariate shift (Sugiyama et al., 2008), performance
+    degradation under worst-case subgroups (Rabanser et al., 2019), and spurious correlations (Geirhos et al., 2020). Methods like
+    GroupDRO (Sagawa et al., 2019), JTT (Liu et al., 2021), and DFR (Izmailov et al., 2022) attempt to improve worst-group
+    accuracy using subgroup annotations or retraining techniques.
+  </p>
+  <p>
+    Prototype-based classification has been effective in few-shot learning (Snell et al., 2017) and in avoiding shortcut learning
+    (Wei et al., 2023). These methods classify samples based on distances to class-specific centroids. Ensemble diversity has
+    also been studied through techniques like bagging, boosting, disagreement-based loss functions (Pagliardini et al., 2023),
+    and mixture-of-experts routing (Zhou et al., 2022). Our method combines these strands by applying diversification within
+    a prototypical ensemble to tackle subpopulation shift.
+  </p>
+</div>
+
+<div class="section">
+  <h2>3. Subpopulation Prototypical Ensemble</h2>
+
+  <h3>Motivation</h3>
+  <p>
+    A single classifier often captures the dominant subgroup's decision boundary, failing on rare subgroups. For example, using
+    “grassy background” to classify “cows” fails on cows in the desert. Instead, training multiple classifiers that rely on
+    different features increases the chance that some ensemble members capture overlooked subpopulations.
+  </p>
+  <p>
+    Our method builds on this idea by training a <strong>Diversified Prototypical Ensemble (DPE)</strong> using prototypes trained
+    on different class-balanced validation subsets. Each prototype serves as a distinct decision rule, and their diversity is
+    enforced explicitly via regularization and implicitly via data sampling.
+  </p>
+
+  <h3>Two-Stage Training</h3>
+  <ol>
+    <li><strong>Stage 1:</strong> Train a feature extractor with standard ERM to learn good representations.</li>
+    <li><strong>Stage 2:</strong> Freeze the feature extractor and train a set of prototype classifiers using a held-out
+    validation subset. No subgroup labels are required.</li>
+  </ol>
+  <p>
+    This second stage uses class-balanced sampling and encourages each prototype to focus on different latent regions through
+    diversification strategies described below.
+  </p>
+
+  <h3>Prototype Classifier</h3>
+  <p>
+    A prototype classifier assigns label probabilities based on the Euclidean distance between the sample’s latent representation
+    and class-specific prototypes:
+  </p>
+  <pre style="background-color:#f4f4f4; padding:10px; border-radius:5px;">
+P(y|X) = exp(-D(f(X), p(y))) / Σ<sub>i</sub> exp(-D(f(X), p(i)))
+  </pre>
+  <p>
+    where D(·,·) is a learnable scaled distance function, and f(X) is the output of the frozen feature extractor.
+  </p>
+
+  <h3>Prototypical Ensemble</h3>
+  <p>
+    Instead of a single prototype per class, DPE uses N prototypes per class. The prediction is averaged across these:
+  </p>
+  <pre style="background-color:#f4f4f4; padding:10px; border-radius:5px;">
+ŷ = argmax<sub>k</sub> (1/N) Σ<sub>i=1 to N</sub> P<sub>i</sub><sup>(k)</sup>(y|X)
+  </pre>
+
+  <h3>Ensemble Diversification</h3>
+  <p>
+    We use two methods to enforce diversity:
+    <ul>
+      <li><strong>Inter-Prototype Similarity (IPS) Loss:</strong> penalizes similar prototype vectors.</li>
+      <li><strong>Bootstrap Aggregation:</strong> each prototype is trained on a different class-balanced subset of validation data.</li>
+    </ul>
+  </p>
+  <p>
+    The IPS loss encourages prototypes for the same class to diverge:
+  </p>
+  <pre style="background-color:#f4f4f4; padding:10px; border-radius:5px;">
+L<sub>IPS</sub> = Σ<sub>k=1 to K</sub> Σ<sub>i≠j</sub> |⟨p<sub>k</sub><sup>(i)</sup>, p<sub>k</sub><sup>(j)</sup>⟩| / (n·d)
+  </pre>
+  <p>
+    where n is the number of ensemble members and d is the dimension of the prototype vectors.
+  </p>
+</div>
+<div class="section">
+  <h2>4. Experiments</h2>
+
+  <h3>4.1 Datasets</h3>
+  <p>
+    We evaluate DPE across <strong>nine real-world datasets</strong> that represent different types of subpopulation shift:
+    <ul>
+      <li><strong>Spurious Correlation:</strong> WATERBIRDS, CELEBA</li>
+      <li><strong>Attribute Imbalance:</strong> CIVILCOMMENTS, CHEXPERT</li>
+      <li><strong>Class Imbalance:</strong> MULTINLI, LIVING17</li>
+      <li><strong>Attribute Generalization:</strong> METASHIFT, IMAGENETBG, NICO++</li>
+    </ul>
+    These benchmarks span multiple modalities including images and text, and are drawn from SubpopBench (Yang et al., 2023).
+  </p>
+
+  <h3>4.2 Attribute Availability</h3>
+  <p>
+    We test two settings:
+    <ul>
+      <li><strong>Unknown subgroup labels:</strong> No group annotations used during training or validation</li>
+      <li><strong>Known subgroup labels:</strong> Group-annotated validation data used for reweighting or balancing</li>
+    </ul>
+    DPE is effective in both regimes, requiring no labels in the most challenging setting.
+  </p>
+
+  <h3>4.3 Baselines</h3>
+  <p>
+    Baselines include ERM, CRT, DFR, JTT, RWY, AFR, GroupDRO, GAP, and others. All use the same backbone for fair comparison.
+  </p>
+
+  <h3>4.4 Implementation Details</h3>
+  <p>
+    <ul>
+      <li>Stage 1: ERM training on full data with augmentation (ResNet-50 for images, BERT for text)</li>
+      <li>Stage 2: DPE training on class-balanced validation subsets</li>
+      <li>15 prototypes per class used in all settings</li>
+    </ul>
+  </p>
+</div>
+
+<div class="section">
+  <h2>5. Results and Discussion</h2>
+
+  <h3>5.1 DPE Without Subgroup Labels</h3>
+  <p>
+    DPE achieves an average WGA of <strong>73.9%</strong> without subgroup labels, significantly outperforming ERM (57.7%), DFR (65.2%), and RWY (67.5%). Notably:
+    <ul>
+      <li><strong>CELEBA:</strong> 84.6% (vs. 57.6% for ERM)</li>
+      <li><strong>CHEXPERT:</strong> 76.8%</li>
+      <li><strong>IMAGENETBG:</strong> 88.1%</li>
+    </ul>
+  </p>
+
+  <h3>5.2 DPE With Subgroup Labels</h3>
+  <p>
+    When validation subgroup annotations are available, DPE improves even further, achieving an average WGA of <strong>83.0%</strong>:
+    <ul>
+      <li><strong>WATERBIRDS:</strong> 94.1%</li>
+      <li><strong>METASHIFT:</strong> 91.7%</li>
+      <li><strong>CIVILCOMMENTS:</strong> 70.8%</li>
+    </ul>
+    These results surpass state-of-the-art methods like GroupDRO, GAP, and DFR.
+  </p>
+
+  <h3>5.3 Challenging Shift Types</h3>
+  <p>
+    DPE excels in <strong>Attribute Imbalance</strong> (CHEXPERT, MULTINLI) and <strong>Attribute Generalization</strong> (IMAGENETBG, LIVING17), outperforming all baselines where other methods like GroupDRO and JTT fail.
+  </p>
+
+  <h3>5.4 Disentangling Backbone Effects</h3>
+  <p>
+    DPE adds value regardless of the strength of the backbone. On WATERBIRDS:
+    <ul>
+      <li>ERM → ERM+DPE: 69.1% → 91.0%</li>
+      <li>ERM* → ERM*+DPE: 77.9% → 94.1%</li>
+    </ul>
+    This confirms that prototype diversification—not just representation—is the source of DPE’s gains.
+  </p>
+</div>
+<div class="section">
+  <h2>6. Ablation Studies</h2>
+
+  <h3>6.1 Prototype Diversification Strategies</h3>
+  <p>
+    We compare three training strategies:
+    <ol>
+      <li>Fixed subset (no diversification)</li>
+      <li>Random subset per prototype</li>
+      <li>Random subset + IPS (our method)</li>
+    </ol>
+    Only the third strategy (ours) achieves consistent gains as the number of prototypes increases. IPS loss ensures that each prototype captures unique patterns, improving worst-group accuracy and balanced accuracy across datasets.
+  </p>
+
+  <h3>6.2 Linear vs. Prototypical Ensemble</h3>
+  <p>
+    We compare DPE to a linear ensemble trained on the same bootstrapped data. Results show:
+    <ul>
+      <li>DPE outperforms linear ensembles on all datasets</li>
+      <li>Particularly large improvements for attribute generalization (IMAGENETBG, LIVING17)</li>
+    </ul>
+    This confirms the benefit of using distance-based decision boundaries for robustness.
+  </p>
+
+  <h3>6.3 Ensemble Size</h3>
+  <p>
+    Adding more prototypes improves performance up to N = 15. Beyond that, gains saturate. Empirical results:
+    <ul>
+      <li>∆5 = 2.4%</li>
+      <li>∆10 = 3.3%</li>
+      <li>∆15 = 3.7%</li>
+      <li>∆25 = 3.7%</li>
+    </ul>
+    Based on this, we fix N = 15 in all experiments.
+  </p>
+
+  <h3>6.4 Hyperparameter Sensitivity</h3>
+  <p>
+    Varying inverse temperature τ and IPS loss weight α results in only minor variations (within 1–2%) in performance. DPE is robust to hyperparameter changes, with only LIVING17 showing higher sensitivity.
+  </p>
+
+  <h3>6.5 Runtime and Memory</h3>
+  <p>
+    DPE is efficient and scalable. On RTX6000 (batch size 1):
+    <ul>
+      <li>15 prototypes: 0.0031s / 0.20 GB</li>
+      <li>100 prototypes: 0.0045s / 0.85 GB</li>
+    </ul>
+    Linear head baseline: 0.0032s / 0.10 GB. DPE adds minimal overhead.
+  </p>
+
+  <h3>6.6 Accuracy vs. Robustness</h3>
+  <p>
+    DPE maintains or improves average accuracy compared to ERM and ERM*. On METASHIFT:
+    <ul>
+      <li>ERM* → Acc: 93.2%</li>
+      <li>DPE → Acc: 93.8%</li>
+    </ul>
+    This indicates DPE improves fairness without sacrificing standard performance.
+  </p>
+</div>
+
+<div class="section">
+  <h2>7. Limitations</h2>
+  <p>
+    DPE introduces additional complexity due to ensemble training and tuning hyperparameters. While efficient, it adds training time (~2 minutes per prototype) and relies on the quality of ERM-learned features. Also, our explanation for subgroup discovery is empirical; a theoretical understanding remains an open research direction.
+  </p>
+  <p>
+    In future work, integrating self-supervised learning could improve performance in low-data or weak-label settings.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Acknowledgements</h2>
+  <p>
+    This work was supported by the Canada CIFAR AI Chair program, the Vector Institute, and the Canada Research Chair Tier I in Medical Informatics.
+    We also acknowledge funding from CIHR and NSERC. Resources used were provided in part by the Province of Ontario, the Government of Canada
+    through CIFAR, and companies sponsoring the Vector Institute. RGK is supported by a Canada CIFAR AI Chair and a Canada Research Chair Tier II
+    in Computational Medicine.
+  </p>
+</div>
+
+<div class="section">
+  <h2>Citation</h2>
+  <pre style="background-color: #f4f4f4; padding: 12px; border-radius: 6px; font-size: 14px;">
+@inproceedings{to2025dpe,
+  title={Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
+  author={To, Minh Nguyen Nhat and Wilson, Paul F R and Nguyen, Viet and Harmanani, Mohamed and Cooper, Michael and
+          Fooladgar, Fahimeh and Abolmaesumi, Purang and Mousavi, Parvin and Krishnan, Rahul},
+  booktitle={International Conference on Machine Learning (ICML)},
+  year={2025}
+}
+  </pre>
 </div>
 
 </body>
