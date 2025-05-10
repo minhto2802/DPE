@@ -1,12 +1,25 @@
-# Diversified Prototypical Ensemble (DPE)
+# Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift
 
-**ICML 2025**  
-**Improving Robustness to Subpopulation Shifts by Heuristic Subspace Exploration with Enhanced Diversification**
+> ICML 2025 · Vancouver, Canada
 
-We propose DPE, a method that improves robustness to subpopulation shifts by combining distance-based prototypical classifiers in a diversified ensemble.
+Minh Nguyen Nhat To, Paul F R Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper,  
+Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan
 
-🔗 [Paper (PDF)](link_to_pdf)  
-🔗 [OpenReview](link_to_openreview)  
-🔗 [Code](https://anonymous.4open.science/r/prototypical_ensembles-BCB3):contentReference[oaicite:0]{index=0}
+[Paper (PDF)](../_ICML2025__Shift_Happens_.pdf)  
+[Code (Anonymous Link)](https://anonymous.4open.science/r/prototypical_ensembles-BCB3)
 
-![DPE Overview](../figures/overview.png)
+---
+
+### Overview
+
+Subpopulation shifts arise when subgroup distributions differ between training and deployment. We introduce **Diversified Prototypical Ensemble (DPE)**, a technique that augments any pretrained feature extractor with a set of prototype classifiers optimized for diversity. DPE significantly outperforms state-of-the-art robust methods across **nine real-world datasets** without requiring subgroup labels.
+
+![Overview](../figures/overview.png)
+
+---
+
+### Why This Matters
+
+- No subgroup annotations required
+- Improves worst-group accuracy (WGA) across vision, language, and healthcare
+- Scalable and modular: can be applied post hoc to any trained model
