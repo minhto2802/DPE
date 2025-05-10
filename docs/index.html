@@ -6,10 +6,11 @@
   <title>DPE: ICML 2025</title>
   <style>
     body {
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       max-width: 900px;
       margin: auto;
-      padding: 30px;
+      padding: 40px;
+      color: #222;
       line-height: 1.6;
     }
     h1 {
@@ -22,24 +23,29 @@
     }
     .button {
       display: inline-block;
-      margin: 5px;
-      padding: 10px 20px;
-      background-color: black;
+      margin: 6px;
+      padding: 10px 18px;
+      background-color: #333;
       color: white;
       border-radius: 20px;
       text-decoration: none;
       font-size: 14px;
+      transition: background 0.2s;
+    }
+    .button:hover {
+      background-color: #555;
     }
     .logo {
       text-align: center;
-      margin: 20px;
+      margin: 30px;
     }
     .logo img {
       width: 300px;
+      max-width: 100%;
     }
     .code-block {
       text-align: center;
-      background-color: #fce8e6;
+      background-color: #fbeaea;
       padding: 10px;
       border-radius: 5px;
       font-family: monospace;
@@ -47,17 +53,19 @@
       margin-bottom: 20px;
     }
     .summary {
-      background-color: #eaf6ff;
-      padding: 15px;
-      border-radius: 10px;
-      margin-top: 20px;
+      background-color: #eef6fb;
+      padding: 18px;
+      border-radius: 12px;
+      margin-top: 30px;
+    }
+    .summary h2 {
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-<h1>DPE: Diversified Prototypical Ensembles for Subpopulation Shift</h1>
-
+<h1>Diversified Prototypical Ensembles (DPE)</h1>
 <p style="text-align:center;">Accepted at the International Conference on Machine Learning (ICML) 2025</p>
 
 <div class="authors">
@@ -72,15 +80,18 @@
 </div>
 
 <div class="logo">
-  <img src="../2fe96786-dfd7-4be3-9139-43bfc9455286.png" alt="DPE Logo">
+  <img src="../figures/motivation.png" alt="DPE Logo or Visual Summary">
 </div>
 
 <p class="code-block">pip install dpe</p>
 
-<h2>Summary</h2>
 <div class="summary">
+  <h2>Summary</h2>
   <p>
-  Subpopulation shifts can degrade model performance in underrepresented groups. We propose a simple yet effective approach — Diversified Prototypical Ensembles (DPE) — that replaces the classifier head with multiple prototypes optimized for diversity. Our method improves worst-group accuracy on 9 real-world datasets, outperforming state-of-the-art methods without relying on subgroup annotations.
+    Subpopulation shifts—discrepancies in the distribution of subgroups between training and test data—can severely degrade model performance. We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a method that replaces the linear classifier with a set of prototype-based classifiers trained to capture diverse latent structures.
+  </p>
+  <p>
+    DPE is trained in two stages: first using ERM to learn representations, then fine-tuning diversified prototype heads using bootstrapped data subsets and a cosine-based diversity loss (IPS). Our approach improves worst-group accuracy (WGA) across 9 challenging datasets—without needing subgroup labels.
   </p>
 </div>
 
