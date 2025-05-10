@@ -2,27 +2,28 @@
 
 ## Ensemble Prototype Diversity
 
-We visualize cosine similarity matrices between prototypes for `Waterbird` and `Landbird` classes. Lower similarity confirms that IPS promotes prototype diversity.
+We visualize the cosine similarity matrices between learned prototypes for the `Waterbird` and `Landbird` classes. Lower off-diagonal values confirm that the Inter-Prototype Similarity (IPS) loss promotes meaningful diversity among prototypes, enabling DPE to capture distinct subpopulation modes.
 
 ![Prototype Similarity](../figures/prototype_diversification.jpg)
 
-## Ablation Study
+---
 
-### Diversification Strategy Impact
+## Ablation Study: Diversification Strategies
 
-Three strategies:
+We compare three diversification strategies to assess their impact on worst-group accuracy:
 
-- Fixed subsets (no diversity)
-- Random subsets
-- Random + IPS (ours)
+- **Fixed Subsets**: Each prototype is trained on the same validation subset (baseline).
+- **Random Subsets**: Each prototype is trained on a randomly sampled subset.
+- **Random Subsets + IPS**: Our proposed method, combining random sampling with the IPS loss.
 
-Ours consistently improves worst-group accuracy across all datasets.
+Our proposed strategy consistently yields the highest WGA across all datasets.
 
 ![Diversification Impact](../figures/cov_loss_ablation.jpg)
 
+---
+
 ## Linear vs. Prototypical Ensemble
 
-DPE outperforms linear ensembles in all settings, especially in attribute generalization (IMAGENETBG, LIVING17).
+We compare DPE against a linear ensemble baseline across multiple subpopulation shift benchmarks. DPE significantly outperforms the linear ensemble in both attribute imbalance (e.g., MULTINLI) and attribute generalization (e.g., IMAGENETBG, LIVING17).
 
 ![Linear vs Prototypical](../figures/linear_vs_prototype.png)
-
