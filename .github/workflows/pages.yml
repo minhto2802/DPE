@@ -15,4 +15,3 @@ jobs:
         with:
           path: docs
       - uses: actions/deploy-pages@v1
-
