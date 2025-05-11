@@ -164,7 +164,6 @@
 <div class="links">
   <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
   <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Reproduce</a>
-  <a href="#" class="button">🛠 Implement</a>
   <a href="https://arxiv.org/abs/placeholder" class="button">📄 arXiv</a>
 </div>
 
@@ -195,24 +194,68 @@
 
 
 <h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
-<p>
-The top half reproduces results from SubpopBench using the same ERM backbone.
-The bottom half includes stronger ERM* baselines and our DPE results.
-</p>
-  
-<h2>Visual Overview</h2>
-<img src="../figures/cov_loss_ablation.jpg" alt="Covariance Loss Ablation">
-
-<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
 <p class="monospace">
 The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* and our DPE on a stronger backbone.
 </p>
 
+<div class="summary" id="method">
+  <h2>Method</h2>
+  <p>
+    We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a two-stage approach that improves robustness to subpopulation shifts by training an ensemble of diverse prototype classifiers.
+  </p>
+
+  <h3 style="text-align: left;">Stage 1: ERM for Feature Extraction</h3>
+  <p>
+    First, a standard feature extractor is trained via empirical risk minimization (ERM) on the full training set. This step learns useful representations but often captures spurious correlations or overlooks rare subgroups.
+  </p>
+
+  <h3 style="text-align: left;">Stage 2: Prototypical Ensemble with Diversity</h3>
+  <p>
+    After freezing the feature extractor, we replace the linear classifier with a prototypical ensemble: for each class, multiple prototype vectors are learned. Each classifier in the ensemble makes predictions based on distance in the latent space to its own set of prototypes.
+  </p>
+  <p>
+    The final prediction is made by averaging predictions across the ensemble members.
+  </p>
+
+  <h3 style="text-align: left;">Encouraging Diversity</h3>
+  <p>
+    DPE ensures ensemble diversity via two mechanisms:
+  </p>
+  <ul>
+    <li><strong>Bootstrapped Training:</strong> Each classifier is trained on a distinct class-balanced validation subset.</li>
+    <li><strong>Inter-Prototype Similarity (IPS) Loss:</strong> A regularization term penalizes cosine similarity between prototypes of the same class across ensemble members.</li>
+  </ul>
+
+  <h3 style="text-align: left;">Prototypical Classifier Equation</h3>
+  <pre>
+P(y|x) = softmax(-D(f(x), p<sub>y</sub>))
+  </pre>
+  <p>
+    where <code>D</code> is a learnable distance function, <code>f(x)</code> is the frozen representation, and <code>p<sub>y</sub></code> is the prototype for class <code>y</code>.
+  </p>
+
+  <h3 style="text-align: left;">Diversity Loss</h3>
+  <p>
+    We minimize the following IPS loss:
+  </p>
+  <pre>
+L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i)</sup>, p<sub>k</sub><sup>(j)</sup>⟩| / (n · d)
+  </pre>
+  <p>
+    where <code>p<sub>k</sub><sup>(i)</sup></code> and <code>p<sub>k</sub><sup>(j)</sup></code> are prototypes for class <code>k</code> in ensemble members <code>i</code> and <code>j</code>, and <code>d</code> is the feature dimension.
+  </p>
+</div>
+ 
 
 <h2>Benchmark Results</h2>
 
-<summary>📊 <strong>Worst-Group Accuracy — No Subgroup Labels</strong></summary>
-<table>
+<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
+ <p>
+ The top half reproduces results from SubpopBench using the same ERM backbone.
+ The bottom half includes stronger ERM* baselines and our DPE results.
+ </p>
+<!-- <summary>📊 <strong>Worst-Group Accuracy — No Subgroup Labels</strong></summary>
+<table> -->
   <thead>
     <tr>
       <th>Algorithm</th>
