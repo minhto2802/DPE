@@ -10,6 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap"
           rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather&family=Source+Sans+Pro&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
 
     <style>
         .table-box {
@@ -21,6 +25,41 @@
         }
 
         .card-section {
+            background-color: #fff7ed; /* soft peach background */
+            padding: 24px;
+            border-radius: 12px;
+            margin: 2rem 0;
+            font-family: 'Georgia', serif; /* classic serif font */
+            color: rgb(32, 0, 0);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* soft shadow */
+            /*border: 1px solid #f1e0d3; !* light border for contrast *!*/
+        }
+
+        .card-section.summary-section {
+            background-color: #edf7f6; /* light teal or choose another distinct tone */
+        }
+
+        .card-section h2 {
+            /*font-family: 'Merriweather', serif;*/
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.5rem;
+            color: rgba(193, 41, 41, 0.73);
+            margin-bottom: 1rem;
+        }
+
+        .card-section ul {
+            padding-left: 1.25rem;
+        }
+
+        .card-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .card-section ul, .card-section li {
+            font-family: 'Lato', sans-serif;
+        }
+
+        .card-section {
             background-color: #eef6fb;
             padding: 24px;
             border-radius: 12px;
@@ -28,7 +67,7 @@
         }
 
         .card-section h3 {
-            text-align: center;
+            text-align: justify;
             font-family: 'Inter', sans-serif;
             font-size: 1.5rem;
             font-weight: 600;
@@ -36,11 +75,11 @@
         }
 
         .card-section p {
+            text-align: justify;
             font-family: 'Roboto', sans-serif;
             font-size: 1rem;
             color: #333;
             line-height: 1.6;
-            text-align: left;
         }
 
         .card-section .math {
@@ -81,8 +120,8 @@
 
         .button {
             display: inline-block;
-            background: #222;
-            color: white;
+            background: rgb(57, 39, 25);
+            color: #ffffff;
             padding: 10px 16px;
             margin: 4px;
             border-radius: 999px;
@@ -91,7 +130,7 @@
         }
 
         .button:hover {
-            background: #444;
+            background: rgb(151, 93, 57);
         }
 
         .logo {
@@ -169,7 +208,7 @@
         }
 
         th {
-            background: #f5f5f5;
+            background: #ebccff;
             padding: 10px;
             font-weight: 600;
             text-align: center;
@@ -187,7 +226,7 @@
         }
 
         tr.highlight {
-            background-color: #f0f0f0;
+            background-color: rgba(248, 101, 101, 0.2);
         }
 
         .std {
@@ -210,9 +249,52 @@
             border-radius: 5px;
             overflow-x: auto;
         }
+
+        .figure-caption-overview {
+            background-color: #f0f4ff; /* light blue background */
+            padding: 16px;
+            border-left: 4px solid #4b6cb7; /* accent bar */
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Source Sans Pro', sans-serif;
+            color: #1a1a1a;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+            text-align: justify;
+        }
+
+        .equation-box {
+            font-size: 18px;
+            background-color: #f3f8ff;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 2rem 0;
+            font-family: 'Georgia', serif;
+            color: #1f2937;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid #dbeafe;
+        }
+
+        .equation-box h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 18px;
+            color: #2c5282;
+            margin-bottom: 1rem;
+        }
+
+
     </style>
 </head>
 
+<script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['\\(', '\\)']],
+            displayMath: [['\\[', '\\]'], ['$$', '$$']]
+        }
+    };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 <body>
 
@@ -225,40 +307,164 @@
 </div>
 
 <div class="links">
-    <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
-    <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Reproduce</a>
-    <a href="https://arxiv.org/abs/placeholder" class="button">📄 arXiv</a>
+    <a href="https://arxiv.org/abs/your-id" class="button" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="16" viewBox="0 0 90 24"
+             style="vertical-align: middle; margin-right: 6px;">
+            <text x="0" y="16" font-family="Arial, sans-serif" font-size="24" fill="white">arXiv</text>
+        </svg>
+        Paper
+    </a>
+
+    <a href="https://github.com/your-repo" class="button" target="_blank">
+        <!-- SVG goes here -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="white"
+             style="vertical-align: middle; margin-right: 6px;">
+            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38
+      0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
+      1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+      0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.65 7.65 0 012 0c1.53-1.03
+      2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
+      3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01
+      8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        Reproduce
+    </a>
+
+    <a href="https://openreview.net/forum?id=your_submission_id" class="button" target="_blank">
+        <svg height="16" viewBox="0 0 100 100" style="vertical-align: middle; margin-right: 6px;">
+            <rect width="100" height="100" fill="#881C1C"/>
+            <text x="10" y="35" font-family="Arial, sans-serif" font-size="24" fill="white">Open</text>
+            <text x="10" y="60" font-family="Arial, sans-serif" font-size="24" fill="white">Review</text>
+            <text x="10" y="85" font-family="Arial, sans-serif" font-size="20" fill="lightgray">.net</text>
+        </svg>
+        OpenReview
+    </a>
 </div>
 
-<div class="logo">
-    <img src="figures/motivation.png" alt="DPE Logo or Teaser Figure">
-</div>
+<!--<div class="logo">-->
+<!--    <img src="figures/motivation.png" alt="DPE Logo or Teaser Figure">-->
+<!--</div>-->
 
 <div style="text-align: center;">
-  <div class="code-block">pip install dpe</div>
-</div>
-
-<div class="card-section">
-    <h2>Summary</h2>
-    <p>
-        Subpopulation shifts can lead to performance degradation in underrepresented groups. We introduce <strong>Diversified
-        Prototypical Ensembles (DPE)</strong>,
-        a method that augments a frozen backbone with a diverse set of prototype classifiers trained to capture
-        complementary latent modes.
-    </p>
-    <p>
-        DPE is trained in two stages: standard ERM for representation learning, followed by diversification using
-        prototype ensembles optimized on
-        bootstrapped validation subsets. This allows DPE to outperform existing methods in worst-group accuracy across 9
-        benchmark datasets, even
-        without access to subgroup annotations.
-    </p>
+    <div class="code-block">pip install dpe</div>
 </div>
 
 <div class="visual">
     <img src="figures/embeddings_figure.png" alt="Diagram Overview of DPE">
 
-    <div class="note">How we diversify prototypes to capture latent subpopulations without group labels.</div>
+    <div class="figure-caption-overview">
+        <p>
+            <strong>(1)</strong> Binary classification with implicit (unannotated) subgroups. The goal is to detect and
+            correct for subpopulation shifts without prior group knowledge.
+            <strong>(2)</strong> A <span class="feature-extractor">frozen feature extractor</span>, <i>f(·)</i>, is used
+            to extract features.
+            <strong>(3)</strong> We train an ensemble of <i>N</i> prototype classifiers per class, using the IPS loss
+            (Eq. 4) to encourage diversity and discover latent subpopulations.
+            <strong>(4)</strong> A 2D projection shows centroids and sample proximity for the “Landbird” class in <i>Waterbirds</i>.
+            Samples closest to each centroid are shown in blue, farther ones in red, and the closest few in dark blue.
+            <strong>(5)</strong> Image patches nearest to each centroid confirm that learned prototypes align with
+            meaningful subgroups (e.g., birds on land vs. in water).
+        </p>
+    </div>
+</div>
+
+<div class="card-section summary-section">
+    <h2>Summary</h2>
+    <p>
+        Subpopulation shifts occur when the distribution of data subgroups differs between training and deployment
+        environments. These shifts can significantly degrade the generalization performance of machine learning models,
+        especially when subgroup annotations are unavailable. Existing solutions often rely on reweighting or
+        subgroup-specific adjustments, which require prior knowledge or annotations that are difficult to obtain in
+        real-world applications.
+    </p>
+    <p>
+        We introduce <strong>Diversified Prototypical Ensembles (DPE)</strong>, a method that improves robustness by
+        training a collection of prototype classifiers. Each classifier is designed to focus on different subsets of the
+        data and different features. By encouraging diversity among ensemble members, DPE captures multiple decision
+        boundaries, enabling better generalization across a wide range of subpopulations.
+    </p>
+    <p><strong>Key Contributions:</strong></p>
+    <ul>
+        <li>We propose an end-to-end framework that promotes diversity within an ensemble of prototype-based
+            classifiers, each capturing complementary decision rules.
+        </li>
+        <li>DPE replaces the standard linear head with multiple prototype heads trained using a combination of
+            diversification loss and sample resampling.
+        </li>
+        <li>We demonstrate state-of-the-art performance on nine datasets, achieving improved worst-group accuracy under
+            various types of subpopulation shift such as attribute imbalance, spurious correlations, and previously
+            unseen attribute values.
+        </li>
+    </ul>
+</div>
+
+<div class="card-section">
+    <h2>Motivation</h2>
+    <p>
+        In real-world datasets, classifiers often learn to rely on shortcuts or spurious features that correlate with
+        the labels in the training distribution but fail to hold in deployment. These failures are especially severe
+        when certain subgroups are underrepresented or shift at test time, making it difficult for the model to learn a
+        single decision boundary that generalizes well.
+    </p>
+    <p>
+        A natural solution is to move beyond a single global decision rule. When a model is encouraged to consider
+        multiple distinct ways to separate the data, it becomes more likely that at least one decision rule will align
+        with the correct semantics across diverse subpopulations. This forms the key insight behind our approach.
+    </p>
+    <p>
+        Rather than relying on prior knowledge of subgroup structure, we explore the feature space. By
+        training multiple classifiers that are explicitly encouraged to be different from one another, we can uncover a
+        richer set of decision boundaries that are more robust to distribution shifts.
+    </p>
+</div>
+
+
+<div class="visual">
+    <img src="figures/motivation.png" alt="Diagram Overview of DPE">
+
+    <div class="note">Motivation of DPE. (a) A single model trained on mixed subgroups learns a biased decision boundary
+        favoring the majority. (b–d) As ensemble size increases, each model captures different subgroup patterns,
+        improving classification across subpopulations.
+    </div>
+
+</div>
+
+
+
+
+<div class="card-section" id="method">
+    <h2 style="text-align: center;">Method</h2>
+
+    <p>
+        <strong>DPE</strong> is a two-stage approach that improves
+        robustness to subpopulation shifts by training an ensemble of diverse prototype classifiers.
+    </p>
+
+    <div class="card-section equation-box">
+    <h3>Prototypical Classifier</h3>
+    <p>
+        The model assigns the probability of class \( y \) based on the distance between the extracted feature
+        representation \( f(x) \) and the prototype \( p_y \). A softmax over the negative distances is used to produce
+        a valid probability distribution:
+    </p>
+    <div style="text-align: center;">
+        $$ P(y \mid x) = \mathrm{softmax}(-D(f(x), p_y)) $$
+    </div>
+</div>
+
+<div class="card-section equation-box">
+    <h3>Prototypical Ensemble </h3>
+    <p>
+        To encourage diversity among prototypes within each class, we minimize the average absolute cosine similarity
+        between all pairs of prototypes for a given class:
+    </p>
+    <div style="text-align: center;">
+        $$ \mathcal{L}_{\text{IPS}} = \frac{1}{K \cdot n \cdot d} \sum_{k=1}^K \sum_{i \ne j} \left| \langle p^{(k)}_i,
+        p^{(k)}_j \rangle \right| $$
+    </div>
+</div>
+
+
 </div>
 
 <div class='table-box' id="wga-no-attributes">
@@ -573,63 +779,6 @@
 </div>
 
 
-<div class="card-section" id="method">
-    <h2 style="text-align: center;">Method</h2>
-
-    <p>
-        We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a two-stage approach that improves
-        robustness to subpopulation shifts by training an ensemble of diverse prototype classifiers.
-    </p>
-
-    <h3>Stage 1: ERM for Feature Extraction</h3>
-    <p>
-        First, a standard feature extractor is trained via empirical risk minimization (ERM) on the full training set.
-        This step learns useful representations but often captures spurious correlations or overlooks rare subgroups.
-    </p>
-
-    <h3>Stage 2: Prototypical Ensemble with Diversity</h3>
-    <p>
-        After freezing the feature extractor, we replace the linear classifier with a prototypical ensemble: for each
-        class,
-        multiple prototype vectors are learned. Each classifier in the ensemble makes predictions based on distance in
-        the
-        latent space to its own set of prototypes.
-    </p>
-    <p>
-        The final prediction is made by averaging predictions across the ensemble members.
-    </p>
-
-    <h3>Encouraging Diversity</h3>
-    <p>DPE ensures ensemble diversity via two mechanisms:</p>
-    <ul>
-        <li><strong>Bootstrapped Training:</strong> Each classifier is trained on a distinct class-balanced validation
-            subset.
-        </li>
-        <li><strong>Inter-Prototype Similarity (IPS) Loss:</strong> A regularization term penalizes cosine similarity
-            between prototypes of the same class across ensemble members.
-        </li>
-    </ul>
-
-    <h3>Prototypical Classifier Equation</h3>
-    <p style="text-align:center;">\( P(y | x) = softmax(-D(f(x), p<sub>y</sub>)) \)</p>
-
-    </pre>
-    <p>
-        where <code>D</code> is a learnable distance function, <code>f(x)</code> is the frozen representation,
-        and <code>p<sub>y</sub></code> is the prototype for class <code>y</code>.
-    </p>
-
-    <h3>Diversity Loss</h3>
-    <p>We minimize the following IPS loss:</p>
-    <pre style="white-space: pre-wrap; font-family: 'Roboto Mono', monospace; font-size: 0.95rem;">
-L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i)</sup>, p<sub>k</sub><sup>(j)</sup>⟩| / (n · d)
-  </pre>
-    <p>
-        where <code>p<sub>k</sub><sup>(i)</sup></code> and <code>p<sub>k</sub><sup>(j)</sup></code> are prototypes for
-        class <code>k</code>
-        in ensemble members <code>i</code> and <code>j</code>, and <code>d</code> is the feature dimension.
-    </p>
-</div>
 
 
 <h2>BibTeX</h2>
@@ -643,7 +792,6 @@ L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i
 }
 </pre>
 
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 </body>
 </html>
