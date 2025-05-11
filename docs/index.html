@@ -449,17 +449,12 @@
 
     <p>
         <strong>DPE</strong> is a two-stage approach for improving robustness to subpopulation shifts by training an
-        ensemble of diverse prototype classifiers. It builds on the hypothesis that promoting variation across
-        classifiers can capture latent subgroups even without explicit subgroup labels.
-    </p>
-
-    <h3>Two-Stage Training</h3>
-    <p>
-        DPE first trains a feature extractor \( f: \mathbb{R}^n \to \mathbb{R}^d \) using standard empirical risk
+        ensemble of diverse prototype classifiers. DPE first trains a feature extractor \( f: \mathbb{R}^n \to
+        \mathbb{R}^d \) using standard empirical risk
         minimization (ERM) on the full training data. This backbone is frozen and then used to extract features for a
         small, class-balanced subset of the validation set. On top of these features, a diversified ensemble of
         prototype classifiers is trained. Notably, no subgroup annotations are required in this second stage, though
-        they can optionally improve balance via stratified sampling.
+        they can improve balance via stratified sampling.
     </p>
 
     <div class="card-section equation-box">
@@ -521,11 +516,24 @@
     </div>
 </div>
 
+
 <div class="card-section" id="evaluation">
     <h2 style="text-align: center;">Strong Generalization Under Distribution Shifts</h2>
     <p>
-        Across a wide range of datasets and subpopulation shift scenarios, <strong>DPE consistently achieves the highest
-        worst-group accuracy</strong>, outperforming both classical and SOTAs. Its effectiveness
+        We evaluate the robustness of DPE against subpopulation shifts using <strong>nine real-world datasets</strong>
+        across vision, language, and medical domains.
+        These datasets are chosen to capture common challenges such as spurious
+        correlations, attribute imbalance, class imbalance, and attribute generalization, all of which can degrade model
+        performance under distribution shift.
+        The evaluation includes <strong>Waterbirds</strong>, <strong>CelebA</strong>, <strong>MetaShift</strong>,
+        <strong>ImageNetBG</strong>, <strong>NICO++</strong>, <strong>Living17</strong>, <strong>CheXpert</strong>,
+        <strong>CivilComments</strong>, and <strong>MultiNLI</strong>, using the training, validation, and test splits
+        provided by Yang et al. (2023). These datasets help assess model robustness when attribute or subgroup
+        information is available or missing.
+    </p>
+    <p>
+        Across a wide range of subpopulation shift scenarios, <strong>DPE consistently achieves the highest
+        worst-group accuracy</strong>, outperforming both classical and state-of-the-art methods. Its effectiveness
         holds under missing subgroup information, challenging shift types like attribute imbalance and
         generalization, and across different backbone strengths.
     </p>
