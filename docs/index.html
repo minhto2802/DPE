@@ -510,10 +510,18 @@
     <div class="card-section equation-box">
         <h3>Prototypical Ensemble</h3>
         <p>
-            Instead of a single prototype per class, DPE maintains \( N \) prototypes per class, resulting in an
-            ensemble \( \{p^{(k)}_j \mid k = 1, \dots, K; j = 1, \dots, N\} \). The predicted class label is computed by
-            averaging predictions across the ensemble:
+            Instead of a single prototype per class, DPE maintains <i>N</i> prototypes per class, resulting in an
+            ensemble:
         </p>
+
+        <div class="math-display">
+            $$ \left\{ p^{(k)}_j \mid k = 1, \dots, K;\ j = 1, \dots, N \right\} $$
+        </div>
+
+        <p>
+            The predicted class label is computed by averaging predictions across the ensemble.
+        </p>
+
         <div class="math-display" style="text-align: center;">
             $$ \hat{y} = \arg\max_{k \in \{1, \dots, K\}} \frac{1}{N} \sum_{j=1}^N P_j^{(k)}(y \mid x) $$
         </div>
@@ -531,7 +539,8 @@
         <div class="math-display" style="text-align: center;">
             $$ \mathcal{L}_{\text{IPS}} = \sum_{k=1}^K \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{1}_{\{i \ne j\}} \cdot
             \frac{\left| \langle p_i^{(k)}, p_j^{(k)} \rangle \right|}{n \cdot d} $$
-        </>
+        </
+        >
         <p>
             Here, \( \langle \cdot, \cdot \rangle \) denotes the inner product, and \( d \) is the embedding dimension.
             Each prototype is also trained on a different class-balanced bootstrap sample, which encourages coverage of
@@ -572,14 +581,16 @@
             <strong>CivilComments</strong>. Methods like CRT and ReWeightCRT also struggle in this setting.
         </p>
         <p>
-            In contrast, <strong>DPE</strong> performs consistently well across datasets without requiring subgroup
-            annotations. It surpasses DFR (65.2%) and RWY (67.5%), and achieves 76.8% WGA on <strong>CheXpert</strong>
-            and 84.6% on <strong>CelebA</strong>.
+            In contrast, <em>DPE</em> performs consistently well across datasets without requiring subgroup
+            annotations. It outperforms AFR (82.0%) and RWY (82.9%), and achieves 84.6% WGA on <strong>CelebA</strong>.
+            On <strong>NICO++</strong>, <em>DPE</em> surpasses other methods by a large margin.
         </p>
         <p>
-            When subgroup annotations are available in the validation set, all methods improve. DPE achieves 94.1% on
-            <strong>Waterbirds</strong> and 91.7% on <strong>MetaShift</strong>, outperforming ReWeightCRT (85.1%), DFR
-            (81.5%), and GAP (93.8%). On <strong>CivilComments</strong>, DPE reaches 70.8%, exceeding CRT and DFR.
+            When subgroup annotations are available in the validation set, all methods show noticeable improvements in
+            worst-group accuracy. Among them, DPE achieves the highest WGA on most datasets: <strong>Waterbirds</strong>,
+            <strong>CelebA</strong>, <strong>MetaShift</strong>, and <strong>CheXpert</strong>. These results highlight
+            DPE’s ability to leverage subgroup information effectively while maintaining strong generalization across
+            diverse subpopulation shift scenarios.
         </p>
     </div>
 
@@ -899,7 +910,7 @@
         </table>
     </div>
     <div class="table-box responsive-table" id="standard-accuracy">
-        <h3 style="text-align: center;">Standard Accuracy (with Attribute Annotations)</h3>
+        <h3 style="text-align: center;">Standard Accuracy (With Attribute Annotations)</h3>
         <p style="text-align: center; font-size: 0.9rem; margin-top: 4px; cursor: pointer;"
            onclick="toggleAccuracyTable()">(Click to expand)</p>
 
@@ -1114,10 +1125,11 @@
             ERM and an enhanced ERM<sup>*</sup> backbone. DPE consistently improves WGA regardless of the backbone.
         </p>
         <p>
-            On <strong>Waterbirds</strong>, WGA improves from 69.1% (ERM) and 77.9% (ERM<sup>*</sup>) to 91.0% and 94.1%
-            with DPE, respectively. On <strong>CelebA</strong>, WGA increases from 57.6% to 81.9% (ERM+DPE), and from
-            66.5% to 84.6% (ERM<sup>*</sup>+DPE). Similarly, on <strong>MultinLI</strong>, WGA improves from 66.4% to
-            69.3% and from 66.5% to 70.9% when DPE is added.
+        <p>
+            On <strong>Waterbirds</strong>, WGA improves from 69.1% (ERM) and 77.9% (ERM<sup>*</sup>) &#8594; 91.0% and
+            94.1% with DPE, respectively. On <strong>CelebA</strong>, WGA increases from 57.6% &#8594; 87.7% (ERM+DPE),
+            and from 66.5% &#8594; 90.3% (ERM<sup>*</sup>+DPE). Similarly, on <strong>MultiNLI</strong>, WGA improves
+            from 66.4% &#8594; 74.8% and from 66.5% &#8594; 75.3% when DPE is added.
         </p>
         <p>
             These results confirm that DPE’s improvements come from prototype diversification, not just better
