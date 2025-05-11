@@ -95,6 +95,143 @@
 <img src="../figures/landbird_prototypes_with_chatgpt_descriptions.jpg" alt="Landbird Prototypes">
 <img src="../figures/waterbird_prototypes_with_chatgpt_descriptions.jpg" alt="Waterbird Prototypes">
 
+<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
+<p>
+The top half reproduces results from SubpopBench using the same ERM backbone.
+The bottom half includes stronger ERM* baselines and our DPE results.
+</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Algorithm</th>
+      <th>Waterbirds</th>
+      <th>CelebA</th>
+      <th>CivilComments</th>
+      <th>MultiNLI</th>
+      <th>MetaShift</th>
+      <th>CheXpert</th>
+      <th>ImageNetBG</th>
+      <th>NICO++</th>
+      <th>Living17</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- SubpopBench section -->
+    <tr>
+      <td>ERM</td>
+      <td>69.1 ± 4.7</td>
+      <td>57.6 ± 0.8</td>
+      <td>63.2 ± 1.2</td>
+      <td><b>66.4</b> ± 2.3</td>
+      <td>82.1 ± 0.8</td>
+      <td>41.7 ± 3.4</td>
+      <td>76.8 ± 0.9</td>
+      <td>35.0 ± 4.1</td>
+      <td>48.0 ± 1.5</td>
+    </tr>
+    <tr>
+      <td>CRT</td>
+      <td>76.3 ± 0.8</td>
+      <td>69.6 ± 0.7</td>
+      <td><b>67.8</b> ± 0.3</td>
+      <td>65.4 ± 0.2</td>
+      <td>83.1 ± 0.0</td>
+      <td>74.6 ± 0.4</td>
+      <td><b>78.2</b> ± 0.5</td>
+      <td>33.3 ± 0.0</td>
+      <td>–</td>
+    </tr>
+    <tr>
+      <td>ReWeightCRT</td>
+      <td>76.3 ± 0.2</td>
+      <td>70.7 ± 0.6</td>
+      <td>64.7 ± 0.2</td>
+      <td>65.2 ± 0.2</td>
+      <td><b><u>85.1</u></b> ± 0.4</td>
+      <td><b>75.1</b> ± 0.2</td>
+      <td>77.5 ± 0.7</td>
+      <td>33.3 ± 0.0</td>
+      <td>–</td>
+    </tr>
+    <tr>
+      <td>DFR</td>
+      <td><b>89.0</b> ± 0.2</td>
+      <td><b>73.7</b> ± 0.8</td>
+      <td>64.4 ± 0.1</td>
+      <td>63.8 ± 0.0</td>
+      <td>81.4 ± 0.1</td>
+      <td><b><u>75.8</u></b> ± 0.3</td>
+      <td>74.4 ± 1.8</td>
+      <td><b>38.0</b> ± 3.8</td>
+      <td>–</td>
+    </tr>
+    <tr style="background-color: #f0f0f0;">
+      <td><b>ERM + DPE</b></td>
+      <td><b><u>91.0</u></b> ± 0.5</td>
+      <td><b><u>81.9</u></b> ± 0.2</td>
+      <td><b><u>69.9</u></b> ± 0.9</td>
+      <td><b><u>69.3</u></b> ± 0.8</td>
+      <td><b>84.1</b> ± 1.5</td>
+      <td>–</td>
+      <td><b><u>87.9</u></b> ± 0.6</td>
+      <td><b><u>50.0</u></b> ± 0.0</td>
+      <td><b><u>54.0</u></b> ± 4.0</td>
+    </tr>
+
+    <!-- Stronger backbone section -->
+    <tr>
+      <td>ERM*</td>
+      <td>77.9 ± 3.0</td>
+      <td>66.5 ± 2.6</td>
+      <td><b><u>69.4</u></b> ± 1.2</td>
+      <td>66.5 ± 0.7</td>
+      <td>80.0 ± 0.0</td>
+      <td>75.6 ± 0.4</td>
+      <td>86.4 ± 0.8</td>
+      <td>33.3 ± 0.0</td>
+      <td>53.3 ± 0.9</td>
+    </tr>
+    <tr>
+      <td>RWY</td>
+      <td>86.1 ± 0.7</td>
+      <td><b>82.9</b> ± 2.2</td>
+      <td>67.5 ± 0.6</td>
+      <td>68.0 ± 1.9</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+    </tr>
+    <tr>
+      <td>AFR</td>
+      <td><b>90.4</b> ± 1.1</td>
+      <td>82.0 ± 0.5</td>
+      <td>68.7 ± 0.6</td>
+      <td><b><u>73.4</u></b> ± 0.6</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+      <td>–</td>
+    </tr>
+    <tr style="background-color: #f0f0f0;">
+      <td><b>ERM* + DPE</b></td>
+      <td><b><u>94.1</u></b> ± 0.2</td>
+      <td><b><u>84.6</u></b> ± 0.8</td>
+      <td><b>68.9</b> ± 0.6</td>
+      <td><b>70.9</b> ± 0.8</td>
+      <td><b><u>83.6</u></b> ± 0.9</td>
+      <td><b><u>76.8</u></b> ± 0.1</td>
+      <td><b><u>88.1</u></b> ± 0.7</td>
+      <td><b><u>50.0</u></b> ± 0.0</td>
+      <td><b><u>63.0</u></b> ± 1.7</td>
+    </tr>
+  </tbody>
+</table>
+
+  
 <h2>Benchmark Results</h2>
 
 <details>
