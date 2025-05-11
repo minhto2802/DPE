@@ -564,7 +564,6 @@
             The top section presents SubpopBench-style baselines using an ERM backbone.
             The bottom section includes recent state-of-the-art methods and our method using a stronger ERM<sup>*</sup>
             backbone.
-            DPE denotes our diversified prototypical ensemble.
         </p>
         <table>
             <thead>
@@ -701,6 +700,11 @@
             from
             original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
             Bold and underlined values indicate the best result per group, bold values indicate the second-best.
+            DPE denotes our diversified prototypical ensemble. Group Info denotes the use of
+            group labels during training and/or validation:
+            <strong>❌/❌</strong>: no group info, <strong❌/✔️</strong>: validation group info only,
+            <strong>❌/✔️✔️</strong>: group info used for training and tuning, <strong>✔️/✔️</strong>: full group labels
+            required.
         </p>
         <table>
             <thead>
@@ -869,6 +873,201 @@
             </tbody>
         </table>
     </div>
+    <div class="table-box" id="standard-accuracy">
+        <h3 style="text-align: center;">Standard Accuracy</h3>
+        <p style="text-align: center; font-size: 0.9rem; margin-top: 4px; cursor: pointer;"
+           onclick="toggleAccuracyTable()">(Click to expand)</p>
+
+        <div id="accuracyTable" style="display: none; overflow-x: auto;">
+            <p>
+                The table below reports average accuracy for each method across datasets.
+            </p>
+
+            <table border="1" cellpadding="8" cellspacing="0"
+                   style="border-collapse: collapse; width: 100%; font-size: 14px;">
+                <thead style="background-color: #f3f4f6;">
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Group Info</th>
+                    <th>Waterbirds</th>
+                    <th>CelebA</th>
+                    <th>CivilComments</th>
+                    <th>MultiNLI</th>
+                    <th>MetaShift</th>
+                    <th>CheXpert</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>ERM</td>
+                    <td>×/×</td>
+                    <td>84.1±1.7</td>
+                    <td>95.0±0.1</td>
+                    <td>85.4±0.2</td>
+                    <td>80.9±0.3</td>
+                    <td>91.5±0.2</td>
+                    <td>88.6±0.7</td>
+                </tr>
+                <tr>
+                    <td>CRT</td>
+                    <td>×/✓</td>
+                    <td>89.2±0.1</td>
+                    <td>94.1±0.1</td>
+                    <td>83.0±0.0</td>
+                    <td>80.2±0.0</td>
+                    <td>91.5±0.0</td>
+                    <td>79.1±0.1</td>
+                </tr>
+                <tr>
+                    <td>ReWeightCRT</td>
+                    <td>×/✓</td>
+                    <td>89.4±0.3</td>
+                    <td>94.2±0.1</td>
+                    <td>83.4±0.0</td>
+                    <td>80.2±0.0</td>
+                    <td>91.3±0.1</td>
+                    <td>79.0±0.0</td>
+                </tr>
+                <tr>
+                    <td>DFR</td>
+                    <td>×/✓✓</td>
+                    <td>92.2±0.2</td>
+                    <td>91.2±0.1</td>
+                    <td>81.3±0.0</td>
+                    <td>80.2±0.0</td>
+                    <td>90.5±0.4</td>
+                    <td>78.9±0.2</td>
+                </tr>
+                <tr>
+                    <td>ERM + DPE</td>
+                    <td>×/✓✓</td>
+                    <td>92.5±0.2</td>
+                    <td>89.8±0.2</td>
+                    <td>82.2±0.2</td>
+                    <td>81.3±0.2</td>
+                    <td>91.2±0.1</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>ERM*</td>
+                    <td>×/×</td>
+                    <td>92.1±0.2</td>
+                    <td>94.0±0.2</td>
+                    <td>83.3±1.4</td>
+                    <td>81.9±0.2</td>
+                    <td>93.2±0.1</td>
+                    <td>79.4±0.3</td>
+                </tr>
+                <tr>
+                    <td>Group DRO</td>
+                    <td>✓/✓</td>
+                    <td>93.5</td>
+                    <td>92.9</td>
+                    <td>88.9</td>
+                    <td>81.4</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>RWG</td>
+                    <td>✓/✓</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>JTT</td>
+                    <td>×/✓</td>
+                    <td>93.3</td>
+                    <td>88.0</td>
+                    <td>91.1</td>
+                    <td>78.6</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>CnC</td>
+                    <td>×/✓</td>
+                    <td>90.9±0.1</td>
+                    <td>89.9±0.5</td>
+                    <td>81.7±0.5</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>SSA</td>
+                    <td>×/✓✓</td>
+                    <td>92.2±0.9</td>
+                    <td>92.8±0.1</td>
+                    <td>88.2±2.0</td>
+                    <td>79.9±0.87</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>DFR*</td>
+                    <td>×/✓✓</td>
+                    <td>94.2±0.4</td>
+                    <td>91.3±0.3</td>
+                    <td>87.2±0.3</td>
+                    <td>82.1±0.2</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>GAP (Last Layer)</td>
+                    <td>×/✓✓</td>
+                    <td>94.6±0.2</td>
+                    <td>91.7±0.2</td>
+                    <td>–</td>
+                    <td>81.9±0.0</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td>GAP (All Layer)</td>
+                    <td>×/✓✓</td>
+                    <td>95.6±0.1</td>
+                    <td>91.5±0.1</td>
+                    <td>–</td>
+                    <td>82.5±0.1</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr  style="background-color: #f9fafb;">
+                    <td>ERM* + DPE</td>
+                    <td>×/✓✓</td>
+                    <td>96.0±0.1</td>
+                    <td>91.9±0.3</td>
+                    <td>81.6±0.2</td>
+                    <td>81.6±0.2</td>
+                    <td>93.8±0.5</td>
+                    <td>79.0±0.2</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        function toggleAccuracyTable() {
+            const table = document.getElementById('accuracyTable');
+            table.style.display = table.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
+
+    <script>
+        function toggleAccuracyTable() {
+            const table = document.getElementById('accuracyTable');
+            table.style.display = table.style.display === 'none' ? 'block' : 'none';
+        }
+    </script>
+
     <div class="card-section equation-box">
         <h3>Attribute Imbalance and Generalization</h3>
         <p>
