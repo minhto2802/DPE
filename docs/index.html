@@ -6,6 +6,8 @@
   <title>DPE: Diverse Prototypical Ensembles (ICML 2025)</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -115,7 +117,63 @@
   .underline {
     text-decoration: underline;
   }
+      body {
+    font-family: 'Roboto', sans-serif;
+    color: #222;
+    max-width: 960px;
+    margin: auto;
+    padding: 2rem;
+  }
+  h1, h2, h3, th {
+    font-family: 'Inter', sans-serif;
+  }
+  p.monospace {
+    font-family: 'Roboto Mono', monospace;
+    font-size: 0.9rem;
+    color: #444;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 15px;
+  }
+  th {
+    background: #f5f5f5;
+    padding: 10px;
+    font-weight: 600;
+  }
+  td {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  tr:nth-child(even) {
+    background: #fafafa;
+  }
+  tr.highlight {
+    background: #f0f0f0;
+  }
+  .std {
+    font-size: 12px;
+    font-family: 'Roboto Mono', monospace;
+    color: #555;
+  }
+  summary {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #eef4ff;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin: 1.5rem 0;
+  }
+  details[open] summary {
+    background: #dde8ff;
+  }
   </style>
+  
 </head>
   
 <body>
@@ -140,6 +198,7 @@
 
 <h2>Visual Overview</h2>
 
+
 <h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
 <p>
 The top half reproduces results from SubpopBench using the same ERM backbone.
@@ -154,16 +213,7 @@ The bottom half includes stronger ERM* baselines and our DPE results.
 The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* and our DPE on a stronger backbone.
 </p>
 
-<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
-<p class="monospace">
-The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* and our DPE on a stronger backbone.
-</p>
-
-<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
-<p class="monospace">
-The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* and our DPE on a stronger backbone.
-</p>
-
+<details>
 <table>
   <thead>
     <tr>
@@ -293,6 +343,7 @@ The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* 
     </tr>
   </tbody>
 </table>
+</details>
 
 
 
