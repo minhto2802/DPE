@@ -160,24 +160,44 @@
   
 <body>
 
-<h1>Diversified Prototypical Ensembles (DPE)</h1>
-<p class="authors">
-  Minh Nguyen Nhat To, Paul F R Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper<br>
-  Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan
-</p>
+<h1>Diversified Prototypical Ensembles</h1>
+<p class="institution">Accepted at the International Conference on Machine Learning (ICML) 2025</p>
+
+<div class="authors">
+  Minh Nguyen Nhat To · Paul F R Wilson · Viet Nguyen · Mohamed Harmanani · Michael Cooper<br>
+  Fahimeh Fooladgar · Purang Abolmaesumi · Parvin Mousavi · Rahul G. Krishnan
+</div>
 
 <div class="links">
   <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
-  <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Code</a>
+  <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Reproduce</a>
+  <a href="#" class="button">🛠 Implement</a>
+  <a href="https://arxiv.org/abs/placeholder" class="button">📄 arXiv</a>
 </div>
 
-  
-<h2>Abstract</h2>
-<p>
-  Subpopulation shifts, characterized by disparities in subpopulation distributions between training and target datasets, can significantly degrade model performance. We propose DPE, a method that augments a frozen feature extractor with a set of prototype classifiers trained to diversify across latent subpopulations. Our approach outperforms prior methods in worst-group accuracy across nine real-world benchmarks without using subgroup labels.
-</p>
+<div class="logo">
+  <img src="../figures/motivation.png" alt="DPE Logo or Teaser Figure">
+</div>
 
-<h2>Visual Overview</h2>
+<div class="code-block">pip install dpe</div>
+
+<div class="summary">
+  <h2>Summary</h2>
+  <p>
+    Subpopulation shifts can lead to performance degradation in underrepresented groups. We introduce <strong>Diversified Prototypical Ensembles (DPE)</strong>, 
+    a method that augments a frozen backbone with a diverse set of prototype classifiers trained to capture complementary latent modes.
+  </p>
+  <p>
+    DPE is trained in two stages: standard ERM for representation learning, followed by diversification using prototype ensembles optimized on
+    bootstrapped validation subsets. This allows DPE to outperform existing methods in worst-group accuracy across 9 benchmark datasets, even 
+    without access to subgroup annotations.
+  </p>
+</div>
+
+<div class="visual">
+  <img src="../figures/ebe27324-45eb-4b16-8238-e756c5db14a3.png" alt="Diagram Overview of DPE">
+  <div class="note">How we diversify prototypes to capture latent subpopulations without group labels.</div>
+</div>
 
 
 <h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
