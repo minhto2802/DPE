@@ -11,6 +11,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto&display=swap" rel="stylesheet">
 
   <style>
+  .table-box {
+    background-color: #f8fafd; /* soft blue-gray */
+    border-radius: 12px;
+    padding: 24px;
+    margin: 2rem 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
      .card-section {
     background-color: #eef6fb;
     padding: 24px;
@@ -238,7 +246,7 @@
   The bottom section includes recent state-of-the-art methods and our method using a stronger ERM<sup>*</sup> backbone.
   DPE denotes our diversified prototypical ensemble.
 </p>
-<div id="wga-no-attributes">
+<div class='table-box' id="wga-no-attributes">
   <table>
     <thead>
       <tr>
@@ -272,7 +280,7 @@
    Bold and underlined values indicate the best result per group, bold values indicate the second-best.
  </p>
 
- <div class="summary" id="wga-with-attributes">
+ <div class="table-box" id="wga-with-attributes">
   <h2 style="text-align: center;">Worst-Group Accuracy (With Attribute Annotations)</h2>
 
   <table>
