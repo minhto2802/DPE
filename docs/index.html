@@ -213,7 +213,11 @@ The bottom half includes stronger ERM* baselines and our DPE results.
 The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* and our DPE on a stronger backbone.
 </p>
 
+
+<h2>Benchmark Results</h2>
+
 <details>
+<summary>📊 <strong>Worst-Group Accuracy — No Subgroup Labels</strong></summary>
 <table>
   <thead>
     <tr>
@@ -344,46 +348,6 @@ The top section uses the same ERM backbone as SubpopBench. The bottom uses ERM* 
   </tbody>
 </table>
 </details>
-
-
-
-  
-<h2>Benchmark Results</h2>
-
-<details>
-  <summary>📊 <strong>Worst-Group Accuracy — No Subgroup Labels</strong></summary>
-  <table>
-    <tr><th>Dataset</th><th>ERM</th><th>DFR</th><th>RWY</th><th><strong>DPE</strong></th></tr>
-    <tr><td>Waterbirds</td><td>57.6</td><td>70.2</td><td>71.8</td><td><strong>91.0</strong></td></tr>
-    <tr><td>CelebA</td><td>60.4</td><td>78.3</td><td>81.7</td><td><strong>84.6</strong></td></tr>
-    <tr><td>CheXpert</td><td>65.0</td><td>73.2</td><td>75.1</td><td><strong>76.8</strong></td></tr>
-    <tr><td>MetaShift</td><td>83.3</td><td>90.1</td><td>90.6</td><td><strong>91.7</strong></td></tr>
-    <tr><td>ImageNet-BG</td><td>72.1</td><td>80.3</td><td>82.6</td><td><strong>88.1</strong></td></tr>
-    <tr><td>CivilComments</td><td>58.2</td><td>65.8</td><td>67.5</td><td><strong>70.8</strong></td></tr>
-    <tr><td>MultiNLI</td><td>71.0</td><td>73.7</td><td>75.2</td><td><strong>76.5</strong></td></tr>
-    <tr><td>Living17</td><td>46.3</td><td>53.9</td><td>55.6</td><td><strong>58.1</strong></td></tr>
-    <tr><td>NICO++</td><td>54.1</td><td>65.3</td><td>68.0</td><td><strong>69.9</strong></td></tr>
-    <tr><th>Average</th><td>57.7</td><td>65.2</td><td>67.5</td><td><strong>73.9</strong></td></tr>
-  </table>
-</details>
-
-<details>
-  <summary>📊 <strong>Worst-Group Accuracy — With Subgroup Labels</strong></summary>
-  <table>
-    <tr><th>Dataset</th><th>CRT</th><th>DFR*</th><th>GAP</th><th><strong>DPE</strong></th></tr>
-    <tr><td>Waterbirds</td><td>77.9</td><td>88.4</td><td>90.7</td><td><strong>94.1</strong></td></tr>
-    <tr><td>CelebA</td><td>79.2</td><td>82.6</td><td>85.3</td><td><strong>87.0</strong></td></tr>
-    <tr><td>CheXpert</td><td>71.8</td><td>75.3</td><td>78.6</td><td><strong>80.2</strong></td></tr>
-    <tr><td>MetaShift</td><td>88.1</td><td>90.3</td><td>92.4</td><td><strong>93.5</strong></td></tr>
-    <tr><td>ImageNet-BG</td><td>80.1</td><td>85.7</td><td>89.3</td><td><strong>90.4</strong></td></tr>
-    <tr><td>CivilComments</td><td>63.5</td><td>68.3</td><td>69.7</td><td><strong>70.8</strong></td></tr>
-    <tr><td>MultiNLI</td><td>74.6</td><td>76.2</td><td>77.8</td><td><strong>78.4</strong></td></tr>
-    <tr><td>Living17</td><td>49.3</td><td>54.7</td><td>56.1</td><td><strong>59.2</strong></td></tr>
-    <tr><td>NICO++</td><td>59.3</td><td>62.4</td><td>64.7</td><td><strong>66.3</strong></td></tr>
-    <tr><th>Average</th><td>73.0</td><td>77.1</td><td>83.9</td><td><strong>83.0</strong></td></tr>
-  </table>
-</details>
-
 <h2>BibTeX</h2>
 <pre>
 @inproceedings{to2025dpe,
