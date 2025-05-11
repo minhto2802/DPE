@@ -415,6 +415,25 @@ L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i
     in ensemble members <code>i</code> and <code>j</code>, and <code>d</code> is the feature dimension.
   </p>
 </div>
+<div class="card-section" id="task-descriptions">
+  <h3>The task descriptions</h3>
+  <p>
+    For a given task, we write a single user role and system role. We can then ask a language model to rephrase these roles <i>k</i> times each.
+    By taking the product of these roles to form each prompt, we create <i>k²</i> unique task descriptions that define the problem setting.
+    These task descriptions should all convey the same instruction and so allow us to capture some of the language model's variation to
+    the way we specify the task.
+  </p>
+  <p>
+    As a synthetic example, we ask the language model to provide a prior distribution over the parameters of a linear model trying to make
+    predictions on the following generated dataset:
+  </p>
+  <div class="math">
+    y = 2x₁ − x₂ + x₃
+  </div>
+  <p>
+    where <i>x₁, x₂, x₃</i> are the features and <i>y</i> is the target and <i>X ∼ 𝒩(0, 1)</i>.
+  </p>
+</div>
 
 
 
