@@ -296,7 +296,32 @@
             margin-bottom: 1rem;
         }
 
+        /* Responsive table wrapper */
+        .responsive-table {
+            overflow-x: auto;
+            max-width: 100%;
+        }
 
+        /* Keep table readable */
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+        }
+
+        /* Scrollable display equations */
+        .math-display {
+            overflow-x: auto;
+            font-size: 1rem;
+            padding: 0.5rem 0;
+        }
+
+        /* Optional: shrink math font slightly on smaller screens */
+        @media (max-width: 768px) {
+            .math-display {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 
@@ -464,19 +489,19 @@
             input \( x \), its class probability is computed based on its proximity to each prototype in the latent
             space:
         </p>
-        <div style="text-align: center;">
+        <div class="math-display" style="text-align: center;">
             $$ P(y \mid x) = \frac{\exp\left(-D(f(x), p_y)\right)}{\sum_{i=1}^K \exp\left(-D(f(x), p_i)\right)} $$
         </div>
         <p>
             The distance function \( D \) is scaled Euclidean distance between normalized feature vectors:
         </p>
-        <div style="text-align: center;">
+        <div class="math-display" style="text-align: center;">
             $$ D(x, y) = |d_s| \cdot \left\lVert \frac{x}{\|x\|} - \frac{y}{\|y\|} \right\rVert_2 $$
         </div>
         <p>
             The classification loss for a data-label pair \( (x, y) \) is:
         </p>
-        <div style="text-align: center;">
+        <div class="math-display" style="text-align: center;">
             $$ \mathcal{L}(x, y) = -\log \left( \frac{\exp\left(-D(f(x), p_y)/\tau\right)}{\sum_{i=1}^K
             \exp\left(-D(f(x), p_i)/\tau\right)} \right) $$
         </div>
@@ -489,7 +514,7 @@
             ensemble \( \{p^{(k)}_j \mid k = 1, \dots, K; j = 1, \dots, N\} \). The predicted class label is computed by
             averaging predictions across the ensemble:
         </p>
-        <div style="text-align: center;">
+        <div class="math-display" style="text-align: center;">
             $$ \hat{y} = \arg\max_{k \in \{1, \dots, K\}} \frac{1}{N} \sum_{j=1}^N P_j^{(k)}(y \mid x) $$
         </div>
     </div>
@@ -503,10 +528,10 @@
             validation samples.
             The similarity loss penalizes correlated prototypes within the same class:
         </p>
-        <div style="text-align: center;">
+        <div class="math-display" style="text-align: center;">
             $$ \mathcal{L}_{\text{IPS}} = \sum_{k=1}^K \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{1}_{\{i \ne j\}} \cdot
             \frac{\left| \langle p_i^{(k)}, p_j^{(k)} \rangle \right|}{n \cdot d} $$
-        </div>
+        </>
         <p>
             Here, \( \langle \cdot, \cdot \rangle \) denotes the inner product, and \( d \) is the embedding dimension.
             Each prototype is also trained on a different class-balanced bootstrap sample, which encourages coverage of
@@ -558,7 +583,7 @@
         </p>
     </div>
 
-    <div class='table-box' id="wga-no-attributes">
+    <div class='table-box responsive-table' id="wga-no-attributes">
         <h3 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h3>
         <p>
             The top section presents SubpopBench-style baselines using an ERM backbone.
@@ -693,8 +718,8 @@
         </table>
     </div>
 
-    <div class="table-box" id="wga-with-attributes">
-        <h3 style="text-align: center;">Worst-Group Accuracy (With Attribute Annotations)</h3>
+    <div class="table-box responsive-table" id="wga-with-attributes">
+        <h3 style="text-align: center;">Worst-Group Accuracy (With Subgroup Annotations)</h3>
         <p>
             The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes results
             from
@@ -873,8 +898,8 @@
             </tbody>
         </table>
     </div>
-    <div class="table-box" id="standard-accuracy">
-        <h3 style="text-align: center;">Standard Accuracy</h3>
+    <div class="table-box responsive-table" id="standard-accuracy">
+        <h3 style="text-align: center;">Standard Accuracy (with Attribute Annotations)</h3>
         <p style="text-align: center; font-size: 0.9rem; margin-top: 4px; cursor: pointer;"
            onclick="toggleAccuracyTable()">(Click to expand)</p>
 
@@ -1038,7 +1063,7 @@
                     <td>–</td>
                     <td>–</td>
                 </tr>
-                <tr  style="background-color: #f9fafb;">
+                <tr style="background-color: #f9fafb;">
                     <td>ERM* + DPE</td>
                     <td>×/✓✓</td>
                     <td>96.0±0.1</td>
