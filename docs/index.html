@@ -8,21 +8,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
 
+ <head>
+  <meta charset="UTF-8">
+  <title>DPE: Diverse Prototypical Ensembles (ICML 2025)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Unified Google Fonts request -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
+
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      max-width: 900px;
+      font-family: 'Roboto', sans-serif;
+      color: #222;
+      max-width: 960px;
       margin: auto;
       padding: 2rem;
       line-height: 1.6;
-      color: #222;
     }
-    h1, h2, h3 {
-      text-align: center;
+
+    h1, h2, h3, th {
+      font-family: 'Inter', sans-serif;
     }
+
+    .monospace, p.monospace {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.9rem;
+      color: #444;
+    }
+
     .authors, .links {
       text-align: center;
     }
+
     .button {
       display: inline-block;
       margin: 6px;
@@ -33,148 +50,80 @@
       text-decoration: none;
       font-size: 14px;
     }
+
     img {
       display: block;
       max-width: 100%;
       margin: 20px auto;
     }
+
     summary {
-      font-weight: bold;
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
       cursor: pointer;
-      background-color: #eef6fb;
-      padding: 10px;
+      background: #eef4ff;
+      padding: 10px 16px;
       border-radius: 6px;
+      margin: 1.5rem 0;
     }
-    details {
-      margin-bottom: 1rem;
+
+    details[open] summary {
+      background: #dde8ff;
     }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.95rem;
+      margin: 1.5rem 0;
+      font-size: 15px;
+      font-family: 'Roboto', sans-serif;
     }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      text-align: left;
-    }
+
     th {
-      background: #f4f4f4;
+      background: #f5f5f5;
+      padding: 10px;
+      font-weight: 600;
+      text-align: center;
     }
+
+    td {
+      padding: 8px 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tr.highlight {
+      background-color: #f0f0f0;
+    }
+
+    .std {
+      font-size: 12px;
+      font-family: 'Roboto Mono', monospace;
+      color: #555;
+    }
+
+    .bold {
+      font-weight: 600;
+    }
+
+    .underline {
+      text-decoration: underline;
+    }
+
     pre {
       background-color: #f4f4f4;
       padding: 10px;
       border-radius: 5px;
       overflow-x: auto;
     }
-      body {
-    font-family: 'Roboto', sans-serif;
-    color: #222;
-    padding: 2rem;
-    max-width: 960px;
-    margin: auto;
-  }
-  h1, h2, h3 {
-    font-family: 'Inter', sans-serif;
-  }
-  p.monospace {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    color: #444;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-family: 'Roboto', sans-serif;
-    font-size: 15px;
-  }
-  th {
-    background: #f5f5f5;
-    padding: 10px;
-    font-weight: 600;
-  }
-  td {
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  tr:nth-child(even) {
-    background: #fafafa;
-  }
-  tr.highlight {
-    background: #f0f0f0;
-  }
-  .std {
-    font-size: 12px;
-    font-family: 'Roboto Mono', monospace;
-    color: #555;
-  }
-  .bold {
-    font-weight: 600;
-  }
-  .underline {
-    text-decoration: underline;
-  }
-      body {
-    font-family: 'Roboto', sans-serif;
-    color: #222;
-    max-width: 960px;
-    margin: auto;
-    padding: 2rem;
-  }
-  h1, h2, h3, th {
-    font-family: 'Inter', sans-serif;
-  }
-  p.monospace {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 0.9rem;
-    color: #444;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1rem 0;
-    font-size: 15px;
-  }
-  th {
-    background: #f5f5f5;
-    padding: 10px;
-    font-weight: 600;
-  }
-  td {
-    padding: 8px 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  tr:nth-child(even) {
-    background: #fafafa;
-  }
-  tr.highlight {
-    background: #f0f0f0;
-  }
-  .std {
-    font-size: 12px;
-    font-family: 'Roboto Mono', monospace;
-    color: #555;
-  }
-  summary {
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    cursor: pointer;
-    background: #eef4ff;
-    padding: 10px 16px;
-    border-radius: 6px;
-    margin: 1.5rem 0;
-  }
-  details[open] summary {
-    background: #dde8ff;
-  }
   </style>
-  
 </head>
+
   
 <body>
 <td><b><u>91.0</u></b> <span class="std">±0.5</span></td>
