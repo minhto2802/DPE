@@ -1,371 +1,633 @@
 <!DOCTYPE html>
 <html lang="en">
 
- <head>
-  <meta charset="UTF-8">
-  <title>DPE: Diverse Prototypical Ensembles (ICML 2025)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="UTF-8">
+    <title>DPE: Diverse Prototypical Ensembles (ICML 2025)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Unified Google Fonts request -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto&display=swap" rel="stylesheet">
+    <!-- Unified Google Fonts request -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600;700&family=Roboto:wght@400;500&family=Roboto+Mono&display=swap"
+          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Roboto&display=swap" rel="stylesheet">
 
-  <style>
-  .table-box {
-    background-color: #FFF4FD;
-    border-radius: 12px;
-    padding: 12px;
-    margin: 2rem 0;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-  }
+    <style>
+        .table-box {
+            background-color: #FFF4FD;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 2rem 0;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+        }
 
-     .card-section {
-    background-color: #eef6fb;
-    padding: 24px;
-    border-radius: 12px;
-    margin: 2rem 0;
-  }
-  .card-section h3 {
-    text-align: center;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-  .card-section p {
-    font-family: 'Roboto', sans-serif;
-    font-size: 1rem;
-    color: #333;
-    line-height: 1.6;
-    text-align: left;
-  }
-  .card-section .math {
-    text-align: center;
-    font-size: 1.1rem;
-    font-style: italic;
-    margin: 1rem 0;
-    font-family: 'Roboto Mono', monospace;
-  }
-   pre {
-      overflow-x: auto;
-      white-space: pre-wrap;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 0.95rem;
-      background: #f4f4f4;
-      padding: 10px;
-      border-radius: 5px;
-      margin: 1rem 0;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      max-width: 900px;
-      margin: auto;
-      padding: 40px 20px;
-      color: #222;
-    }
+        .card-section {
+            background-color: #eef6fb;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
 
-    h1, h2, h3 {
-      font-family: 'Inter', sans-serif;
-      text-align: center;
-    }
+        .card-section h3 {
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
 
-    .authors, .institution, .links, .summary {
-      text-align: center;
-    }
-    .button {
-      display: inline-block;
-      background: #222;
-      color: white;
-      padding: 10px 16px;
-      margin: 4px;
-      border-radius: 999px;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .button:hover {
-      background: #444;
-    }
-    .logo {
-      text-align: center;
-      margin: 20px;
-    }
-    .logo img {
-      max-width: 300px;
-    }
-    .code-block {
-      text-align: center;
-      margin-top: 12px;
-      font-family: 'Roboto Mono', monospace;
-      color: #c7254e;
-      background: #fbeaea;
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 4px;
-    }
-    .summary {
-      background: #eef6fb;
-      padding: 16px;
-      border-radius: 10px;
-      margin-top: 30px;
-    }
-    .visual {
-      text-align: center;
-      margin-top: 30px;
-    }
-    .visual img {
-      max-width: 100%;
-      border-radius: 8px;
-    }
-    .note {
-      font-size: 0.9rem;
-      color: #555;
-      text-align: center;
-      margin-top: 10px;
-    }
+        .card-section p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.6;
+            text-align: left;
+        }
 
-    img {
-      display: block;
-      max-width: 100%;
-      margin: 20px auto;
-    }
+        .card-section .math {
+            text-align: center;
+            font-size: 1.1rem;
+            font-style: italic;
+            margin: 1rem 0;
+            font-family: 'Roboto Mono', monospace;
+        }
 
-    summary {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      background: #eef4ff;
-      padding: 10px 16px;
-      border-radius: 6px;
-      margin: 1.5rem 0;
-    }
+        pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95rem;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
 
-    details[open] summary {
-      background: #dde8ff;
-    }
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-width: 900px;
+            margin: auto;
+            padding: 40px 20px;
+            color: #222;
+        }
 
-    table {
-      background-color: #ffffff;
-      width: 100%;
-      border-collapse: collapse;
-      margin: 1.5rem 0;
-      font-size: 13.5px;
-      font-family: 'Roboto', sans-serif;
-    }
+        h1, h2, h3 {
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
 
-    th {
-      background: #f5f5f5;
-      padding: 10px;
-      font-weight: 600;
-      text-align: center;
-      font-family: 'Inter', sans-serif;
-    }
+        .authors, .institution, .links, .summary {
+            text-align: center;
+        }
 
-    td {
-      padding: 6px 8px;
-      border: 1px solid #ddd;
-      text-align: center;
-    }
+        .button {
+            display: inline-block;
+            background: #222;
+            color: white;
+            padding: 10px 16px;
+            margin: 4px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
-    tr:nth-child(even) {
-      background-color: #fafafa;
-    }
+        .button:hover {
+            background: #444;
+        }
 
-    tr.highlight {
-      background-color: #f0f0f0;
-    }
+        .logo {
+            text-align: center;
+            margin: 20px;
+        }
 
-    .std {
-      font-size: 11px;
-      font-family: 'Roboto Mono', monospace;
-      color: #555;
-    }
+        .logo img {
+            max-width: 300px;
+        }
 
-    .bold {
-      font-weight: 600;
-    }
+        .code-block {
+            text-align: center;
+            margin-top: 12px;
+            font-family: 'Roboto Mono', monospace;
+            color: #c7254e;
+            background: #fbeaea;
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 4px;
+        }
 
-    .underline {
-      text-decoration: underline;
-    }
+        .summary {
+            background: #eef6fb;
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
 
-    pre {
-      background-color: #f4f4f4;
-      padding: 10px;
-      border-radius: 5px;
-      overflow-x: auto;
-    }
-  </style>
+        .visual {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .visual img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        img {
+            display: block;
+            max-width: 100%;
+            margin: 20px auto;
+        }
+
+        summary {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            background: #eef4ff;
+            padding: 10px 16px;
+            border-radius: 6px;
+            margin: 1.5rem 0;
+        }
+
+        details[open] summary {
+            background: #dde8ff;
+        }
+
+        table {
+            background-color: #ffffff;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 13.5px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        th {
+            background: #f5f5f5;
+            padding: 10px;
+            font-weight: 600;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        td {
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        tr.highlight {
+            background-color: #f0f0f0;
+        }
+
+        .std {
+            font-size: 11px;
+            font-family: 'Roboto Mono', monospace;
+            color: #555;
+        }
+
+        .bold {
+            font-weight: 600;
+        }
+
+        .underline {
+            text-decoration: underline;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
 </head>
 
-  
+
 <body>
 
 <h1>Diversified Prototypical Ensembles</h1>
 <p class="institution">Accepted at the International Conference on Machine Learning (ICML) 2025</p>
 
 <div class="authors">
-  Minh Nguyen Nhat To · Paul F R Wilson · Viet Nguyen · Mohamed Harmanani · Michael Cooper<br>
-  Fahimeh Fooladgar · Purang Abolmaesumi · Parvin Mousavi · Rahul G. Krishnan
+    Minh Nguyen Nhat To · Paul F R Wilson · Viet Nguyen · Mohamed Harmanani · Michael Cooper<br>
+    Fahimeh Fooladgar · Purang Abolmaesumi · Parvin Mousavi · Rahul G. Krishnan
 </div>
 
 <div class="links">
-  <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
-  <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Reproduce</a>
-  <a href="https://arxiv.org/abs/placeholder" class="button">📄 arXiv</a>
+    <a href="../_ICML2025__Shift_Happens_.pdf" class="button">📄 Paper</a>
+    <a href="https://anonymous.4open.science/r/prototypical_ensembles-BCB3" class="button">💻 Reproduce</a>
+    <a href="https://arxiv.org/abs/placeholder" class="button">📄 arXiv</a>
 </div>
 
 <div class="logo">
-  <img src="../figures/motivation.png" alt="DPE Logo or Teaser Figure">
+    <img src="figures/motivation.png" alt="DPE Logo or Teaser Figure">
 </div>
 
 <div class="code-block">pip install dpe</div>
 
 <div class="card-section">
-  <h2>Summary</h2>
-  <p>
-    Subpopulation shifts can lead to performance degradation in underrepresented groups. We introduce <strong>Diversified Prototypical Ensembles (DPE)</strong>, 
-    a method that augments a frozen backbone with a diverse set of prototype classifiers trained to capture complementary latent modes.
-  </p>
-  <p>
-    DPE is trained in two stages: standard ERM for representation learning, followed by diversification using prototype ensembles optimized on
-    bootstrapped validation subsets. This allows DPE to outperform existing methods in worst-group accuracy across 9 benchmark datasets, even 
-    without access to subgroup annotations.
-  </p>
+    <h2>Summary</h2>
+    <p>
+        Subpopulation shifts can lead to performance degradation in underrepresented groups. We introduce <strong>Diversified
+        Prototypical Ensembles (DPE)</strong>,
+        a method that augments a frozen backbone with a diverse set of prototype classifiers trained to capture
+        complementary latent modes.
+    </p>
+    <p>
+        DPE is trained in two stages: standard ERM for representation learning, followed by diversification using
+        prototype ensembles optimized on
+        bootstrapped validation subsets. This allows DPE to outperform existing methods in worst-group accuracy across 9
+        benchmark datasets, even
+        without access to subgroup annotations.
+    </p>
 </div>
 
 <div class="visual">
-  <img src="../figures/embeddings_figure.png" alt="Diagram Overview of DPE">
-  
-  <div class="note">How we diversify prototypes to capture latent subpopulations without group labels.</div>
+    <img src="figures/embeddings_figure.png" alt="Diagram Overview of DPE">
+
+    <div class="note">How we diversify prototypes to capture latent subpopulations without group labels.</div>
 </div>
 
 <div class='table-box' id="wga-no-attributes">
- <h2 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h2>
- <p>
-   The top section presents SubpopBench-style baselines using an ERM backbone.
-   The bottom section includes recent state-of-the-art methods and our method using a stronger ERM<sup>*</sup> backbone.
-   DPE denotes our diversified prototypical ensemble.
- </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Algorithm</th>
-        <th>Waterbirds</th>
-        <th>CelebA</th>
-        <th>CivilComments</th>
-        <th>MultiNLI</th>
-        <th>MetaShift</th>
-        <th>CheXpert</th>
-        <th>ImageNetBG</th>
-        <th>NICO++</th>
-        <th>Living17</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>ERM</strong></td><td>69.1 <span class="std">±4.7</span></td><td>57.6 <span class="std">±0.8</span></td><td>63.2 <span class="std">±1.2</span></td><td><b>66.4</b> <span class="std">±2.3</span></td><td>82.1 <span class="std">±0.8</span></td><td>41.7 <span class="std">±3.4</span></td><td>76.8 <span class="std">±0.9</span></td><td>35.0 <span class="std">±4.1</span></td><td>48.0 <span class="std">±1.5</span></td></tr>
-      <tr><td><strong>CRT</strong></td><td>76.3 <span class="std">±0.8</span></td><td>69.6 <span class="std">±0.7</span></td><td><b>67.8</b> <span class="std">±0.3</span></td><td>65.4 <span class="std">±0.2</span></td><td>83.1 <span class="std">±0.0</span></td><td>74.6 <span class="std">±0.4</span></td><td><b>78.2</b> <span class="std">±0.5</span></td><td>33.3 <span class="std">±0.0</span></td><td>–</td></tr>
-      <tr><td><strong>ReWeightCRT</strong></td><td>76.3 <span class="std">±0.2</span></td><td>70.7 <span class="std">±0.6</span></td><td>64.7 <span class="std">±0.2</span></td><td>65.2 <span class="std">±0.2</span></td><td><b><u>85.1</u></b> <span class="std">±0.4</span></td><td><b>75.1</b> <span class="std">±0.2</span></td><td>77.5 <span class="std">±0.7</span></td><td>33.3 <span class="std">±0.0</span></td><td>–</td></tr>
-      <tr><td><strong>DFR</strong></td><td><b>89.0</b> <span class="std">±0.2</span></td><td><b>73.7</b> <span class="std">±0.8</span></td><td>64.4 <span class="std">±0.1</span></td><td>63.8 <span class="std">±0.0</span></td><td>81.4 <span class="std">±0.1</span></td><td><b><u>75.8</u></b> <span class="std">±0.3</span></td><td>74.4 <span class="std">±1.8</span></td><td><b>38.0</b> <span class="std">±3.8</span></td><td>–</td></tr>
-      <tr class="highlight"><td><strong>ERM + DPE</strong></td><td><b><u>91.0</u></b> <span class="std">±0.5</span></td><td><b><u>81.9</u></b> <span class="std">±0.2</span></td><td><b><u>69.9</u></b> <span class="std">±0.9</span></td><td><b><u>69.3</u></b> <span class="std">±0.8</span></td><td><b>84.1</b> <span class="std">±1.5</span></td><td>–</td><td><b><u>87.9</u></b> <span class="std">±0.6</span></td><td><b><u>50.0</u></b> <span class="std">±0.0</span></td><td><b><u>54.0</u></b> <span class="std">±4.0</span></td></tr>
-      <tr><td><strong>ERM*</strong></td><td>77.9 <span class="std">±3.0</span></td><td>66.5 <span class="std">±2.6</span></td><td><b><u>69.4</u></b> <span class="std">±1.2</span></td><td>66.5 <span class="std">±0.7</span></td><td>80.0 <span class="std">±0.0</span></td><td>75.6 <span class="std">±0.4</span></td><td>86.4 <span class="std">±0.8</span></td><td>33.3 <span class="std">±0.0</span></td><td>53.3 <span class="std">±0.9</span></td></tr>
-      <tr><td><strong>RWY</strong></td><td>86.1 <span class="std">±0.7</span></td><td><b>82.9</b> <span class="std">±2.2</span></td><td>67.5 <span class="std">±0.6</span></td><td>68.0 <span class="std">±1.9</span></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
-      <tr><td><strong>AFR</strong></td><td><b>90.4</b> <span class="std">±1.1</span></td><td>82.0 <span class="std">±0.5</span></td><td>68.7 <span class="std">±0.6</span></td><td><b><u>73.4</u></b> <span class="std">±0.6</span></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
-      <tr class="highlight"><td><strong>ERM* + DPE</strong></td><td><b><u>94.1</u></b> <span class="std">±0.2</span></td><td><b><u>84.6</u></b> <span class="std">±0.8</span></td><td><b>68.9</b> <span class="std">±0.6</span></td><td><b>70.9</b> <span class="std">±0.8</span></td><td><b><u>83.6</u></b> <span class="std">±0.9</span></td><td><b><u>76.8</u></b> <span class="std">±0.1</span></td><td><b><u>88.1</u></b> <span class="std">±0.7</span></td><td><b><u>50.0</u></b> <span class="std">±0.0</span></td><td><b><u>63.0</u></b> <span class="std">±1.7</span></td></tr>
-    </tbody>
-  </table>
+    <h2 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h2>
+    <p>
+        The top section presents SubpopBench-style baselines using an ERM backbone.
+        The bottom section includes recent state-of-the-art methods and our method using a stronger ERM<sup>*</sup>
+        backbone.
+        DPE denotes our diversified prototypical ensemble.
+    </p>
+    <table>
+        <thead>
+        <tr>
+            <th>Algorithm</th>
+            <th>Waterbirds</th>
+            <th>CelebA</th>
+            <th>CivilComments</th>
+            <th>MultiNLI</th>
+            <th>MetaShift</th>
+            <th>CheXpert</th>
+            <th>ImageNetBG</th>
+            <th>NICO++</th>
+            <th>Living17</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><strong>ERM</strong></td>
+            <td>69.1 <span class="std">±4.7</span></td>
+            <td>57.6 <span class="std">±0.8</span></td>
+            <td>63.2 <span class="std">±1.2</span></td>
+            <td><b>66.4</b> <span class="std">±2.3</span></td>
+            <td>82.1 <span class="std">±0.8</span></td>
+            <td>41.7 <span class="std">±3.4</span></td>
+            <td>76.8 <span class="std">±0.9</span></td>
+            <td>35.0 <span class="std">±4.1</span></td>
+            <td>48.0 <span class="std">±1.5</span></td>
+        </tr>
+        <tr>
+            <td><strong>CRT</strong></td>
+            <td>76.3 <span class="std">±0.8</span></td>
+            <td>69.6 <span class="std">±0.7</span></td>
+            <td><b>67.8</b> <span class="std">±0.3</span></td>
+            <td>65.4 <span class="std">±0.2</span></td>
+            <td>83.1 <span class="std">±0.0</span></td>
+            <td>74.6 <span class="std">±0.4</span></td>
+            <td><b>78.2</b> <span class="std">±0.5</span></td>
+            <td>33.3 <span class="std">±0.0</span></td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>ReWeightCRT</strong></td>
+            <td>76.3 <span class="std">±0.2</span></td>
+            <td>70.7 <span class="std">±0.6</span></td>
+            <td>64.7 <span class="std">±0.2</span></td>
+            <td>65.2 <span class="std">±0.2</span></td>
+            <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
+            <td><b>75.1</b> <span class="std">±0.2</span></td>
+            <td>77.5 <span class="std">±0.7</span></td>
+            <td>33.3 <span class="std">±0.0</span></td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>DFR</strong></td>
+            <td><b>89.0</b> <span class="std">±0.2</span></td>
+            <td><b>73.7</b> <span class="std">±0.8</span></td>
+            <td>64.4 <span class="std">±0.1</span></td>
+            <td>63.8 <span class="std">±0.0</span></td>
+            <td>81.4 <span class="std">±0.1</span></td>
+            <td><b><u>75.8</u></b> <span class="std">±0.3</span></td>
+            <td>74.4 <span class="std">±1.8</span></td>
+            <td><b>38.0</b> <span class="std">±3.8</span></td>
+            <td>–</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>ERM + DPE</strong></td>
+            <td><b><u>91.0</u></b> <span class="std">±0.5</span></td>
+            <td><b><u>81.9</u></b> <span class="std">±0.2</span></td>
+            <td><b><u>69.9</u></b> <span class="std">±0.9</span></td>
+            <td><b><u>69.3</u></b> <span class="std">±0.8</span></td>
+            <td><b>84.1</b> <span class="std">±1.5</span></td>
+            <td>–</td>
+            <td><b><u>87.9</u></b> <span class="std">±0.6</span></td>
+            <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
+            <td><b><u>54.0</u></b> <span class="std">±4.0</span></td>
+        </tr>
+        <tr>
+            <td><strong>ERM*</strong></td>
+            <td>77.9 <span class="std">±3.0</span></td>
+            <td>66.5 <span class="std">±2.6</span></td>
+            <td><b><u>69.4</u></b> <span class="std">±1.2</span></td>
+            <td>66.5 <span class="std">±0.7</span></td>
+            <td>80.0 <span class="std">±0.0</span></td>
+            <td>75.6 <span class="std">±0.4</span></td>
+            <td>86.4 <span class="std">±0.8</span></td>
+            <td>33.3 <span class="std">±0.0</span></td>
+            <td>53.3 <span class="std">±0.9</span></td>
+        </tr>
+        <tr>
+            <td><strong>RWY</strong></td>
+            <td>86.1 <span class="std">±0.7</span></td>
+            <td><b>82.9</b> <span class="std">±2.2</span></td>
+            <td>67.5 <span class="std">±0.6</span></td>
+            <td>68.0 <span class="std">±1.9</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>AFR</strong></td>
+            <td><b>90.4</b> <span class="std">±1.1</span></td>
+            <td>82.0 <span class="std">±0.5</span></td>
+            <td>68.7 <span class="std">±0.6</span></td>
+            <td><b><u>73.4</u></b> <span class="std">±0.6</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>ERM* + DPE</strong></td>
+            <td><b><u>94.1</u></b> <span class="std">±0.2</span></td>
+            <td><b><u>84.6</u></b> <span class="std">±0.8</span></td>
+            <td><b>68.9</b> <span class="std">±0.6</span></td>
+            <td><b>70.9</b> <span class="std">±0.8</span></td>
+            <td><b><u>83.6</u></b> <span class="std">±0.9</span></td>
+            <td><b><u>76.8</u></b> <span class="std">±0.1</span></td>
+            <td><b><u>88.1</u></b> <span class="std">±0.7</span></td>
+            <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
+            <td><b><u>63.0</u></b> <span class="std">±1.7</span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
- <div class="table-box" id="wga-with-attributes">
-  <h2 style="text-align: center;">Worst-Group Accuracy (With Attribute Annotations)</h2>
- <p>
-   The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes results from original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
-   Bold and underlined values indicate the best result per group, bold values indicate the second-best.
- </p>
-  <table>
-    <thead>
-      <tr>
-        <th>Algorithm</th>
-        <th>Group Info (Train/Val)</th>
-        <th>Waterbirds</th>
-        <th>CelebA</th>
-        <th>CivilComments</th>
-        <th>MultiNLI</th>
-        <th>MetaShift</th>
-        <th>CheXpert</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td><strong>ERM</strong></td><td>❌/❌</td><td>69.1 <span class="std">±4.7</span></td><td>57.6 <span class="std">±0.8</span></td><td>63.2 <span class="std">±1.2</span></td><td><b>66.4</b> <span class="std">±2.3</span></td><td>82.1 <span class="std">±0.8</span></td><td>41.7 <span class="std">±3.4</span></td></tr>
-      <tr><td><strong>CRT</strong></td><td>❌/✔️</td><td>76.3 <span class="std">±0.8</span></td><td>70.4 <span class="std">±0.4</span></td><td><b>68.5</b> <span class="std">±0.0</span></td><td>65.4 <span class="std">±0.1</span></td><td>83.1 <span class="std">±0.0</span></td><td><b>74.0</b> <span class="std">±0.2</span></td></tr>
-      <tr><td><strong>ReWeightCRT</strong></td><td>❌/✔️</td><td>76.3 <span class="std">±0.2</span></td><td>71.1 <span class="std">±0.5</span></td><td>68.2 <span class="std">±0.4</span></td><td>65.3 <span class="std">±0.1</span></td><td><b><u>85.1</u></b> <span class="std">±0.4</span></td><td>73.9 <span class="std">±0.2</span></td></tr>
-      <tr><td><strong>DFR</strong></td><td>❌/✔️✔️</td><td><b>89.0</b> <span class="std">±0.2</span></td><td><b>86.3</b> <span class="std">±0.3</span></td><td>66.5 <span class="std">±0.2</span></td><td>63.8 <span class="std">±0.0</span></td><td>81.5 <span class="std">±0.0</span></td><td><b><u>75.4</u></b> <span class="std">±0.6</span></td></tr>
-      <tr class="highlight"><td><strong>ERM + DPE</strong></td><td>❌/✔️✔️</td><td><b><u>91.0</u></b> <span class="std">±0.4</span></td><td><b><u>87.7</u></b> <span class="std">±0.6</span></td><td><b><u>71.5</u></b> <span class="std">±0.6</span></td><td><b><u>74.8</u></b> <span class="std">±0.3</span></td><td><b>87.9</b> <span class="std">±0.7</span></td><td>–</td></tr>
-      <tr><td><strong>ERM*</strong></td><td>❌/❌</td><td>77.9 <span class="std">±3.0</span></td><td>66.5 <span class="std">±2.6</span></td><td>69.4 <span class="std">±1.2</span></td><td>66.5 <span class="std">±0.7</span></td><td>80.0 <span class="std">±0.0</span></td><td>75.6 <span class="std">±0.4</span></td></tr>
-      <tr><td><strong>Group DRO</strong></td><td>✔️/✔️</td><td>91.4 <span class="std">±1.1</span></td><td>88.9 <span class="std">±2.3</span></td><td>70.0 <span class="std">±2.0</span></td><td><b>77.7</b> <span class="std">±1.4</span></td><td>–</td><td>–</td></tr>
-      <tr><td><strong>RWG</strong></td><td>✔️/✔️</td><td>87.6 <span class="std">±1.6</span></td><td>84.3 <span class="std">±1.8</span></td><td><b><u>72.0</u></b> <span class="std">±1.9</span></td><td>69.6 <span class="std">±1.0</span></td><td>–</td><td>–</td></tr>
-      <tr><td><strong>JTT</strong></td><td>❌/✔️</td><td>86.7</td><td>81.1</td><td>69.3</td><td>72.6</td><td>–</td><td>–</td></tr>
-      <tr><td><strong>CnC</strong></td><td>❌/✔️</td><td>88.5 <span class="std">±0.3</span></td><td>88.8 <span class="std">±0.9</span></td><td>68.9 <span class="std">±2.1</span></td><td>–</td><td>–</td><td>–</td></tr>
-      <tr><td><strong>SSA</strong></td><td>❌/✔️✔️</td><td>89.0 <span class="std">±0.6</span></td><td>89.8 <span class="std">±1.3</span></td><td>69.9 <span class="std">±2.0</span></td><td>76.6 <span class="std">±0.7</span></td><td>–</td><td>–</td></tr>
-      <tr><td><strong>DFR*</strong></td><td>❌/✔️✔️</td><td>92.9 <span class="std">±0.2</span></td><td>88.3 <span class="std">±1.1</span></td><td>70.1 <span class="std">±0.8</span></td><td>74.7 <span class="std">±0.7</span></td><td>–</td><td>–</td></tr>
-      <tr><td><strong>GAP (Last Layer)</strong></td><td>❌/✔️✔️</td><td>93.2 <span class="std">±0.2</span></td><td><b>90.2</b> <span class="std">±0.3</span></td><td>–</td><td>74.3 <span class="std">±0.2</span></td><td>–</td><td>–</td></tr>
-      <tr><td><strong>GAP (All Layer)</strong></td><td>❌/✔️✔️</td><td><b>93.8</b> <span class="std">±0.1</span></td><td><b>90.2</b> <span class="std">±0.3</span></td><td>–</td><td><b><u>77.8</u></b> <span class="std">±0.6</span></td><td>–</td><td>–</td></tr>
-      <tr class="highlight"><td><strong>ERM* + DPE</strong></td><td>❌/✔️✔️</td><td><b><u>94.1</u></b> <span class="std">±0.4</span></td><td><b><u>90.3</u></b> <span class="std">±0.7</span></td><td><b>70.8</b> <span class="std">±0.8</span></td><td>75.3 <span class="std">±0.5</span></td><td><b><u>91.7</u></b> <span class="std">±1.3</span></td><td><b><u>76.0</u></b> <span class="std">±0.3</span></td></tr>
-    </tbody>
-  </table>
+<div class="table-box" id="wga-with-attributes">
+    <h2 style="text-align: center;">Worst-Group Accuracy (With Attribute Annotations)</h2>
+    <p>
+        The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes results from
+        original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
+        Bold and underlined values indicate the best result per group, bold values indicate the second-best.
+    </p>
+    <table>
+        <thead>
+        <tr>
+            <th>Algorithm</th>
+            <th>Group Info (Train/Val)</th>
+            <th>Waterbirds</th>
+            <th>CelebA</th>
+            <th>CivilComments</th>
+            <th>MultiNLI</th>
+            <th>MetaShift</th>
+            <th>CheXpert</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><strong>ERM</strong></td>
+            <td>❌/❌</td>
+            <td>69.1 <span class="std">±4.7</span></td>
+            <td>57.6 <span class="std">±0.8</span></td>
+            <td>63.2 <span class="std">±1.2</span></td>
+            <td><b>66.4</b> <span class="std">±2.3</span></td>
+            <td>82.1 <span class="std">±0.8</span></td>
+            <td>41.7 <span class="std">±3.4</span></td>
+        </tr>
+        <tr>
+            <td><strong>CRT</strong></td>
+            <td>❌/✔️</td>
+            <td>76.3 <span class="std">±0.8</span></td>
+            <td>70.4 <span class="std">±0.4</span></td>
+            <td><b>68.5</b> <span class="std">±0.0</span></td>
+            <td>65.4 <span class="std">±0.1</span></td>
+            <td>83.1 <span class="std">±0.0</span></td>
+            <td><b>74.0</b> <span class="std">±0.2</span></td>
+        </tr>
+        <tr>
+            <td><strong>ReWeightCRT</strong></td>
+            <td>❌/✔️</td>
+            <td>76.3 <span class="std">±0.2</span></td>
+            <td>71.1 <span class="std">±0.5</span></td>
+            <td>68.2 <span class="std">±0.4</span></td>
+            <td>65.3 <span class="std">±0.1</span></td>
+            <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
+            <td>73.9 <span class="std">±0.2</span></td>
+        </tr>
+        <tr>
+            <td><strong>DFR</strong></td>
+            <td>❌/✔️✔️</td>
+            <td><b>89.0</b> <span class="std">±0.2</span></td>
+            <td><b>86.3</b> <span class="std">±0.3</span></td>
+            <td>66.5 <span class="std">±0.2</span></td>
+            <td>63.8 <span class="std">±0.0</span></td>
+            <td>81.5 <span class="std">±0.0</span></td>
+            <td><b><u>75.4</u></b> <span class="std">±0.6</span></td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>ERM + DPE</strong></td>
+            <td>❌/✔️✔️</td>
+            <td><b><u>91.0</u></b> <span class="std">±0.4</span></td>
+            <td><b><u>87.7</u></b> <span class="std">±0.6</span></td>
+            <td><b><u>71.5</u></b> <span class="std">±0.6</span></td>
+            <td><b><u>74.8</u></b> <span class="std">±0.3</span></td>
+            <td><b>87.9</b> <span class="std">±0.7</span></td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>ERM*</strong></td>
+            <td>❌/❌</td>
+            <td>77.9 <span class="std">±3.0</span></td>
+            <td>66.5 <span class="std">±2.6</span></td>
+            <td>69.4 <span class="std">±1.2</span></td>
+            <td>66.5 <span class="std">±0.7</span></td>
+            <td>80.0 <span class="std">±0.0</span></td>
+            <td>75.6 <span class="std">±0.4</span></td>
+        </tr>
+        <tr>
+            <td><strong>Group DRO</strong></td>
+            <td>✔️/✔️</td>
+            <td>91.4 <span class="std">±1.1</span></td>
+            <td>88.9 <span class="std">±2.3</span></td>
+            <td>70.0 <span class="std">±2.0</span></td>
+            <td><b>77.7</b> <span class="std">±1.4</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>RWG</strong></td>
+            <td>✔️/✔️</td>
+            <td>87.6 <span class="std">±1.6</span></td>
+            <td>84.3 <span class="std">±1.8</span></td>
+            <td><b><u>72.0</u></b> <span class="std">±1.9</span></td>
+            <td>69.6 <span class="std">±1.0</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>JTT</strong></td>
+            <td>❌/✔️</td>
+            <td>86.7</td>
+            <td>81.1</td>
+            <td>69.3</td>
+            <td>72.6</td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>CnC</strong></td>
+            <td>❌/✔️</td>
+            <td>88.5 <span class="std">±0.3</span></td>
+            <td>88.8 <span class="std">±0.9</span></td>
+            <td>68.9 <span class="std">±2.1</span></td>
+            <td>–</td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>SSA</strong></td>
+            <td>❌/✔️✔️</td>
+            <td>89.0 <span class="std">±0.6</span></td>
+            <td>89.8 <span class="std">±1.3</span></td>
+            <td>69.9 <span class="std">±2.0</span></td>
+            <td>76.6 <span class="std">±0.7</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>DFR*</strong></td>
+            <td>❌/✔️✔️</td>
+            <td>92.9 <span class="std">±0.2</span></td>
+            <td>88.3 <span class="std">±1.1</span></td>
+            <td>70.1 <span class="std">±0.8</span></td>
+            <td>74.7 <span class="std">±0.7</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>GAP (Last Layer)</strong></td>
+            <td>❌/✔️✔️</td>
+            <td>93.2 <span class="std">±0.2</span></td>
+            <td><b>90.2</b> <span class="std">±0.3</span></td>
+            <td>–</td>
+            <td>74.3 <span class="std">±0.2</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr>
+            <td><strong>GAP (All Layer)</strong></td>
+            <td>❌/✔️✔️</td>
+            <td><b>93.8</b> <span class="std">±0.1</span></td>
+            <td><b>90.2</b> <span class="std">±0.3</span></td>
+            <td>–</td>
+            <td><b><u>77.8</u></b> <span class="std">±0.6</span></td>
+            <td>–</td>
+            <td>–</td>
+        </tr>
+        <tr class="highlight">
+            <td><strong>ERM* + DPE</strong></td>
+            <td>❌/✔️✔️</td>
+            <td><b><u>94.1</u></b> <span class="std">±0.4</span></td>
+            <td><b><u>90.3</u></b> <span class="std">±0.7</span></td>
+            <td><b>70.8</b> <span class="std">±0.8</span></td>
+            <td>75.3 <span class="std">±0.5</span></td>
+            <td><b><u>91.7</u></b> <span class="std">±1.3</span></td>
+            <td><b><u>76.0</u></b> <span class="std">±0.3</span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
- 
+
 <div class="card-section" id="method">
-  <h2 style="text-align: center;">Method</h2>
+    <h2 style="text-align: center;">Method</h2>
 
-  <p>
-    We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a two-stage approach that improves robustness to subpopulation shifts by training an ensemble of diverse prototype classifiers.
-  </p>
+    <p>
+        We propose <strong>Diversified Prototypical Ensembles (DPE)</strong>, a two-stage approach that improves
+        robustness to subpopulation shifts by training an ensemble of diverse prototype classifiers.
+    </p>
 
-  <h3>Stage 1: ERM for Feature Extraction</h3>
-  <p>
-    First, a standard feature extractor is trained via empirical risk minimization (ERM) on the full training set.
-    This step learns useful representations but often captures spurious correlations or overlooks rare subgroups.
-  </p>
+    <h3>Stage 1: ERM for Feature Extraction</h3>
+    <p>
+        First, a standard feature extractor is trained via empirical risk minimization (ERM) on the full training set.
+        This step learns useful representations but often captures spurious correlations or overlooks rare subgroups.
+    </p>
 
-  <h3>Stage 2: Prototypical Ensemble with Diversity</h3>
-  <p>
-    After freezing the feature extractor, we replace the linear classifier with a prototypical ensemble: for each class,
-    multiple prototype vectors are learned. Each classifier in the ensemble makes predictions based on distance in the
-    latent space to its own set of prototypes.
-  </p>
-  <p>
-    The final prediction is made by averaging predictions across the ensemble members.
-  </p>
+    <h3>Stage 2: Prototypical Ensemble with Diversity</h3>
+    <p>
+        After freezing the feature extractor, we replace the linear classifier with a prototypical ensemble: for each
+        class,
+        multiple prototype vectors are learned. Each classifier in the ensemble makes predictions based on distance in
+        the
+        latent space to its own set of prototypes.
+    </p>
+    <p>
+        The final prediction is made by averaging predictions across the ensemble members.
+    </p>
 
-  <h3>Encouraging Diversity</h3>
-  <p>DPE ensures ensemble diversity via two mechanisms:</p>
-  <ul>
-    <li><strong>Bootstrapped Training:</strong> Each classifier is trained on a distinct class-balanced validation subset.</li>
-    <li><strong>Inter-Prototype Similarity (IPS) Loss:</strong> A regularization term penalizes cosine similarity between prototypes of the same class across ensemble members.</li>
-  </ul>
+    <h3>Encouraging Diversity</h3>
+    <p>DPE ensures ensemble diversity via two mechanisms:</p>
+    <ul>
+        <li><strong>Bootstrapped Training:</strong> Each classifier is trained on a distinct class-balanced validation
+            subset.
+        </li>
+        <li><strong>Inter-Prototype Similarity (IPS) Loss:</strong> A regularization term penalizes cosine similarity
+            between prototypes of the same class across ensemble members.
+        </li>
+    </ul>
 
-  <h3>Prototypical Classifier Equation</h3>
-  <p style="text-align:center;">\( P(y | x) = softmax(-D(f(x), p<sub>y</sub>)) \)</p>
+    <h3>Prototypical Classifier Equation</h3>
+    <p style="text-align:center;">\( P(y | x) = softmax(-D(f(x), p<sub>y</sub>)) \)</p>
 
-  </pre>
-  <p>
-    where <code>D</code> is a learnable distance function, <code>f(x)</code> is the frozen representation,
-    and <code>p<sub>y</sub></code> is the prototype for class <code>y</code>.
-  </p>
+    </pre>
+    <p>
+        where <code>D</code> is a learnable distance function, <code>f(x)</code> is the frozen representation,
+        and <code>p<sub>y</sub></code> is the prototype for class <code>y</code>.
+    </p>
 
-  <h3>Diversity Loss</h3>
-  <p>We minimize the following IPS loss:</p>
-  <pre style="white-space: pre-wrap; font-family: 'Roboto Mono', monospace; font-size: 0.95rem;">
+    <h3>Diversity Loss</h3>
+    <p>We minimize the following IPS loss:</p>
+    <pre style="white-space: pre-wrap; font-family: 'Roboto Mono', monospace; font-size: 0.95rem;">
 L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i)</sup>, p<sub>k</sub><sup>(j)</sup>⟩| / (n · d)
   </pre>
-  <p>
-    where <code>p<sub>k</sub><sup>(i)</sup></code> and <code>p<sub>k</sub><sup>(j)</sup></code> are prototypes for class <code>k</code>
-    in ensemble members <code>i</code> and <code>j</code>, and <code>d</code> is the feature dimension.
-  </p>
+    <p>
+        where <code>p<sub>k</sub><sup>(i)</sup></code> and <code>p<sub>k</sub><sup>(j)</sup></code> are prototypes for
+        class <code>k</code>
+        in ensemble members <code>i</code> and <code>j</code>, and <code>d</code> is the feature dimension.
+    </p>
 </div>
-
 
 
 <h2>BibTeX</h2>
@@ -379,7 +641,7 @@ L<sub>IPS</sub> = ∑<sub>k</sub> ∑<sub>i ≠ j</sub> |⟨p<sub>k</sub><sup>(i
 }
 </pre>
 
- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
 </body>
 </html>
