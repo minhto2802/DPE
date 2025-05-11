@@ -149,6 +149,7 @@
       padding: 10px;
       font-weight: 600;
       text-align: center;
+      font-family: 'Inter', sans-serif;
     }
 
     td {
@@ -233,139 +234,41 @@
 
 <h2>Benchmark Results</h2>
 
-<h3>Worst-Group Accuracy (No Subgroup Labels)</h3>
- <p>
- The top half reproduces results from SubpopBench using the same ERM backbone.
- The bottom half includes stronger ERM* baselines and our DPE results.
- </p>
-<summary>📊 <strong>Worst-Group Accuracy — No Subgroup Labels</strong></summary>
-<table>
-  <thead>
-    <tr>
-      <th>Algorithm</th>
-      <th>Waterbirds</th>
-      <th>CelebA</th>
-      <th>CivilComments</th>
-      <th>MultiNLI</th>
-      <th>MetaShift</th>
-      <th>CheXpert</th>
-      <th>ImageNetBG</th>
-      <th>NICO++</th>
-      <th>Living17</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>ERM</strong></td>
-      <td>69.1 <span class="std">±4.7</span></td>
-      <td>57.6 <span class="std">±0.8</span></td>
-      <td>63.2 <span class="std">±1.2</span></td>
-      <td><b>66.4</b> <span class="std">±2.3</span></td>
-      <td>82.1 <span class="std">±0.8</span></td>
-      <td>41.7 <span class="std">±3.4</span></td>
-      <td>76.8 <span class="std">±0.9</span></td>
-      <td>35.0 <span class="std">±4.1</span></td>
-      <td>48.0 <span class="std">±1.5</span></td>
-    </tr>
-    <tr>
-      <td><strong>CRT</strong></td>
-      <td>76.3 <span class="std">±0.8</span></td>
-      <td>69.6 <span class="std">±0.7</span></td>
-      <td><b>67.8</b> <span class="std">±0.3</span></td>
-      <td>65.4 <span class="std">±0.2</span></td>
-      <td>83.1 <span class="std">±0.0</span></td>
-      <td>74.6 <span class="std">±0.4</span></td>
-      <td><b>78.2</b> <span class="std">±0.5</span></td>
-      <td>33.3 <span class="std">±0.0</span></td>
-      <td>–</td>
-    </tr>
-    <tr>
-      <td><strong>ReWeightCRT</strong></td>
-      <td>76.3 <span class="std">±0.2</span></td>
-      <td>70.7 <span class="std">±0.6</span></td>
-      <td>64.7 <span class="std">±0.2</span></td>
-      <td>65.2 <span class="std">±0.2</span></td>
-      <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
-      <td><b>75.1</b> <span class="std">±0.2</span></td>
-      <td>77.5 <span class="std">±0.7</span></td>
-      <td>33.3 <span class="std">±0.0</span></td>
-      <td>–</td>
-    </tr>
-    <tr>
-      <td><strong>DFR</strong></td>
-      <td><b>89.0</b> <span class="std">±0.2</span></td>
-      <td><b>73.7</b> <span class="std">±0.8</span></td>
-      <td>64.4 <span class="std">±0.1</span></td>
-      <td>63.8 <span class="std">±0.0</span></td>
-      <td>81.4 <span class="std">±0.1</span></td>
-      <td><b><u>75.8</u></b> <span class="std">±0.3</span></td>
-      <td>74.4 <span class="std">±1.8</span></td>
-      <td><b>38.0</b> <span class="std">±3.8</span></td>
-      <td>–</td>
-    </tr>
-    <tr class="highlight">
-      <td><strong>ERM + DPE</strong></td>
-      <td><b><u>91.0</u></b> <span class="std">±0.5</span></td>
-      <td><b><u>81.9</u></b> <span class="std">±0.2</span></td>
-      <td><b><u>69.9</u></b> <span class="std">±0.9</span></td>
-      <td><b><u>69.3</u></b> <span class="std">±0.8</span></td>
-      <td><b>84.1</b> <span class="std">±1.5</span></td>
-      <td>–</td>
-      <td><b><u>87.9</u></b> <span class="std">±0.6</span></td>
-      <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
-      <td><b><u>54.0</u></b> <span class="std">±4.0</span></td>
-    </tr>
+<div class="summary" id="wga-no-attributes">
+  <h2 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h2>
+  <p>
+    The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes results from original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
+    Bold and underlined values indicate the best result per group, bold values indicate the second-best.
+  </p>
 
-    <tr>
-      <td><strong>ERM*</strong></td>
-      <td>77.9 <span class="std">±3.0</span></td>
-      <td>66.5 <span class="std">±2.6</span></td>
-      <td><b><u>69.4</u></b> <span class="std">±1.2</span></td>
-      <td>66.5 <span class="std">±0.7</span></td>
-      <td>80.0 <span class="std">±0.0</span></td>
-      <td>75.6 <span class="std">±0.4</span></td>
-      <td>86.4 <span class="std">±0.8</span></td>
-      <td>33.3 <span class="std">±0.0</span></td>
-      <td>53.3 <span class="std">±0.9</span></td>
-    </tr>
-    <tr>
-      <td><strong>RWY</strong></td>
-      <td>86.1 <span class="std">±0.7</span></td>
-      <td><b>82.9</b> <span class="std">±2.2</span></td>
-      <td>67.5 <span class="std">±0.6</span></td>
-      <td>68.0 <span class="std">±1.9</span></td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-    </tr>
-    <tr>
-      <td><strong>AFR</strong></td>
-      <td><b>90.4</b> <span class="std">±1.1</span></td>
-      <td>82.0 <span class="std">±0.5</span></td>
-      <td>68.7 <span class="std">±0.6</span></td>
-      <td><b><u>73.4</u></b> <span class="std">±0.6</span></td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-      <td>–</td>
-    </tr>
-    <tr class="highlight">
-      <td><strong>ERM* + DPE</strong></td>
-      <td><b><u>94.1</u></b> <span class="std">±0.2</span></td>
-      <td><b><u>84.6</u></b> <span class="std">±0.8</span></td>
-      <td><b>68.9</b> <span class="std">±0.6</span></td>
-      <td><b>70.9</b> <span class="std">±0.8</span></td>
-      <td><b><u>83.6</u></b> <span class="std">±0.9</span></td>
-      <td><b><u>76.8</u></b> <span class="std">±0.1</span></td>
-      <td><b><u>88.1</u></b> <span class="std">±0.7</span></td>
-      <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
-      <td><b><u>63.0</u></b> <span class="std">±1.7</span></td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Algorithm</th>
+        <th>Waterbirds</th>
+        <th>CelebA</th>
+        <th>CivilComments</th>
+        <th>MultiNLI</th>
+        <th>MetaShift</th>
+        <th>CheXpert</th>
+        <th>ImageNetBG</th>
+        <th>NICO++</th>
+        <th>Living17</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>ERM</strong></td><td>69.1 <span class="std">±4.7</span></td><td>57.6 <span class="std">±0.8</span></td><td>63.2 <span class="std">±1.2</span></td><td><b>66.4</b> <span class="std">±2.3</span></td><td>82.1 <span class="std">±0.8</span></td><td>41.7 <span class="std">±3.4</span></td><td>76.8 <span class="std">±0.9</span></td><td>35.0 <span class="std">±4.1</span></td><td>48.0 <span class="std">±1.5</span></td></tr>
+      <tr><td><strong>CRT</strong></td><td>76.3 <span class="std">±0.8</span></td><td>69.6 <span class="std">±0.7</span></td><td><b>67.8</b> <span class="std">±0.3</span></td><td>65.4 <span class="std">±0.2</span></td><td>83.1 <span class="std">±0.0</span></td><td>74.6 <span class="std">±0.4</span></td><td><b>78.2</b> <span class="std">±0.5</span></td><td>33.3 <span class="std">±0.0</span></td><td>–</td></tr>
+      <tr><td><strong>ReWeightCRT</strong></td><td>76.3 <span class="std">±0.2</span></td><td>70.7 <span class="std">±0.6</span></td><td>64.7 <span class="std">±0.2</span></td><td>65.2 <span class="std">±0.2</span></td><td><b><u>85.1</u></b> <span class="std">±0.4</span></td><td><b>75.1</b> <span class="std">±0.2</span></td><td>77.5 <span class="std">±0.7</span></td><td>33.3 <span class="std">±0.0</span></td><td>–</td></tr>
+      <tr><td><strong>DFR</strong></td><td><b>89.0</b> <span class="std">±0.2</span></td><td><b>73.7</b> <span class="std">±0.8</span></td><td>64.4 <span class="std">±0.1</span></td><td>63.8 <span class="std">±0.0</span></td><td>81.4 <span class="std">±0.1</span></td><td><b><u>75.8</u></b> <span class="std">±0.3</span></td><td>74.4 <span class="std">±1.8</span></td><td><b>38.0</b> <span class="std">±3.8</span></td><td>–</td></tr>
+      <tr class="highlight"><td><strong>ERM + DPE</strong></td><td><b><u>91.0</u></b> <span class="std">±0.5</span></td><td><b><u>81.9</u></b> <span class="std">±0.2</span></td><td><b><u>69.9</u></b> <span class="std">±0.9</span></td><td><b><u>69.3</u></b> <span class="std">±0.8</span></td><td><b>84.1</b> <span class="std">±1.5</span></td><td>–</td><td><b><u>87.9</u></b> <span class="std">±0.6</span></td><td><b><u>50.0</u></b> <span class="std">±0.0</span></td><td><b><u>54.0</u></b> <span class="std">±4.0</span></td></tr>
+      <tr><td><strong>ERM*</strong></td><td>77.9 <span class="std">±3.0</span></td><td>66.5 <span class="std">±2.6</span></td><td><b><u>69.4</u></b> <span class="std">±1.2</span></td><td>66.5 <span class="std">±0.7</span></td><td>80.0 <span class="std">±0.0</span></td><td>75.6 <span class="std">±0.4</span></td><td>86.4 <span class="std">±0.8</span></td><td>33.3 <span class="std">±0.0</span></td><td>53.3 <span class="std">±0.9</span></td></tr>
+      <tr><td><strong>RWY</strong></td><td>86.1 <span class="std">±0.7</span></td><td><b>82.9</b> <span class="std">±2.2</span></td><td>67.5 <span class="std">±0.6</span></td><td>68.0 <span class="std">±1.9</span></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+      <tr><td><strong>AFR</strong></td><td><b>90.4</b> <span class="std">±1.1</span></td><td>82.0 <span class="std">±0.5</span></td><td>68.7 <span class="std">±0.6</span></td><td><b><u>73.4</u></b> <span class="std">±0.6</span></td><td>–</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+      <tr class="highlight"><td><strong>ERM* + DPE</strong></td><td><b><u>94.1</u></b> <span class="std">±0.2</span></td><td><b><u>84.6</u></b> <span class="std">±0.8</span></td><td><b>68.9</b> <span class="std">±0.6</span></td><td><b>70.9</b> <span class="std">±0.8</span></td><td><b><u>83.6</u></b> <span class="std">±0.9</span></td><td><b><u>76.8</u></b> <span class="std">±0.1</span></td><td><b><u>88.1</u></b> <span class="std">±0.7</span></td><td><b><u>50.0</u></b> <span class="std">±0.0</span></td><td><b><u>63.0</u></b> <span class="std">±1.7</span></td></tr>
+    </tbody>
+  </table>
+</div>
 
  <div class="summary" id="wga-with-attributes">
   <h2 style="text-align: center;">Worst-Group Accuracy (With Attribute Annotations)</h2>
