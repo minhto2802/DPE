@@ -16,6 +16,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
 
     <style>
+        .paper-header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+
+        .paper-header h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 0.5rem;
+        }
+
+        .paper-header .venue {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .paper-header .authors {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
         #toc {
             position: fixed;
             top: 120px;
@@ -386,7 +414,7 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 
-<body>
+<body id="top">
 
 <nav id="toc">
     <h3>Contents</h3>
@@ -398,16 +426,27 @@
         <li><a href="#diversification-ablation">Ensemble Diversification Strategies</a></li>
         <li><a href="#limitations">Limitations</a></li>
         <li><a href="#bibtex">BibTeX</a></li>
+        <li style="margin-top: 1rem;"><a href="#top"><strong>↑ Back to Top</strong></a></li>
     </ul>
 </nav>
 
-<h1>Diversified Prototypical Ensembles</h1>
-<p class="institution">Accepted at the International Conference on Machine Learning (ICML) 2025</p>
+<div class="paper-header">
+    <h1>Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift</h1>
+    <p class="venue">Accepted at <strong>ICML 2025</strong></p>
 
-<div class="authors">
-    Minh Nguyen Nhat To · Paul F R Wilson · Viet Nguyen · Mohamed Harmanani · Michael Cooper<br>
-    Fahimeh Fooladgar · Purang Abolmaesumi · Parvin Mousavi · Rahul G. Krishnan
+    <div class="authors">
+        <span>Minh Nguyen Nhat To</span> ·
+        <span>Paul F R Wilson</span> ·
+        <span>Viet Nguyen</span> ·
+        <span>Mohamed Harmanani</span> ·
+        <span>Michael Cooper</span><br>
+        <span>Fahimeh Fooladgar</span> ·
+        <span>Purang Abolmaesumi</span> ·
+        <span>Parvin Mousavi</span> ·
+        <span>Rahul G. Krishnan</span>
+    </div>
 </div>
+
 
 <div class="links">
     <a href="https://arxiv.org/abs/your-id" class="button" target="_blank">
@@ -1299,6 +1338,6 @@
 </pre>
 
 
-</body>
+</idbody>
 </html>
 
