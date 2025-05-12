@@ -270,6 +270,19 @@
             margin-top: 10px;
         }
 
+        .notetxt {
+            font-size: 0.8rem; /* smaller text */
+            font-style: italic;
+            color: #666;
+            background-color: #f5f5f5;
+            border-left: 3px solid #ccc;
+            padding: 6px 10px; /* tighter padding */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            line-height: 1.4; /* more compact line spacing */
+        }
+
         img {
             display: block;
             max-width: 100%;
@@ -708,6 +721,13 @@
             diverse subpopulation shift scenarios.
         </p>
     </div>
+    <p class="notetxt">
+        In our experiments, <strong>ERM<sup>*</sup></strong> refers to a stronger feature extractor trained with
+        standard empirical risk minimization but using enhanced configurations such as
+        <em>longer training schedules</em>, <em>stronger data augmentations</em>, potentially improving the quality
+        of the extracted features.
+    </p>
+
 
     <div class='table-box responsive-table' id="wga-no-attributes">
         <h3 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h3>
@@ -1259,8 +1279,6 @@
             representations, making it a modular enhancement applicable across training pipelines.
         </p>
     </div>
-
-
 </div>
 
 <div class="card-section" id="prototype-alignment">
