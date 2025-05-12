@@ -586,7 +586,7 @@
     <div class="over">
         <img src="figures/motivation.png" alt="Diagram Overview of DPE">
 
-        <div class="figure-caption-overview">(a) A single model trained on mixed subgroups learns a biased decision
+        <div class="note">(a) A single model trained on mixed subgroups learns a biased decision
             boundary
             favoring the majority. (b–d) As ensemble size increases, each model captures different subgroup patterns,
             improving classification across subpopulations.
@@ -1306,8 +1306,8 @@
         <img src="figures/supp/waterbird_prototypes_with_chatgpt_descriptions.jpg" alt="Waterbird Prototypes"
              style="width: 100%; max-width: 900px; border-radius: 8px;"/>
         <div class="figure-caption-overview">
-            <strong>Waterbird Prototypes.</strong> Each row shows the top-10 validation samples nearest to one
-            of the prototypes learned for the Waterbirds class. Patterns include aquatic divers, birds in flight,
+            Each row shows the top-10 validation samples nearest to one
+            of the learned waterbird prototypes. Patterns include aquatic divers, birds in flight,
             terrestrial seabirds, and upright gulls, as interpreted by ChatGPT.
         </div>
     </div>
@@ -1317,7 +1317,7 @@
         <img src="figures/supp/landbird_prototypes_with_chatgpt_descriptions.jpg" alt="Landbird Prototypes"
              style="width: 100%; max-width: 900px; border-radius: 8px;"/>
         <div class="figure-caption-overview">
-            <strong>Landbird Prototypes.</strong> Each row shows the top-10 validation samples closest to a DPE
+            Each row shows the top-10 validation samples closest to a DPE
             prototype for the Landbirds class. Learned clusters correspond to postural variation, ecological context,
             and background-driven biases such as birds in human-made settings.
         </div>
@@ -1346,10 +1346,8 @@
     <div class="visual" style="text-align: center;">
         <img src="figures/cov_loss_ablation.jpg" alt="Effect of diversification methods"
              style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="figure-caption-overview">(a) <strong>Effect of different ensemble diversification methods</strong>
-            on performance with increasing
-            ensemble size. The combination of sampling and similarity loss provide the most robust improvement in
-            worst-group and balanced accuracy.
+        <div class="note">Effect of different ensemble diversification methods
+            on performance with increasing ensemble size.
         </div>
     </div>
 </div>
