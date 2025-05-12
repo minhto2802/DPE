@@ -309,7 +309,7 @@
         }
 
         td {
-            padding: 6px 8px;
+            padding: 6px 4px;
             border: 1px solid #ddd;
             text-align: center;
         }
@@ -1036,7 +1036,7 @@
                 <tbody>
                 <tr>
                     <td>ERM</td>
-                    <td>×/×</td>
+                    <td>❌/❌</td>
                     <td>84.1±1.7</td>
                     <td>95.0±0.1</td>
                     <td>85.4±0.2</td>
@@ -1046,7 +1046,7 @@
                 </tr>
                 <tr>
                     <td>CRT</td>
-                    <td>×/✓</td>
+                    <td>❌/✔️</td>
                     <td>89.2±0.1</td>
                     <td>94.1±0.1</td>
                     <td>83.0±0.0</td>
@@ -1056,7 +1056,7 @@
                 </tr>
                 <tr>
                     <td>ReWeightCRT</td>
-                    <td>×/✓</td>
+                    <td>❌/✔️</td>
                     <td>89.4±0.3</td>
                     <td>94.2±0.1</td>
                     <td>83.4±0.0</td>
@@ -1066,7 +1066,7 @@
                 </tr>
                 <tr>
                     <td>DFR</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>92.2±0.2</td>
                     <td>91.2±0.1</td>
                     <td>81.3±0.0</td>
@@ -1076,7 +1076,7 @@
                 </tr>
                 <tr>
                     <td>ERM + DPE</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>92.5±0.2</td>
                     <td>89.8±0.2</td>
                     <td>82.2±0.2</td>
@@ -1086,7 +1086,7 @@
                 </tr>
                 <tr>
                     <td>ERM*</td>
-                    <td>×/×</td>
+                    <td>❌/❌</td>
                     <td>92.1±0.2</td>
                     <td>94.0±0.2</td>
                     <td>83.3±1.4</td>
@@ -1096,7 +1096,7 @@
                 </tr>
                 <tr>
                     <td>Group DRO</td>
-                    <td>✓/✓</td>
+                    <td>✔️/✔️</td>
                     <td>93.5</td>
                     <td>92.9</td>
                     <td>88.9</td>
@@ -1106,7 +1106,7 @@
                 </tr>
                 <tr>
                     <td>RWG</td>
-                    <td>✓/✓</td>
+                    <td>✔️/✔️</td>
                     <td>–</td>
                     <td>–</td>
                     <td>–</td>
@@ -1116,7 +1116,7 @@
                 </tr>
                 <tr>
                     <td>JTT</td>
-                    <td>×/✓</td>
+                    <td>❌/✔️</td>
                     <td>93.3</td>
                     <td>88.0</td>
                     <td>91.1</td>
@@ -1126,7 +1126,7 @@
                 </tr>
                 <tr>
                     <td>CnC</td>
-                    <td>×/✓</td>
+                    <td>❌/✔️</td>
                     <td>90.9±0.1</td>
                     <td>89.9±0.5</td>
                     <td>81.7±0.5</td>
@@ -1136,7 +1136,7 @@
                 </tr>
                 <tr>
                     <td>SSA</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>92.2±0.9</td>
                     <td>92.8±0.1</td>
                     <td>88.2±2.0</td>
@@ -1146,7 +1146,7 @@
                 </tr>
                 <tr>
                     <td>DFR*</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>94.2±0.4</td>
                     <td>91.3±0.3</td>
                     <td>87.2±0.3</td>
@@ -1156,7 +1156,7 @@
                 </tr>
                 <tr>
                     <td>GAP (Last Layer)</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>94.6±0.2</td>
                     <td>91.7±0.2</td>
                     <td>–</td>
@@ -1166,7 +1166,7 @@
                 </tr>
                 <tr>
                     <td>GAP (All Layer)</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>95.6±0.1</td>
                     <td>91.5±0.1</td>
                     <td>–</td>
@@ -1176,7 +1176,7 @@
                 </tr>
                 <tr style="background-color: #f9fafb;">
                     <td>ERM* + DPE</td>
-                    <td>×/✓✓</td>
+                    <td>❌/✔️✔️</td>
                     <td>96.0±0.1</td>
                     <td>91.9±0.3</td>
                     <td>81.6±0.2</td>
@@ -1319,7 +1319,7 @@
         DPE introduces additional complexity due to its ensemble structure and hyperparameters, though this is offset by
         improved robustness without requiring subgroup labels. The method remains efficient, adding only a few minutes
         per prototype when trained on pre-extracted features. While empirical results are strong, a formal theoretical
-        explanation for why prototype diversification improves worst-group accuracy is lacking. Our exploratory analysis
+        explanation for why prototype diversification improves WGA is lacking. Our exploratory analysis
         suggests semantic alignment with latent subgroups, but a rigorous understanding remains an open research
         direction.
     </p>
