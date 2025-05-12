@@ -435,14 +435,15 @@
         <li><a href="#overview">Overview</a></li>
         <li><a href="#motivation">Motivation</a></li>
         <li><a href="#method">Diversified Prototypical Ensembles</a></li>
+        <li><a href="#evaluation-metrics">Evaluation Metrics</a></li>
         <li><a href="#evaluation">Generalization Under Distribution Shifts</a></li>
         <ul style="padding-left: 1rem;">
             <li><a href="#robustness-without-groups">With and Without Subgroup Annotations</a></li>
             <li><a href="#attribute-imbalance">Attribute Imbalance and Generalization</a></li>
             <li><a href="#backbone-effects">Disentangling Backbone Effects</a></li>
         </ul>
-        <li><a href="#prototype-alignment">Prototype–Subgroup Alignment</a></li>
         <li><a href="#diversification-ablation">Ensemble Diversification Strategies</a></li>
+        <li><a href="#prototype-alignment">Prototype–Subgroup Alignment</a></li>
         <li><a href="#limitations">Limitations</a></li>
         <li><a href="#bibtex">BibTeX</a></li>
         <li style="margin-top: 1rem;"><a href="#top"><strong>↑ Back to Top</strong></a></li>
@@ -678,6 +679,60 @@
     </div>
 </div>
 
+<div class="card-section" id="evaluation-metrics">
+    <h2 style="text-align: center;">Evaluation Metrics</h2>
+
+    <p>
+        To assess robustness under subpopulation shift, we primarily use <strong>Worst-Group Accuracy (WGA)</strong>,
+        the standard evaluation metric in this field. WGA quantifies performance on the most challenging or
+        underrepresented subgroup in the dataset, reflecting how well a model generalizes beyond dominant patterns.
+        In addition to WGA, we report <strong>Balanced Accuracy (BA)</strong> and <strong>Standard Accuracy</strong> to
+        provide a more complete picture of model performance across all classes.
+    </p>
+    <div class="card-section equation-box">
+        <details open>
+            <summary><h3 style="display: inline;">Worst-Group Accuracy</h3></summary>
+        <p>
+            Worst-group accuracy measures the performance of a model on the subgroup of data where it performs the
+            worst. Formally, let \( \mathcal{G} \) denote the set of all groups, and let \( \mathcal{D}_g \) represent
+            the subset of data belonging to group \( g \in \mathcal{G} \). Define the accuracy on group \( g \) as:
+        </p>
+        <div class="math-display">
+            $$ \text{Acc}_g = \frac{1}{|\mathcal{D}_g|} \sum_{(x, y) \in \mathcal{D}_g} \mathbb{I}(f(x) = y) $$
+            $$ \text{WGA} = \min_{g \in \mathcal{G}} \text{Acc}_g $$
+        </div>
+        <p>
+            This metric evaluates the robustness of the model to underrepresented or challenging groups in the dataset.
+        </p>
+        </details>
+
+        <details>
+            <summary><h3 style="display: inline;">Balanced Accuracy (BA)</h3></summary>
+            <p>
+                Balanced accuracy is designed to mitigate the effects of class imbalance by averaging the accuracy
+                across all classes. Let \( \mathcal{C} \) denote the set of all classes, and \( \mathcal{D}_c \) the
+                subset of data belonging to class \( c \in \mathcal{C} \). The per-class accuracy is defined as:
+            </p>
+            <div class="math-display">
+                $$ \text{Acc}_c = \frac{1}{|\mathcal{D}_c|} \sum_{(x, y) \in \mathcal{D}_c} \mathbb{I}(f(x) = y) $$
+                $$ \text{BA} = \frac{1}{|\mathcal{C}|} \sum_{c \in \mathcal{C}} \text{Acc}_c $$
+            </div>
+            <p>
+                Balanced accuracy ensures that each class contributes equally to the overall evaluation, regardless of
+                its frequency in the dataset.
+            </p>
+        </details>
+        <details>
+            <summary><h3 style="display: inline;">Standard Accuracy</h3></summary>
+            <p>
+                For completeness, we also report standard (average) accuracy, computed over all examples regardless of
+                group or class. While it provides a high-level view of model performance, it may mask disparities across
+                subgroups or underrepresented classes.
+            </p>
+        </details>
+    </div>
+</div>
+
 
 <div class="card-section" id="evaluation">
     <h2 style="text-align: center;">Generalization Under Distribution Shifts</h2>
@@ -706,7 +761,7 @@
         <h3>Robustness With and Without Subgroup Annotations</h3>
         <p>
             When attributes are unavailable during both training and validation, baseline methods degrade significantly.
-            For example, ERM achieves 69.1% worst-group accuracy (WGA) on <strong>Waterbirds</strong> and 63.2% on
+            For example, ERM achieves 69.1% WGA on <strong>Waterbirds</strong> and 63.2% on
             <strong>CivilComments</strong>. Methods like CRT and ReWeightCRT also struggle in this setting.
         </p>
         <p>
@@ -1282,6 +1337,34 @@
     </div>
 </div>
 
+<div class="card-section" id="diversification-ablation">
+    <h2 style="text-align: center;">Ensemble Diversification Strategies</h2>
+
+    <p>
+        The figure below illustrates how different
+        ensemble diversification strategies impact both worst-group accuracy and balanced accuracy as the number of
+        ensemble members increases. The comparison includes three methods:
+    </p>
+    <ol>
+        <li>Training each prototype on a fixed data subset (no diversification)</li>
+        <li>Training on random subsets for each ensemble member</li>
+        <li>Combining random subset selection with inter-prototype similarity loss</li>
+    </ol>
+    <p>
+        The combined strategy consistently yields the best worst-group accuracy across datasets. This highlights the
+        importance of combining both explicit (loss-based) and implicit (sampling-based) diversification to ensure broad
+        coverage of the data distribution and robustness to subpopulation shifts.
+    </p>
+
+    <div class="visual" style="text-align: center;">
+        <img src="figures/cov_loss_ablation.jpg" alt="Effect of diversification methods"
+             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+        <div class="note">Effect of different ensemble diversification methods
+            on performance with increasing ensemble size.
+        </div>
+    </div>
+</div>
+
 <div class="card-section" id="prototype-alignment">
     <h2 style="text-align: center;">Prototype–Subgroup Alignment</h2>
     <p>
@@ -1321,34 +1404,6 @@
             Each row shows the top-10 validation samples closest to a DPE
             prototype for the Landbirds class. Learned clusters correspond to postural variation, ecological context,
             and background-driven biases such as birds in human-made settings.
-        </div>
-    </div>
-</div>
-
-<div class="card-section" id="diversification-ablation">
-    <h2 style="text-align: center;">Ensemble Diversification Strategies</h2>
-
-    <p>
-        The figure below illustrates how different
-        ensemble diversification strategies impact both worst-group accuracy and balanced accuracy as the number of
-        ensemble members increases. The comparison includes three methods:
-    </p>
-    <ol>
-        <li>Training each prototype on a fixed data subset (no diversification)</li>
-        <li>Training on random subsets for each ensemble member</li>
-        <li>Combining random subset selection with inter-prototype similarity loss</li>
-    </ol>
-    <p>
-        The combined strategy consistently yields the best worst-group accuracy across datasets. This highlights the
-        importance of combining both explicit (loss-based) and implicit (sampling-based) diversification to ensure broad
-        coverage of the data distribution and robustness to subpopulation shifts.
-    </p>
-
-    <div class="visual" style="text-align: center;">
-        <img src="figures/cov_loss_ablation.jpg" alt="Effect of diversification methods"
-             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="note">Effect of different ensemble diversification methods
-            on performance with increasing ensemble size.
         </div>
     </div>
 </div>
