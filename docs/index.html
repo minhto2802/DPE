@@ -16,6 +16,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet">
 
     <style>
+        #toc {
+            position: fixed;
+            top: 120px;
+            left: 20px;
+            width: 180px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+
+        #toc h3 {
+            margin-top: 0;
+            font-size: 16px;
+            color: #333;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        #toc li {
+            margin: 8px 0;
+        }
+
+        #toc a {
+            text-decoration: none;
+            color: #444;
+        }
+
+        #toc a:hover {
+            text-decoration: underline;
+            color: #c33;
+        }
+
+        @media (max-width: 1000px) {
+            #toc {
+                display: none;
+            }
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         .table-box {
             background-color: #FFF4FD;
             border-radius: 12px;
@@ -407,7 +458,34 @@
     </div>
 </div>
 
-<div class="card-section summary-section">
+<!--<div class="card-section" id="table-of-contents">-->
+<!--    <h2 style="text-align: center;">Table of Contents</h2>-->
+<!--    <ul style="line-height: 1.8; font-family: 'Roboto', sans-serif;">-->
+<!--        <li><a href="#overview">Overview</a></li>-->
+<!--        <li><a href="#method">Diversified Prototypical Ensembles</a></li>-->
+<!--        <li><a href="#evaluation">Generalization Under Distribution Shifts</a></li>-->
+<!--        <li><a href="#prototype-alignment">Prototype–Subgroup Alignment</a></li>-->
+<!--        <li><a href="#diversification-ablation">Ensemble Diversification Strategies</a></li>-->
+<!--        <li><a href="#limitations">Limitations</a></li>-->
+<!--        <li><a href="#bibtex">BibTeX</a></li>-->
+<!--    </ul>-->
+<!--</div>-->
+
+<nav id="toc">
+    <h3>Contents</h3>
+    <ul>
+        <li><a href="#overview">Overview</a></li>
+        <li><a href="#method">Diversified Prototypical Ensembles</a></li>
+        <li><a href="#evaluation">Generalization Under Distribution Shifts</a></li>
+        <li><a href="#prototype-alignment">Prototype–Subgroup Alignment</a></li>
+        <li><a href="#diversification-ablation">Ensemble Diversification Strategies</a></li>
+        <li><a href="#limitations">Limitations</a></li>
+        <li><a href="#bibtex">BibTeX</a></li>
+    </ul>
+</nav>
+
+
+<div class="card-section summary-section" id="overview">
     <h2>Overview</h2>
     <p>
         Subpopulation shifts occur when the distribution of data subgroups differs between training and deployment
@@ -552,7 +630,7 @@
 
 
 <div class="card-section" id="evaluation">
-    <h2 style="text-align: center;">Strong Generalization Under Distribution Shifts</h2>
+    <h2 style="text-align: center;">Generalization Under Distribution Shifts</h2>
     <p>
         We evaluate the robustness of DPE against subpopulation shifts using <strong>nine real-world datasets</strong>
         across vision, language, and medical domains.
@@ -1141,7 +1219,7 @@
 </div>
 
 <div class="card-section" id="prototype-alignment">
-    <h2 style="text-align: center;">Exploratory Analysis of Prototype–Subgroup Alignment</h2>
+    <h2 style="text-align: center;">Prototype–Subgroup Alignment</h2>
     <p>
         To better understand the semantic structure captured by the Diversified Prototypical Ensemble (DPE), we
         conducted an exploratory analysis on the <strong>Waterbirds</strong> dataset. For each prototype, we retrieved
@@ -1184,7 +1262,7 @@
 </div>
 
 <div class="card-section" id="diversification-ablation">
-    <h2 style="text-align: center;">Effect of Ensemble Diversification Strategies</h2>
+    <h2 style="text-align: center;">Ensemble Diversification Strategies</h2>
 
     <p>
         The figure below extends the results from the main paper (Figure 5) to four datasets, illustrating how different
@@ -1226,7 +1304,7 @@
 </div>
 
 
-<h2>BibTeX</h2>
+<h2 id='bibtex'>BibTeX</h2>
 <pre>
 @inproceedings{to2025dpe,
   title={Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
