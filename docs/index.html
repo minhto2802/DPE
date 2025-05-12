@@ -422,6 +422,11 @@
         <li><a href="#overview">Overview</a></li>
         <li><a href="#method">Diversified Prototypical Ensembles</a></li>
         <li><a href="#evaluation">Generalization Under Distribution Shifts</a></li>
+        <ul style="padding-left: 1rem;">
+            <li><a href="#robustness-without-groups">With and Without Subgroup Annotations</a></li>
+            <li><a href="#attribute-imbalance">Attribute Imbalance and Generalization</a></li>
+            <li><a href="#backbone-effects">Disentangling Backbone Effects</a></li>
+        </ul>
         <li><a href="#prototype-alignment">Prototype–Subgroup Alignment</a></li>
         <li><a href="#diversification-ablation">Ensemble Diversification Strategies</a></li>
         <li><a href="#limitations">Limitations</a></li>
@@ -674,7 +679,7 @@
     </p>
 
 
-    <div class="card-section equation-box">
+    <div class="card-section equation-box" id="robustness-without-groups">
         <h3>Robustness With and Without Subgroup Annotations</h3>
         <p>
             When attributes are unavailable during both training and validation, baseline methods degrade significantly.
@@ -1205,7 +1210,7 @@
         }
     </script>
 
-    <div class="card-section equation-box">
+    <div class="card-section equation-box" id="attribute-imbalance">
         <h3>Attribute Imbalance and Generalization</h3>
         <p>
             Attribute imbalance and attribute generalization remain difficult for most methods. As reported in prior
@@ -1219,7 +1224,15 @@
         </p>
     </div>
 
-    <div class="card-section equation-box">
+    <div class="visual" style="text-align: center;">
+        <img src="figures/improve_on_erm.png" alt="erm*_erm"
+             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+        <div class="note">
+            Worst-group improvement over ERM* when using DPE with and without subgroup annotations.
+        </div>
+    </div>
+
+    <div class="card-section equation-box" id="backbone-effects">
         <h3>Disentangling Backbone Effects</h3>
         <p>
             To isolate the effect of DPE from that of the feature extractor, the authors compare DPE on both standard
