@@ -529,16 +529,25 @@
     </p>
     <p><strong>Key Contributions:</strong></p>
     <ul>
-        <li>We propose an end-to-end framework that promotes diversity within an ensemble of prototype-based
-            classifiers, each capturing complementary decision rules.
-        </li>
-        <li>DPE replaces the standard linear head with multiple prototype heads trained using a combination of
-            diversification loss and sample resampling.
-        </li>
-        <li>We demonstrate state-of-the-art performance on nine datasets, achieving improved worst-group accuracy under
-            various types of subpopulation shift such as attribute imbalance, spurious correlations, and previously
-            unseen attribute values.
-        </li>
+        <ul>
+            <li>
+                We introduce a differentiable <strong>end-to-end</strong> method for subpopulation shift based on
+                diversified ensembles, enabling discovery and classification of latent subgroups without requiring
+                subgroup labels or prior assumptions.
+            </li>
+            <li>
+                Our method replaces the linear head with a Diversified Prototypical Ensemble, a set of
+                distance-based classifiers trained with both loss-based and sampling-based diversification.
+            </li>
+            <li>
+                We evaluate DPE on nine real-world datasets from <a
+                    href="https://proceedings.mlr.press/v202/yang23s/yang23s.pdf" target="_blank">Yang et al.
+                (2023)</a> and
+                demonstrate improved robustness over prior methods, including under attribute generalization and
+                imbalance.
+            </li>
+        </ul>
+
     </ul>
 </div>
 
