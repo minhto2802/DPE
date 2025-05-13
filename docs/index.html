@@ -414,6 +414,38 @@
                 font-size: 0.9rem;
             }
         }
+
+        .author-block {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .author-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .author {
+            text-align: center;
+            font-size: 0.95rem;
+            max-width: 220px;
+            line-height: 1.4;
+        }
+
+        .author a {
+            font-weight: 600;
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .author a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -454,17 +486,61 @@
     <h1>Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift</h1>
     <p class="venue">Accepted at <strong>ICML 2025</strong></p>
 
-    <div class="authors">
-        <span>Minh Nguyen Nhat To</span> ·
-        <span>Paul F R Wilson</span> ·
-        <span>Viet Nguyen</span> ·
-        <span>Mohamed Harmanani</span> ·
-        <span>Michael Cooper</span><br>
-        <span>Fahimeh Fooladgar</span> ·
-        <span>Purang Abolmaesumi</span> ·
-        <span>Parvin Mousavi</span> ·
-        <span>Rahul G. Krishnan</span>
+    <div class="author-block">
+        <div class="author-row">
+            <div class="author">
+                <a href="https://minhto2802.github.io" target="_blank">Minh Nguyen Nhat To</a><br>
+                University of British Columbia<br>
+                Vector Institute
+            </div>
+            <div class="author">
+                <a href="https://www.linkedin.com/in/paul-wilson-832313179/" target="_blank">Paul F R Wilson</a><br>
+                Queen's University<br>
+                Vector Institute
+            </div>
+        </div>
+
+        <div class="author-row">
+            <div class="author">
+                <a href="https://www.cs.toronto.edu/~viet/" target="_blank">Viet Nguyen</a><br>
+                University of Toronto<br>
+                Vector Institute
+            </div>
+            <div class="author">
+                <a href="https://harmanani.com/" target="_blank">Mohamed Harmanani</a><br>
+                Queen's University<br>
+                Vector Institute
+            </div>
+            <div class="author">
+                <a href="https://michaeljohncooper.com/" target="_blank">Michael Cooper</a><br>
+                University of Toronto<br>
+                Vector Institute
+            </div>
+            <div class="author">
+                <a href="https://www.linkedin.com/in/fahimeh-fooladgar/" target="_blank">Fahimeh Fooladgar</a><br>
+                University of British Columbia<br>
+            </div>
+        </div>
+
+        <div class="author-row">
+            <div class="author">
+                <a href="https://ece.ubc.ca/purang-abolmaesumi/" target="_blank">Purang Abolmaesumi</a><br>
+                University of British Columbia
+            </div>
+            <div class="author">
+                <a href="https://www.cs.queensu.ca/people/Parvin/Mousavi" target="_blank">Parvin Mousavi</a><br>
+                Queen’s University<br>
+                Vector Institute
+            </div>
+            <div class="author">
+                <a href="https://www.cs.toronto.edu/~rahulgk/" target="_blank">Rahul G. Krishnan</a><br>
+                University of Toronto<br>
+                Vector Institute
+            </div>
+        </div>
     </div>
+
+
 </div>
 
 
@@ -489,7 +565,7 @@
       3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01
       8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
         </svg>
-        Reproduce
+        Code
     </a>
 
     <a href="https://openreview.net/forum?id=your_submission_id" class="button" target="_blank">
@@ -692,18 +768,20 @@
     <div class="card-section equation-box">
         <details open>
             <summary><h3 style="display: inline;">Worst-Group Accuracy</h3></summary>
-        <p>
-            Worst-group accuracy measures the performance of a model on the subgroup of data where it performs the
-            worst. Formally, let \( \mathcal{G} \) denote the set of all groups, and let \( \mathcal{D}_g \) represent
-            the subset of data belonging to group \( g \in \mathcal{G} \). Define the accuracy on group \( g \) as:
-        </p>
-        <div class="math-display">
-            $$ \text{Acc}_g = \frac{1}{|\mathcal{D}_g|} \sum_{(x, y) \in \mathcal{D}_g} \mathbb{I}(f(x) = y) $$
-            $$ \text{WGA} = \min_{g \in \mathcal{G}} \text{Acc}_g $$
-        </div>
-        <p>
-            This metric evaluates the robustness of the model to underrepresented or challenging groups in the dataset.
-        </p>
+            <p>
+                Worst-group accuracy measures the performance of a model on the subgroup of data where it performs the
+                worst. Formally, let \( \mathcal{G} \) denote the set of all groups, and let \( \mathcal{D}_g \)
+                represent
+                the subset of data belonging to group \( g \in \mathcal{G} \). Define the accuracy on group \( g \) as:
+            </p>
+            <div class="math-display">
+                $$ \text{Acc}_g = \frac{1}{|\mathcal{D}_g|} \sum_{(x, y) \in \mathcal{D}_g} \mathbb{I}(f(x) = y) $$
+                $$ \text{WGA} = \min_{g \in \mathcal{G}} \text{Acc}_g $$
+            </div>
+            <p>
+                This metric evaluates the robustness of the model to underrepresented or challenging groups in the
+                dataset.
+            </p>
         </details>
 
         <details>
@@ -1435,6 +1513,6 @@
 </pre>
 
 
-</idbody>
+</body>
 </html>
 
