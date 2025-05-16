@@ -57,6 +57,9 @@
             font-size: 14px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
             z-index: 1000;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
 
         #toc h3 {
@@ -89,6 +92,11 @@
             #toc {
                 display: none;
             }
+        }
+
+        #toc.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
         html {
@@ -482,718 +490,575 @@
     </ul>
 </nav>
 
-<div class="paper-header">
-    <h1>Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift</h1>
-    <p class="venue">Accepted at <strong>ICML 2025</strong></p>
+<main id="main-content" class="main-content">
+    <div class="paper-header">
+        <h1>Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift</h1>
+        <p class="venue">Accepted at <strong>ICML 2025</strong></p>
 
-    <div class="author-block">
-        <div class="author-row">
-            <div class="author">
-                <a href="https://minhto2802.github.io" target="_blank">Minh Nguyen Nhat To</a><br>
-                University of British Columbia<br>
-                Vector Institute
+        <div class="author-block">
+            <div class="author-row">
+                <div class="author">
+                    <a href="https://minhto2802.github.io" target="_blank">Minh Nguyen Nhat To</a><br>
+                    University of British Columbia<br>
+                    Vector Institute
+                </div>
+                <div class="author">
+                    <a href="https://www.linkedin.com/in/paul-wilson-832313179/" target="_blank">Paul F R Wilson</a><br>
+                    Queen's University<br>
+                    Vector Institute
+                </div>
             </div>
-            <div class="author">
-                <a href="https://www.linkedin.com/in/paul-wilson-832313179/" target="_blank">Paul F R Wilson</a><br>
-                Queen's University<br>
-                Vector Institute
+
+            <div class="author-row">
+                <div class="author">
+                    <a href="https://www.cs.toronto.edu/~viet/" target="_blank">Viet Nguyen</a><br>
+                    University of Toronto<br>
+                    Vector Institute
+                </div>
+                <div class="author">
+                    <a href="https://harmanani.com/" target="_blank">Mohamed Harmanani</a><br>
+                    Queen's University<br>
+                    Vector Institute
+                </div>
+                <div class="author">
+                    <a href="https://michaeljohncooper.com/" target="_blank">Michael Cooper</a><br>
+                    University of Toronto<br>
+                    Vector Institute
+                </div>
+                <div class="author">
+                    <a href="https://www.linkedin.com/in/fahimeh-fooladgar/" target="_blank">Fahimeh Fooladgar</a><br>
+                    University of British Columbia<br>
+                </div>
+            </div>
+
+            <div class="author-row">
+                <div class="author">
+                    <a href="https://ece.ubc.ca/purang-abolmaesumi/" target="_blank">Purang Abolmaesumi</a><br>
+                    University of British Columbia
+                </div>
+                <div class="author">
+                    <a href="https://www.cs.queensu.ca/people/Parvin/Mousavi" target="_blank">Parvin Mousavi</a><br>
+                    Queen’s University<br>
+                    Vector Institute
+                </div>
+                <div class="author">
+                    <a href="https://www.cs.toronto.edu/~rahulgk/" target="_blank">Rahul G. Krishnan</a><br>
+                    University of Toronto<br>
+                    Vector Institute
+                </div>
             </div>
         </div>
 
-        <div class="author-row">
-            <div class="author">
-                <a href="https://www.cs.toronto.edu/~viet/" target="_blank">Viet Nguyen</a><br>
-                University of Toronto<br>
-                Vector Institute
-            </div>
-            <div class="author">
-                <a href="https://harmanani.com/" target="_blank">Mohamed Harmanani</a><br>
-                Queen's University<br>
-                Vector Institute
-            </div>
-            <div class="author">
-                <a href="https://michaeljohncooper.com/" target="_blank">Michael Cooper</a><br>
-                University of Toronto<br>
-                Vector Institute
-            </div>
-            <div class="author">
-                <a href="https://www.linkedin.com/in/fahimeh-fooladgar/" target="_blank">Fahimeh Fooladgar</a><br>
-                University of British Columbia<br>
-            </div>
-        </div>
 
-        <div class="author-row">
-            <div class="author">
-                <a href="https://ece.ubc.ca/purang-abolmaesumi/" target="_blank">Purang Abolmaesumi</a><br>
-                University of British Columbia
-            </div>
-            <div class="author">
-                <a href="https://www.cs.queensu.ca/people/Parvin/Mousavi" target="_blank">Parvin Mousavi</a><br>
-                Queen’s University<br>
-                Vector Institute
-            </div>
-            <div class="author">
-                <a href="https://www.cs.toronto.edu/~rahulgk/" target="_blank">Rahul G. Krishnan</a><br>
-                University of Toronto<br>
-                Vector Institute
-            </div>
-        </div>
     </div>
 
 
-</div>
+    <div class="links">
+        <a href="https://arxiv.org/abs/your-id" class="button" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" width="34" height="16" viewBox="0 0 90 24"
+                 style="vertical-align: middle; margin-right: 6px;">
+                <text x="0" y="16" font-family="Arial, sans-serif" font-size="24" fill="white">arXiv</text>
+            </svg>
+            Paper
+        </a>
 
-
-<div class="links">
-    <a href="https://arxiv.org/abs/your-id" class="button" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="34" height="16" viewBox="0 0 90 24"
-             style="vertical-align: middle; margin-right: 6px;">
-            <text x="0" y="16" font-family="Arial, sans-serif" font-size="24" fill="white">arXiv</text>
-        </svg>
-        Paper
-    </a>
-
-    <a href="https://github.com/your-repo" class="button" target="_blank">
-        <!-- SVG goes here -->
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="white"
-             style="vertical-align: middle; margin-right: 6px;">
-            <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38
+        <a href="https://github.com/your-repo" class="button" target="_blank">
+            <!-- SVG goes here -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" fill="white"
+                 style="vertical-align: middle; margin-right: 6px;">
+                <path d="M8 0C3.58 0 0 3.58 0 8a8 8 0 005.47 7.59c.4.07.55-.17.55-.38
       0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01
       1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
       0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.65 7.65 0 012 0c1.53-1.03
       2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65
       3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01
       8.01 0 0016 8c0-4.42-3.58-8-8-8z"/>
-        </svg>
-        Code
-    </a>
+            </svg>
+            Code
+        </a>
 
-    <a href="https://openreview.net/forum?id=your_submission_id" class="button" target="_blank">
-        <svg height="16" viewBox="0 0 100 100" style="vertical-align: middle; margin-right: 6px;">
-            <rect width="100" height="100" fill="#881C1C"/>
-            <text x="10" y="35" font-family="Arial, sans-serif" font-size="24" fill="white">Open</text>
-            <text x="10" y="60" font-family="Arial, sans-serif" font-size="24" fill="white">Review</text>
-            <text x="10" y="85" font-family="Arial, sans-serif" font-size="20" fill="lightgray">.net</text>
-        </svg>
-        OpenReview
-    </a>
-</div>
-
-<div style="text-align: center;">
-    <div class="code-block">pip install dpe</div>
-</div>
-
-<div class="visual" id="overview">
-    <img src="figures/embeddings_figure.png" alt="Diagram Overview of DPE">
-
-    <div class="figure-caption-overview">
-        <p>
-            <strong>(1)</strong> Binary classification with implicit (unannotated) subgroups. The goal is to detect and
-            correct for subpopulation shifts without prior group knowledge.
-            <strong>(2)</strong> A <span class="feature-extractor">frozen feature extractor</span>, <i>f(·)</i>, is used
-            to extract features.
-            <strong>(3)</strong> We train an ensemble of <i>N</i> prototype classifiers per class, using the IPS loss
-            (Eq. 4) to encourage diversity and discover latent subpopulations.
-            <strong>(4)</strong> A 2D projection shows centroids and sample proximity for the “Landbird” class in <i>Waterbirds</i>.
-            Samples closest to each centroid are shown in blue, farther ones in red, and the closest few in dark blue.
-            <strong>(5)</strong> Image patches nearest to each centroid confirm that learned prototypes align with
-            meaningful subgroups (e.g., birds on land vs. in water).
-        </p>
+        <a href="https://openreview.net/forum?id=your_submission_id" class="button" target="_blank">
+            <svg height="16" viewBox="0 0 100 100" style="vertical-align: middle; margin-right: 6px;">
+                <rect width="100" height="100" fill="#881C1C"/>
+                <text x="10" y="35" font-family="Arial, sans-serif" font-size="24" fill="white">Open</text>
+                <text x="10" y="60" font-family="Arial, sans-serif" font-size="24" fill="white">Review</text>
+                <text x="10" y="85" font-family="Arial, sans-serif" font-size="20" fill="lightgray">.net</text>
+            </svg>
+            OpenReview
+        </a>
     </div>
-</div>
+
+    <div style="text-align: center;">
+        <div class="code-block">pip install dpe</div>
+    </div>
+
+    <div class="visual" id="overview">
+        <img src="figures/embeddings_figure.png" alt="Diagram Overview of DPE">
+
+        <div class="figure-caption-overview">
+            <p>
+                <strong>(1)</strong> Binary classification with implicit (unannotated) subgroups. The goal is to detect
+                and
+                correct for subpopulation shifts without prior group knowledge.
+                <strong>(2)</strong> A <span class="feature-extractor">frozen feature extractor</span>, <i>f(·)</i>, is
+                used
+                to extract features.
+                <strong>(3)</strong> We train an ensemble of <i>N</i> prototype classifiers per class, using the IPS
+                loss
+                (Eq. 4) to encourage diversity and discover latent subpopulations.
+                <strong>(4)</strong> A 2D projection shows centroids and sample proximity for the “Landbird” class in
+                <i>Waterbirds</i>.
+                Samples closest to each centroid are shown in blue, farther ones in red, and the closest few in dark
+                blue.
+                <strong>(5)</strong> Image patches nearest to each centroid confirm that learned prototypes align with
+                meaningful subgroups (e.g., birds on land vs. in water).
+            </p>
+        </div>
+    </div>
 
 
-<div class="card-section summary-section">
-    <h2>Overview</h2>
-    <p>
-        Subpopulation shifts occur when the distribution of data subgroups differs between training and deployment
-        environments. These shifts can significantly degrade the generalization performance of machine learning models,
-        especially when subgroup annotations are unavailable. Existing solutions often rely on reweighting or
-        subgroup-specific adjustments, which require prior knowledge or annotations that are difficult to obtain in
-        real-world applications.
-    </p>
-    <p>
-        We introduce <strong>Diversified Prototypical Ensembles (DPE)</strong>, a method that improves robustness by
-        training a collection of prototype classifiers. Each classifier is designed to focus on different subsets of the
-        data and different features. By encouraging diversity among ensemble members, DPE captures multiple decision
-        boundaries, enabling better generalization across a wide range of subpopulations.
-    </p>
-    <p><strong>Key Contributions:</strong></p>
-    <ul>
+    <div class="card-section summary-section">
+        <h2>Overview</h2>
+        <p>
+            Subpopulation shifts occur when the distribution of data subgroups differs between training and deployment
+            environments. These shifts can significantly degrade the generalization performance of machine learning
+            models,
+            especially when subgroup annotations are unavailable. Existing solutions often rely on reweighting or
+            subgroup-specific adjustments, which require prior knowledge or annotations that are difficult to obtain in
+            real-world applications.
+        </p>
+        <p>
+            We introduce <strong>Diversified Prototypical Ensembles (DPE)</strong>, a method that improves robustness by
+            training a collection of prototype classifiers. Each classifier is designed to focus on different subsets of
+            the
+            data and different features. By encouraging diversity among ensemble members, DPE captures multiple decision
+            boundaries, enabling better generalization across a wide range of subpopulations.
+        </p>
+        <p><strong>Key Contributions:</strong></p>
         <ul>
-            <li>
-                We introduce a differentiable <strong>end-to-end</strong> method for subpopulation shift based on
-                diversified ensembles, enabling discovery and classification of latent subgroups without requiring
-                subgroup labels or prior assumptions.
-            </li>
-            <li>
-                Our method replaces the linear head with a Diversified Prototypical Ensemble, a set of
-                distance-based classifiers trained with both loss-based and sampling-based diversification.
-            </li>
-            <li>
-                We evaluate DPE on nine real-world datasets from <a
-                    href="https://proceedings.mlr.press/v202/yang23s/yang23s.pdf" target="_blank">Yang et al.
-                (2023)</a> and
-                demonstrate improved robustness over prior methods, including under attribute generalization and
-                imbalance.
-            </li>
+            <ul>
+                <li>
+                    We introduce a differentiable <strong>end-to-end</strong> method for subpopulation shift based on
+                    diversified ensembles, enabling discovery and classification of latent subgroups without requiring
+                    subgroup labels or prior assumptions.
+                </li>
+                <li>
+                    Our method replaces the linear head with a Diversified Prototypical Ensemble, a set of
+                    distance-based classifiers trained with both loss-based and sampling-based diversification.
+                </li>
+                <li>
+                    We evaluate DPE on nine real-world datasets from <a
+                        href="https://proceedings.mlr.press/v202/yang23s/yang23s.pdf" target="_blank">Yang et al.
+                    (2023)</a> and
+                    demonstrate improved robustness over prior methods, including under attribute generalization and
+                    imbalance.
+                </li>
+            </ul>
+
         </ul>
-
-    </ul>
-</div>
-
-<div class="card-section" id="motivation">
-    <h2>Motivation</h2>
-    <p>
-        In real-world datasets, classifiers often learn to rely on shortcuts or spurious features that correlate with
-        the labels in the training distribution but fail to hold in deployment. These failures are especially severe
-        when certain subgroups are underrepresented or shift at test time, making it difficult for the model to learn a
-        single decision boundary that generalizes well.
-    </p>
-    <p>
-        A natural solution is to move beyond a single global decision rule. When a model is encouraged to consider
-        multiple distinct ways to separate the data, it becomes more likely that at least one decision rule will align
-        with the correct semantics across diverse subpopulations. This forms the key insight behind our approach.
-    </p>
-    <p>
-        Rather than relying on prior knowledge of subgroup structure, we explore the feature space. By
-        training multiple classifiers that are explicitly encouraged to be different from one another, we can uncover a
-        richer set of decision boundaries that are more robust to distribution shifts.
-    </p>
-
-    <div class="over">
-        <img src="figures/motivation.png" alt="Diagram Overview of DPE">
-
-        <div class="figure-caption-overview">(a) A single model trained on mixed subgroups learns a biased decision
-            boundary
-            favoring the majority. (b–d) As ensemble size increases, each model captures different subgroup patterns,
-            improving classification across subpopulations.
-        </div>
-
     </div>
-</div>
 
-
-<div class="card-section" id="method">
-    <h2 style="text-align: center;">Diversified Prototypical Ensembles</h2>
-
-    <p>
-        <strong>DPE</strong> is a two-stage approach for improving robustness to subpopulation shifts by training an
-        ensemble of diverse prototype classifiers. DPE first trains a feature extractor \( f: \mathbb{R}^n \to
-        \mathbb{R}^d \) using standard empirical risk
-        minimization (ERM) on the full training data. This backbone is frozen and then used to extract features for a
-        small, class-balanced subset of the validation set. On top of these features, a diversified ensemble of
-        prototype classifiers is trained. Notably, no subgroup annotations are required in this second stage, though
-        they can improve balance via stratified sampling.
-    </p>
-
-    <div class="card-section equation-box">
-        <h3>Prototypical Classifier</h3>
+    <div class="card-section" id="motivation">
+        <h2>Motivation</h2>
         <p>
-            Each classifier contains a set of learnable prototypes \( \{p^{(i)}\}_{i=1}^K \), one per class. Given an
-            input \( x \), its class probability is computed based on its proximity to each prototype in the latent
-            space:
+            In real-world datasets, classifiers often learn to rely on shortcuts or spurious features that correlate
+            with
+            the labels in the training distribution but fail to hold in deployment. These failures are especially severe
+            when certain subgroups are underrepresented or shift at test time, making it difficult for the model to
+            learn a
+            single decision boundary that generalizes well.
         </p>
-        <div class="math-display" style="text-align: center;">
-            $$ P(y \mid x) = \frac{\exp\left(-D(f(x), p_y)\right)}{\sum_{i=1}^K \exp\left(-D(f(x), p_i)\right)} $$
-        </div>
         <p>
-            The distance function \( D \) is scaled Euclidean distance between normalized feature vectors:
+            A natural solution is to move beyond a single global decision rule. When a model is encouraged to consider
+            multiple distinct ways to separate the data, it becomes more likely that at least one decision rule will
+            align
+            with the correct semantics across diverse subpopulations. This forms the key insight behind our approach.
         </p>
-        <div class="math-display" style="text-align: center;">
-            $$ D(x, y) = |d_s| \cdot \left\lVert \frac{x}{\|x\|} - \frac{y}{\|y\|} \right\rVert_2 $$
-        </div>
         <p>
-            The classification loss for a data-label pair \( (x, y) \) is:
+            Rather than relying on prior knowledge of subgroup structure, we explore the feature space. By
+            training multiple classifiers that are explicitly encouraged to be different from one another, we can
+            uncover a
+            richer set of decision boundaries that are more robust to distribution shifts.
         </p>
-        <div class="math-display" style="text-align: center;">
-            $$ \mathcal{L}(x, y) = -\log \left( \frac{\exp\left(-D(f(x), p_y)/\tau\right)}{\sum_{i=1}^K
-            \exp\left(-D(f(x), p_i)/\tau\right)} \right) $$
+
+        <div class="over">
+            <img src="figures/motivation.png" alt="Diagram Overview of DPE">
+
+            <div class="figure-caption-overview">(a) A single model trained on mixed subgroups learns a biased decision
+                boundary
+                favoring the majority. (b–d) As ensemble size increases, each model captures different subgroup
+                patterns,
+                improving classification across subpopulations.
+            </div>
+
         </div>
     </div>
 
-    <div class="card-section equation-box">
-        <h3>Prototypical Ensemble</h3>
-        <p>
-            Instead of a single prototype per class, DPE maintains <i>N</i> prototypes per class, resulting in an
-            ensemble:
-        </p>
 
-        <div class="math-display">
-            $$ \left\{ p^{(k)}_j \mid k = 1, \dots, K;\ j = 1, \dots, N \right\} $$
-        </div>
+    <div class="card-section" id="method">
+        <h2 style="text-align: center;">Diversified Prototypical Ensembles</h2>
 
         <p>
-            The predicted class label is computed by averaging predictions across the ensemble.
+            <strong>DPE</strong> is a two-stage approach for improving robustness to subpopulation shifts by training an
+            ensemble of diverse prototype classifiers. DPE first trains a feature extractor \( f: \mathbb{R}^n \to
+            \mathbb{R}^d \) using standard empirical risk
+            minimization (ERM) on the full training data. This backbone is frozen and then used to extract features for
+            a
+            small, class-balanced subset of the validation set. On top of these features, a diversified ensemble of
+            prototype classifiers is trained. Notably, no subgroup annotations are required in this second stage, though
+            they can improve balance via stratified sampling.
         </p>
 
-        <div class="math-display" style="text-align: center;">
-            $$ \hat{y} = \arg\max_{k \in \{1, \dots, K\}} \frac{1}{N} \sum_{j=1}^N P_j^{(k)}(y \mid x) $$
-        </div>
-    </div>
-
-    <div class="card-section equation-box">
-        <h3>Ensemble Diversification</h3>
-        <p>
-            To prevent ensemble members from collapsing to similar decision boundaries, DPE uses two diversification
-            strategies:
-            an <strong>inter-prototype similarity loss</strong> and <strong>bootstrap aggregation</strong> across
-            validation samples.
-            The similarity loss penalizes correlated prototypes within the same class:
-        </p>
-        <div class="math-display" style="text-align: center;">
-            $$ \mathcal{L}_{\text{IPS}} = \sum_{k=1}^K \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{1}_{\{i \ne j\}} \cdot
-            \frac{\left| \langle p_i^{(k)}, p_j^{(k)} \rangle \right|}{n \cdot d} $$
-        </
-        >
-        <p>
-            Here, \( \langle \cdot, \cdot \rangle \) denotes the inner product, and \( d \) is the embedding dimension.
-            Each prototype is also trained on a different class-balanced bootstrap sample, which encourages coverage of
-            different feature subspaces. Together, these mechanisms ensure that the ensemble captures a wide variety of
-            subgroup-relevant signals.
-        </p>
-    </div>
-</div>
-
-<div class="card-section" id="evaluation-metrics">
-    <h2 style="text-align: center;">Evaluation Metrics</h2>
-
-    <p>
-        To assess robustness under subpopulation shift, we primarily use <strong>Worst-Group Accuracy (WGA)</strong>,
-        the standard evaluation metric in this field. WGA quantifies performance on the most challenging or
-        underrepresented subgroup in the dataset, reflecting how well a model generalizes beyond dominant patterns.
-        In addition to WGA, we report <strong>Balanced Accuracy (BA)</strong> and <strong>Standard Accuracy</strong> to
-        provide a more complete picture of model performance across all classes.
-    </p>
-    <div class="card-section equation-box">
-        <details open>
-            <summary><h3 style="display: inline;">Worst-Group Accuracy</h3></summary>
+        <div class="card-section equation-box">
+            <h3>Prototypical Classifier</h3>
             <p>
-                Worst-group accuracy measures the performance of a model on the subgroup of data where it performs the
-                worst. Formally, let \( \mathcal{G} \) denote the set of all groups, and let \( \mathcal{D}_g \)
-                represent
-                the subset of data belonging to group \( g \in \mathcal{G} \). Define the accuracy on group \( g \) as:
+                Each classifier contains a set of learnable prototypes \( \{p^{(i)}\}_{i=1}^K \), one per class. Given
+                an
+                input \( x \), its class probability is computed based on its proximity to each prototype in the latent
+                space:
             </p>
-            <div class="math-display">
-                $$ \text{Acc}_g = \frac{1}{|\mathcal{D}_g|} \sum_{(x, y) \in \mathcal{D}_g} \mathbb{I}(f(x) = y) $$
-                $$ \text{WGA} = \min_{g \in \mathcal{G}} \text{Acc}_g $$
+            <div class="math-display" style="text-align: center;">
+                $$ P(y \mid x) = \frac{\exp\left(-D(f(x), p_y)\right)}{\sum_{i=1}^K \exp\left(-D(f(x), p_i)\right)} $$
             </div>
             <p>
-                This metric evaluates the robustness of the model to underrepresented or challenging groups in the
-                dataset.
+                The distance function \( D \) is scaled Euclidean distance between normalized feature vectors:
             </p>
-        </details>
-
-        <details>
-            <summary><h3 style="display: inline;">Balanced Accuracy (BA)</h3></summary>
-            <p>
-                Balanced accuracy is designed to mitigate the effects of class imbalance by averaging the accuracy
-                across all classes. Let \( \mathcal{C} \) denote the set of all classes, and \( \mathcal{D}_c \) the
-                subset of data belonging to class \( c \in \mathcal{C} \). The per-class accuracy is defined as:
-            </p>
-            <div class="math-display">
-                $$ \text{Acc}_c = \frac{1}{|\mathcal{D}_c|} \sum_{(x, y) \in \mathcal{D}_c} \mathbb{I}(f(x) = y) $$
-                $$ \text{BA} = \frac{1}{|\mathcal{C}|} \sum_{c \in \mathcal{C}} \text{Acc}_c $$
+            <div class="math-display" style="text-align: center;">
+                $$ D(x, y) = |d_s| \cdot \left\lVert \frac{x}{\|x\|} - \frac{y}{\|y\|} \right\rVert_2 $$
             </div>
             <p>
-                Balanced accuracy ensures that each class contributes equally to the overall evaluation, regardless of
-                its frequency in the dataset.
+                The classification loss for a data-label pair \( (x, y) \) is:
             </p>
-        </details>
-        <details>
-            <summary><h3 style="display: inline;">Standard Accuracy</h3></summary>
+            <div class="math-display" style="text-align: center;">
+                $$ \mathcal{L}(x, y) = -\log \left( \frac{\exp\left(-D(f(x), p_y)/\tau\right)}{\sum_{i=1}^K
+                \exp\left(-D(f(x), p_i)/\tau\right)} \right) $$
+            </div>
+        </div>
+
+        <div class="card-section equation-box">
+            <h3>Prototypical Ensemble</h3>
             <p>
-                For completeness, we also report standard (average) accuracy, computed over all examples regardless of
-                group or class. While it provides a high-level view of model performance, it may mask disparities across
-                subgroups or underrepresented classes.
+                Instead of a single prototype per class, DPE maintains <i>N</i> prototypes per class, resulting in an
+                ensemble:
             </p>
-        </details>
-    </div>
-</div>
 
+            <div class="math-display">
+                $$ \left\{ p^{(k)}_j \mid k = 1, \dots, K;\ j = 1, \dots, N \right\} $$
+            </div>
 
-<div class="card-section" id="evaluation">
-    <h2 style="text-align: center;">Generalization Under Distribution Shifts</h2>
-    <p>
-        We evaluate the robustness of DPE against subpopulation shifts using <strong>nine real-world datasets</strong>
-        across vision, language, and medical domains.
-        These datasets are chosen to capture common challenges such as spurious
-        correlations, attribute imbalance, class imbalance, and attribute generalization, all of which can degrade model
-        performance under distribution shift.
-        The evaluation includes <strong>Waterbirds</strong>, <strong>CelebA</strong>, <strong>MetaShift</strong>,
-        <strong>ImageNetBG</strong>, <strong>NICO++</strong>, <strong>Living17</strong>, <strong>CheXpert</strong>,
-        <strong>CivilComments</strong>, and <strong>MultiNLI</strong>, using the training, validation, and test splits
-        provided by <a href="https://proceedings.mlr.press/v202/yang23s/yang23s.pdf" target="_blank">Yang et al.
-        (2023)</a>. These datasets help assess model robustness when attribute or subgroup
-        information is available or missing.
-    </p>
-    <p>
-        Across a wide range of subpopulation shift scenarios, <strong>DPE consistently achieves the highest
-        worst-group accuracy</strong>, outperforming both classical and state-of-the-art methods. Its effectiveness
-        holds under missing subgroup information, challenging shift types like attribute imbalance and
-        generalization, and across different backbone strengths.
-    </p>
-
-
-    <div class="card-section equation-box" id="robustness-without-groups">
-        <h3>Robustness With and Without Subgroup Annotations</h3>
-        <p>
-            When attributes are unavailable during both training and validation, baseline methods degrade significantly.
-            For example, ERM achieves 69.1% WGA on <strong>Waterbirds</strong> and 63.2% on
-            <strong>CivilComments</strong>. Methods like CRT and ReWeightCRT also struggle in this setting.
-        </p>
-        <p>
-            In contrast, <em>DPE</em> performs consistently well across datasets without requiring subgroup
-            annotations. It outperforms AFR (82.0%) and RWY (82.9%), and achieves 84.6% WGA on <strong>CelebA</strong>.
-            On <strong>NICO++</strong>, <em>DPE</em> surpasses other methods by a large margin.
-        </p>
-        <p>
-            When subgroup annotations are available in the validation set, all methods show noticeable improvements in
-            worst-group accuracy. Among them, DPE achieves the highest WGA on most datasets: <strong>Waterbirds</strong>,
-            <strong>CelebA</strong>, <strong>MetaShift</strong>, and <strong>CheXpert</strong>. These results highlight
-            DPE’s ability to leverage subgroup information effectively while maintaining strong generalization across
-            diverse subpopulation shift scenarios.
-        </p>
-    </div>
-    <p class="notetxt">
-        In our experiments, <strong>ERM<sup>*</sup></strong> refers to a stronger feature extractor trained with
-        standard empirical risk minimization but using enhanced configurations such as
-        <em>longer training schedules</em>, <em>stronger data augmentations</em>, potentially improving the quality
-        of the extracted features.
-    </p>
-
-
-    <div class='table-box responsive-table' id="wga-no-attributes">
-        <h3 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h3>
-        <p>
-            The top section presents SubpopBench-style baselines using an ERM backbone.
-            The bottom section includes recent state-of-the-art methods and our method using a stronger ERM<sup>*</sup>
-            backbone.
-        </p>
-        <table>
-            <thead>
-            <tr>
-                <th>Algorithm</th>
-                <th>Waterbirds</th>
-                <th>CelebA</th>
-                <th>CivilComments</th>
-                <th>MultiNLI</th>
-                <th>MetaShift</th>
-                <th>CheXpert</th>
-                <th>ImageNetBG</th>
-                <th>NICO++</th>
-                <th>Living17</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><strong>ERM</strong></td>
-                <td>69.1 <span class="std">±4.7</span></td>
-                <td>57.6 <span class="std">±0.8</span></td>
-                <td>63.2 <span class="std">±1.2</span></td>
-                <td><b>66.4</b> <span class="std">±2.3</span></td>
-                <td>82.1 <span class="std">±0.8</span></td>
-                <td>41.7 <span class="std">±3.4</span></td>
-                <td>76.8 <span class="std">±0.9</span></td>
-                <td>35.0 <span class="std">±4.1</span></td>
-                <td>48.0 <span class="std">±1.5</span></td>
-            </tr>
-            <tr>
-                <td><strong>CRT</strong></td>
-                <td>76.3 <span class="std">±0.8</span></td>
-                <td>69.6 <span class="std">±0.7</span></td>
-                <td><b>67.8</b> <span class="std">±0.3</span></td>
-                <td>65.4 <span class="std">±0.2</span></td>
-                <td>83.1 <span class="std">±0.0</span></td>
-                <td>74.6 <span class="std">±0.4</span></td>
-                <td><b>78.2</b> <span class="std">±0.5</span></td>
-                <td>33.3 <span class="std">±0.0</span></td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>ReWeightCRT</strong></td>
-                <td>76.3 <span class="std">±0.2</span></td>
-                <td>70.7 <span class="std">±0.6</span></td>
-                <td>64.7 <span class="std">±0.2</span></td>
-                <td>65.2 <span class="std">±0.2</span></td>
-                <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
-                <td><b>75.1</b> <span class="std">±0.2</span></td>
-                <td>77.5 <span class="std">±0.7</span></td>
-                <td>33.3 <span class="std">±0.0</span></td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>DFR</strong></td>
-                <td><b>89.0</b> <span class="std">±0.2</span></td>
-                <td><b>73.7</b> <span class="std">±0.8</span></td>
-                <td>64.4 <span class="std">±0.1</span></td>
-                <td>63.8 <span class="std">±0.0</span></td>
-                <td>81.4 <span class="std">±0.1</span></td>
-                <td><b><u>75.8</u></b> <span class="std">±0.3</span></td>
-                <td>74.4 <span class="std">±1.8</span></td>
-                <td><b>38.0</b> <span class="std">±3.8</span></td>
-                <td>–</td>
-            </tr>
-            <tr class="highlight">
-                <td><strong>ERM + DPE</strong></td>
-                <td><b><u>91.0</u></b> <span class="std">±0.5</span></td>
-                <td><b><u>81.9</u></b> <span class="std">±0.2</span></td>
-                <td><b><u>69.9</u></b> <span class="std">±0.9</span></td>
-                <td><b><u>69.3</u></b> <span class="std">±0.8</span></td>
-                <td><b>84.1</b> <span class="std">±1.5</span></td>
-                <td>–</td>
-                <td><b><u>87.9</u></b> <span class="std">±0.6</span></td>
-                <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
-                <td><b><u>54.0</u></b> <span class="std">±4.0</span></td>
-            </tr>
-            <tr>
-                <td><strong>ERM*</strong></td>
-                <td>77.9 <span class="std">±3.0</span></td>
-                <td>66.5 <span class="std">±2.6</span></td>
-                <td><b><u>69.4</u></b> <span class="std">±1.2</span></td>
-                <td>66.5 <span class="std">±0.7</span></td>
-                <td>80.0 <span class="std">±0.0</span></td>
-                <td>75.6 <span class="std">±0.4</span></td>
-                <td>86.4 <span class="std">±0.8</span></td>
-                <td>33.3 <span class="std">±0.0</span></td>
-                <td>53.3 <span class="std">±0.9</span></td>
-            </tr>
-            <tr>
-                <td><strong>RWY</strong></td>
-                <td>86.1 <span class="std">±0.7</span></td>
-                <td><b>82.9</b> <span class="std">±2.2</span></td>
-                <td>67.5 <span class="std">±0.6</span></td>
-                <td>68.0 <span class="std">±1.9</span></td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>AFR</strong></td>
-                <td><b>90.4</b> <span class="std">±1.1</span></td>
-                <td>82.0 <span class="std">±0.5</span></td>
-                <td>68.7 <span class="std">±0.6</span></td>
-                <td><b><u>73.4</u></b> <span class="std">±0.6</span></td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr class="highlight">
-                <td><strong>ERM* + DPE</strong></td>
-                <td><b><u>94.1</u></b> <span class="std">±0.2</span></td>
-                <td><b><u>84.6</u></b> <span class="std">±0.8</span></td>
-                <td><b>68.9</b> <span class="std">±0.6</span></td>
-                <td><b>70.9</b> <span class="std">±0.8</span></td>
-                <td><b><u>83.6</u></b> <span class="std">±0.9</span></td>
-                <td><b><u>76.8</u></b> <span class="std">±0.1</span></td>
-                <td><b><u>88.1</u></b> <span class="std">±0.7</span></td>
-                <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
-                <td><b><u>63.0</u></b> <span class="std">±1.7</span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="table-box responsive-table" id="wga-with-attributes">
-        <h3 style="text-align: center;">Worst-Group Accuracy (With Subgroup Annotations)</h3>
-        <p>
-            The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes results
-            from
-            original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
-            Bold and underlined values indicate the best result per group, bold values indicate the second-best.
-            DPE denotes our diversified prototypical ensemble. Group Info denotes the use of
-            group labels during training and/or validation:
-            <strong>❌/❌</strong>: no group info, <strong❌/✔️</strong>: validation group info only,
-            <strong>❌/✔️✔️</strong>: group info used for training and tuning, <strong>✔️/✔️</strong>: full group labels
-            required.
-        </p>
-        <table>
-            <thead>
-            <tr>
-                <th>Algorithm</th>
-                <th>Group Info (Train/Val)</th>
-                <th>Waterbirds</th>
-                <th>CelebA</th>
-                <th>CivilComments</th>
-                <th>MultiNLI</th>
-                <th>MetaShift</th>
-                <th>CheXpert</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><strong>ERM</strong></td>
-                <td>❌/❌</td>
-                <td>69.1 <span class="std">±4.7</span></td>
-                <td>57.6 <span class="std">±0.8</span></td>
-                <td>63.2 <span class="std">±1.2</span></td>
-                <td><b>66.4</b> <span class="std">±2.3</span></td>
-                <td>82.1 <span class="std">±0.8</span></td>
-                <td>41.7 <span class="std">±3.4</span></td>
-            </tr>
-            <tr>
-                <td><strong>CRT</strong></td>
-                <td>❌/✔️</td>
-                <td>76.3 <span class="std">±0.8</span></td>
-                <td>70.4 <span class="std">±0.4</span></td>
-                <td><b>68.5</b> <span class="std">±0.0</span></td>
-                <td>65.4 <span class="std">±0.1</span></td>
-                <td>83.1 <span class="std">±0.0</span></td>
-                <td><b>74.0</b> <span class="std">±0.2</span></td>
-            </tr>
-            <tr>
-                <td><strong>ReWeightCRT</strong></td>
-                <td>❌/✔️</td>
-                <td>76.3 <span class="std">±0.2</span></td>
-                <td>71.1 <span class="std">±0.5</span></td>
-                <td>68.2 <span class="std">±0.4</span></td>
-                <td>65.3 <span class="std">±0.1</span></td>
-                <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
-                <td>73.9 <span class="std">±0.2</span></td>
-            </tr>
-            <tr>
-                <td><strong>DFR</strong></td>
-                <td>❌/✔️✔️</td>
-                <td><b>89.0</b> <span class="std">±0.2</span></td>
-                <td><b>86.3</b> <span class="std">±0.3</span></td>
-                <td>66.5 <span class="std">±0.2</span></td>
-                <td>63.8 <span class="std">±0.0</span></td>
-                <td>81.5 <span class="std">±0.0</span></td>
-                <td><b><u>75.4</u></b> <span class="std">±0.6</span></td>
-            </tr>
-            <tr class="highlight">
-                <td><strong>ERM + DPE</strong></td>
-                <td>❌/✔️✔️</td>
-                <td><b><u>91.0</u></b> <span class="std">±0.4</span></td>
-                <td><b><u>87.7</u></b> <span class="std">±0.6</span></td>
-                <td><b><u>71.5</u></b> <span class="std">±0.6</span></td>
-                <td><b><u>74.8</u></b> <span class="std">±0.3</span></td>
-                <td><b>87.9</b> <span class="std">±0.7</span></td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>ERM*</strong></td>
-                <td>❌/❌</td>
-                <td>77.9 <span class="std">±3.0</span></td>
-                <td>66.5 <span class="std">±2.6</span></td>
-                <td>69.4 <span class="std">±1.2</span></td>
-                <td>66.5 <span class="std">±0.7</span></td>
-                <td>80.0 <span class="std">±0.0</span></td>
-                <td>75.6 <span class="std">±0.4</span></td>
-            </tr>
-            <tr>
-                <td><strong>Group DRO</strong></td>
-                <td>✔️/✔️</td>
-                <td>91.4 <span class="std">±1.1</span></td>
-                <td>88.9 <span class="std">±2.3</span></td>
-                <td>70.0 <span class="std">±2.0</span></td>
-                <td><b>77.7</b> <span class="std">±1.4</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>RWG</strong></td>
-                <td>✔️/✔️</td>
-                <td>87.6 <span class="std">±1.6</span></td>
-                <td>84.3 <span class="std">±1.8</span></td>
-                <td><b><u>72.0</u></b> <span class="std">±1.9</span></td>
-                <td>69.6 <span class="std">±1.0</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>JTT</strong></td>
-                <td>❌/✔️</td>
-                <td>86.7</td>
-                <td>81.1</td>
-                <td>69.3</td>
-                <td>72.6</td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>CnC</strong></td>
-                <td>❌/✔️</td>
-                <td>88.5 <span class="std">±0.3</span></td>
-                <td>88.8 <span class="std">±0.9</span></td>
-                <td>68.9 <span class="std">±2.1</span></td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>SSA</strong></td>
-                <td>❌/✔️✔️</td>
-                <td>89.0 <span class="std">±0.6</span></td>
-                <td>89.8 <span class="std">±1.3</span></td>
-                <td>69.9 <span class="std">±2.0</span></td>
-                <td>76.6 <span class="std">±0.7</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>DFR*</strong></td>
-                <td>❌/✔️✔️</td>
-                <td>92.9 <span class="std">±0.2</span></td>
-                <td>88.3 <span class="std">±1.1</span></td>
-                <td>70.1 <span class="std">±0.8</span></td>
-                <td>74.7 <span class="std">±0.7</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>GAP (Last Layer)</strong></td>
-                <td>❌/✔️✔️</td>
-                <td>93.2 <span class="std">±0.2</span></td>
-                <td><b>90.2</b> <span class="std">±0.3</span></td>
-                <td>–</td>
-                <td>74.3 <span class="std">±0.2</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr>
-                <td><strong>GAP (All Layer)</strong></td>
-                <td>❌/✔️✔️</td>
-                <td><b>93.8</b> <span class="std">±0.1</span></td>
-                <td><b>90.2</b> <span class="std">±0.3</span></td>
-                <td>–</td>
-                <td><b><u>77.8</u></b> <span class="std">±0.6</span></td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
-            <tr class="highlight">
-                <td><strong>ERM* + DPE</strong></td>
-                <td>❌/✔️✔️</td>
-                <td><b><u>94.1</u></b> <span class="std">±0.4</span></td>
-                <td><b><u>90.3</u></b> <span class="std">±0.7</span></td>
-                <td><b>70.8</b> <span class="std">±0.8</span></td>
-                <td>75.3 <span class="std">±0.5</span></td>
-                <td><b><u>91.7</u></b> <span class="std">±1.3</span></td>
-                <td><b><u>76.0</u></b> <span class="std">±0.3</span></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="table-box responsive-table" id="standard-accuracy">
-        <h3 style="text-align: center;">Standard Accuracy (With Attribute Annotations)</h3>
-        <p style="text-align: center; font-size: 0.9rem; margin-top: 4px; cursor: pointer;"
-           onclick="toggleAccuracyTable()">(Click to expand)</p>
-
-        <div id="accuracyTable" style="display: none; overflow-x: auto;">
             <p>
-                The table below reports average accuracy for each method across datasets.
+                The predicted class label is computed by averaging predictions across the ensemble.
             </p>
 
-            <table border="1" cellpadding="8" cellspacing="0"
-                   style="border-collapse: collapse; width: 100%; font-size: 14px;">
-                <thead style="background-color: #f3f4f6;">
+            <div class="math-display" style="text-align: center;">
+                $$ \hat{y} = \arg\max_{k \in \{1, \dots, K\}} \frac{1}{N} \sum_{j=1}^N P_j^{(k)}(y \mid x) $$
+            </div>
+        </div>
+
+        <div class="card-section equation-box">
+            <h3>Ensemble Diversification</h3>
+            <p>
+                To prevent ensemble members from collapsing to similar decision boundaries, DPE uses two diversification
+                strategies:
+                an <strong>inter-prototype similarity loss</strong> and <strong>bootstrap aggregation</strong> across
+                validation samples.
+                The similarity loss penalizes correlated prototypes within the same class:
+            </p>
+            <div class="math-display" style="text-align: center;">
+                $$ \mathcal{L}_{\text{IPS}} = \sum_{k=1}^K \sum_{i=1}^{n} \sum_{j=1}^{n} \mathbb{1}_{\{i \ne j\}} \cdot
+                \frac{\left| \langle p_i^{(k)}, p_j^{(k)} \rangle \right|}{n \cdot d} $$
+            </div>
+            <p>
+                Here, \( \langle \cdot, \cdot \rangle \) denotes the inner product, and \( d \) is the embedding
+                dimension.
+                Each prototype is also trained on a different class-balanced bootstrap sample, which encourages coverage
+                of
+                different feature subspaces. Together, these mechanisms ensure that the ensemble captures a wide variety
+                of
+                subgroup-relevant signals.
+            </p>
+        </div>
+    </div>
+
+    <div class="card-section" id="evaluation-metrics">
+        <h2 style="text-align: center;">Evaluation Metrics</h2>
+
+        <p>
+            To assess robustness under subpopulation shift, we primarily use <strong>Worst-Group Accuracy (WGA)</strong>,
+            the standard evaluation metric in this field. WGA quantifies performance on the most challenging or
+            underrepresented subgroup in the dataset, reflecting how well a model generalizes beyond dominant patterns.
+            In addition to WGA, we report <strong>Balanced Accuracy (BA)</strong> and <strong>Standard Accuracy</strong>
+            to
+            provide a more complete picture of model performance across all classes.
+        </p>
+        <div class="card-section equation-box">
+            <details open>
+                <summary><h3 style="display: inline;">Worst-Group Accuracy</h3></summary>
+                <p>
+                    Worst-group accuracy measures the performance of a model on the subgroup of data where it performs
+                    the
+                    worst. Formally, let \( \mathcal{G} \) denote the set of all groups, and let \( \mathcal{D}_g \)
+                    represent
+                    the subset of data belonging to group \( g \in \mathcal{G} \). Define the accuracy on group \( g \)
+                    as:
+                </p>
+                <div class="math-display">
+                    $$ \text{Acc}_g = \frac{1}{|\mathcal{D}_g|} \sum_{(x, y) \in \mathcal{D}_g} \mathbb{I}(f(x) = y) $$
+                    $$ \text{WGA} = \min_{g \in \mathcal{G}} \text{Acc}_g $$
+                </div>
+                <p>
+                    This metric evaluates the robustness of the model to underrepresented or challenging groups in the
+                    dataset.
+                </p>
+            </details>
+
+            <details>
+                <summary><h3 style="display: inline;">Balanced Accuracy (BA)</h3></summary>
+                <p>
+                    Balanced accuracy is designed to mitigate the effects of class imbalance by averaging the accuracy
+                    across all classes. Let \( \mathcal{C} \) denote the set of all classes, and \( \mathcal{D}_c \) the
+                    subset of data belonging to class \( c \in \mathcal{C} \). The per-class accuracy is defined as:
+                </p>
+                <div class="math-display">
+                    $$ \text{Acc}_c = \frac{1}{|\mathcal{D}_c|} \sum_{(x, y) \in \mathcal{D}_c} \mathbb{I}(f(x) = y) $$
+                    $$ \text{BA} = \frac{1}{|\mathcal{C}|} \sum_{c \in \mathcal{C}} \text{Acc}_c $$
+                </div>
+                <p>
+                    Balanced accuracy ensures that each class contributes equally to the overall evaluation, regardless
+                    of
+                    its frequency in the dataset.
+                </p>
+            </details>
+            <details>
+                <summary><h3 style="display: inline;">Standard Accuracy</h3></summary>
+                <p>
+                    For completeness, we also report standard (average) accuracy, computed over all examples regardless
+                    of
+                    group or class. While it provides a high-level view of model performance, it may mask disparities
+                    across
+                    subgroups or underrepresented classes.
+                </p>
+            </details>
+        </div>
+    </div>
+
+
+    <div class="card-section" id="evaluation">
+        <h2 style="text-align: center;">Generalization Under Distribution Shifts</h2>
+        <p>
+            We evaluate the robustness of DPE against subpopulation shifts using <strong>nine real-world
+            datasets</strong>
+            across vision, language, and medical domains.
+            These datasets are chosen to capture common challenges such as spurious
+            correlations, attribute imbalance, class imbalance, and attribute generalization, all of which can degrade
+            model
+            performance under distribution shift.
+            The evaluation includes <strong>Waterbirds</strong>, <strong>CelebA</strong>, <strong>MetaShift</strong>,
+            <strong>ImageNetBG</strong>, <strong>NICO++</strong>, <strong>Living17</strong>, <strong>CheXpert</strong>,
+            <strong>CivilComments</strong>, and <strong>MultiNLI</strong>, using the training, validation, and test
+            splits
+            provided by <a href="https://proceedings.mlr.press/v202/yang23s/yang23s.pdf" target="_blank">Yang et al.
+            (2023)</a>. These datasets help assess model robustness when attribute or subgroup
+            information is available or missing.
+        </p>
+        <p>
+            Across a wide range of subpopulation shift scenarios, <strong>DPE consistently achieves the highest
+            worst-group accuracy</strong>, outperforming both classical and state-of-the-art methods. Its effectiveness
+            holds under missing subgroup information, challenging shift types like attribute imbalance and
+            generalization, and across different backbone strengths.
+        </p>
+
+
+        <div class="card-section equation-box" id="robustness-without-groups">
+            <h3>Robustness With and Without Subgroup Annotations</h3>
+            <p>
+                When attributes are unavailable during both training and validation, baseline methods degrade
+                significantly.
+                For example, ERM achieves 69.1% WGA on <strong>Waterbirds</strong> and 63.2% on
+                <strong>CivilComments</strong>. Methods like CRT and ReWeightCRT also struggle in this setting.
+            </p>
+            <p>
+                In contrast, <em>DPE</em> performs consistently well across datasets without requiring subgroup
+                annotations. It outperforms AFR (82.0%) and RWY (82.9%), and achieves 84.6% WGA on
+                <strong>CelebA</strong>.
+                On <strong>NICO++</strong>, <em>DPE</em> surpasses other methods by a large margin.
+            </p>
+            <p>
+                When subgroup annotations are available in the validation set, all methods show noticeable improvements
+                in
+                worst-group accuracy. Among them, DPE achieves the highest WGA on most datasets:
+                <strong>Waterbirds</strong>,
+                <strong>CelebA</strong>, <strong>MetaShift</strong>, and <strong>CheXpert</strong>. These results
+                highlight
+                DPE’s ability to leverage subgroup information effectively while maintaining strong generalization
+                across
+                diverse subpopulation shift scenarios.
+            </p>
+        </div>
+        <p class="notetxt">
+            In our experiments, <strong>ERM<sup>*</sup></strong> refers to a stronger feature extractor trained with
+            standard empirical risk minimization but using enhanced configurations such as
+            <em>longer training schedules</em>, <em>stronger data augmentations</em>, potentially improving the quality
+            of the extracted features.
+        </p>
+
+
+        <div class='table-box responsive-table' id="wga-no-attributes">
+            <h3 style="text-align: center;">Worst-Group Accuracy (Without Subgroup Annotations)</h3>
+            <p>
+                The top section presents SubpopBench-style baselines using an ERM backbone.
+                The bottom section includes recent state-of-the-art methods and our method using a stronger
+                ERM<sup>*</sup>
+                backbone.
+            </p>
+            <table>
+                <thead>
                 <tr>
                     <th>Algorithm</th>
-                    <th>Group Info</th>
+                    <th>Waterbirds</th>
+                    <th>CelebA</th>
+                    <th>CivilComments</th>
+                    <th>MultiNLI</th>
+                    <th>MetaShift</th>
+                    <th>CheXpert</th>
+                    <th>ImageNetBG</th>
+                    <th>NICO++</th>
+                    <th>Living17</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><strong>ERM</strong></td>
+                    <td>69.1 <span class="std">±4.7</span></td>
+                    <td>57.6 <span class="std">±0.8</span></td>
+                    <td>63.2 <span class="std">±1.2</span></td>
+                    <td><b>66.4</b> <span class="std">±2.3</span></td>
+                    <td>82.1 <span class="std">±0.8</span></td>
+                    <td>41.7 <span class="std">±3.4</span></td>
+                    <td>76.8 <span class="std">±0.9</span></td>
+                    <td>35.0 <span class="std">±4.1</span></td>
+                    <td>48.0 <span class="std">±1.5</span></td>
+                </tr>
+                <tr>
+                    <td><strong>CRT</strong></td>
+                    <td>76.3 <span class="std">±0.8</span></td>
+                    <td>69.6 <span class="std">±0.7</span></td>
+                    <td><b>67.8</b> <span class="std">±0.3</span></td>
+                    <td>65.4 <span class="std">±0.2</span></td>
+                    <td>83.1 <span class="std">±0.0</span></td>
+                    <td>74.6 <span class="std">±0.4</span></td>
+                    <td><b>78.2</b> <span class="std">±0.5</span></td>
+                    <td>33.3 <span class="std">±0.0</span></td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td><strong>ReWeightCRT</strong></td>
+                    <td>76.3 <span class="std">±0.2</span></td>
+                    <td>70.7 <span class="std">±0.6</span></td>
+                    <td>64.7 <span class="std">±0.2</span></td>
+                    <td>65.2 <span class="std">±0.2</span></td>
+                    <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
+                    <td><b>75.1</b> <span class="std">±0.2</span></td>
+                    <td>77.5 <span class="std">±0.7</span></td>
+                    <td>33.3 <span class="std">±0.0</span></td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td><strong>DFR</strong></td>
+                    <td><b>89.0</b> <span class="std">±0.2</span></td>
+                    <td><b>73.7</b> <span class="std">±0.8</span></td>
+                    <td>64.4 <span class="std">±0.1</span></td>
+                    <td>63.8 <span class="std">±0.0</span></td>
+                    <td>81.4 <span class="std">±0.1</span></td>
+                    <td><b><u>75.8</u></b> <span class="std">±0.3</span></td>
+                    <td>74.4 <span class="std">±1.8</span></td>
+                    <td><b>38.0</b> <span class="std">±3.8</span></td>
+                    <td>–</td>
+                </tr>
+                <tr class="highlight">
+                    <td><strong>ERM + DPE</strong></td>
+                    <td><b><u>91.0</u></b> <span class="std">±0.5</span></td>
+                    <td><b><u>81.9</u></b> <span class="std">±0.2</span></td>
+                    <td><b><u>69.9</u></b> <span class="std">±0.9</span></td>
+                    <td><b><u>69.3</u></b> <span class="std">±0.8</span></td>
+                    <td><b>84.1</b> <span class="std">±1.5</span></td>
+                    <td>–</td>
+                    <td><b><u>87.9</u></b> <span class="std">±0.6</span></td>
+                    <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
+                    <td><b><u>54.0</u></b> <span class="std">±4.0</span></td>
+                </tr>
+                <tr>
+                    <td><strong>ERM*</strong></td>
+                    <td>77.9 <span class="std">±3.0</span></td>
+                    <td>66.5 <span class="std">±2.6</span></td>
+                    <td><b><u>69.4</u></b> <span class="std">±1.2</span></td>
+                    <td>66.5 <span class="std">±0.7</span></td>
+                    <td>80.0 <span class="std">±0.0</span></td>
+                    <td>75.6 <span class="std">±0.4</span></td>
+                    <td>86.4 <span class="std">±0.8</span></td>
+                    <td>33.3 <span class="std">±0.0</span></td>
+                    <td>53.3 <span class="std">±0.9</span></td>
+                </tr>
+                <tr>
+                    <td><strong>RWY</strong></td>
+                    <td>86.1 <span class="std">±0.7</span></td>
+                    <td><b>82.9</b> <span class="std">±2.2</span></td>
+                    <td>67.5 <span class="std">±0.6</span></td>
+                    <td>68.0 <span class="std">±1.9</span></td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr>
+                    <td><strong>AFR</strong></td>
+                    <td><b>90.4</b> <span class="std">±1.1</span></td>
+                    <td>82.0 <span class="std">±0.5</span></td>
+                    <td>68.7 <span class="std">±0.6</span></td>
+                    <td><b><u>73.4</u></b> <span class="std">±0.6</span></td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+                <tr class="highlight">
+                    <td><strong>ERM* + DPE</strong></td>
+                    <td><b><u>94.1</u></b> <span class="std">±0.2</span></td>
+                    <td><b><u>84.6</u></b> <span class="std">±0.8</span></td>
+                    <td><b>68.9</b> <span class="std">±0.6</span></td>
+                    <td><b>70.9</b> <span class="std">±0.8</span></td>
+                    <td><b><u>83.6</u></b> <span class="std">±0.9</span></td>
+                    <td><b><u>76.8</u></b> <span class="std">±0.1</span></td>
+                    <td><b><u>88.1</u></b> <span class="std">±0.7</span></td>
+                    <td><b><u>50.0</u></b> <span class="std">±0.0</span></td>
+                    <td><b><u>63.0</u></b> <span class="std">±1.7</span></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-box responsive-table" id="wga-with-attributes">
+            <h3 style="text-align: center;">Worst-Group Accuracy (With Subgroup Annotations)</h3>
+            <p>
+                The top section reproduces SubpopBench baselines using the same ERM backbone. The bottom includes
+                results
+                from
+                original papers and our method (DPE) applied to a stronger ERM<sup>*</sup> backbone.
+                Bold and underlined values indicate the best result per group, bold values indicate the second-best.
+                DPE denotes our diversified prototypical ensemble. Group Info denotes the use of
+                group labels during training and/or validation:
+                <strong>❌/❌</strong>: no group info, <strong❌/✔️</strong>: validation group info only,
+                <strong>❌/✔️✔️</strong>: group info used for training and tuning, <strong>✔️/✔️</strong>: full group
+                labels
+                required.
+            </p>
+            <table>
+                <thead>
+                <tr>
+                    <th>Algorithm</th>
+                    <th>Group Info (Train/Val)</th>
                     <th>Waterbirds</th>
                     <th>CelebA</th>
                     <th>CivilComments</th>
@@ -1204,303 +1069,495 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>ERM</td>
+                    <td><strong>ERM</strong></td>
                     <td>❌/❌</td>
-                    <td>84.1±1.7</td>
-                    <td>95.0±0.1</td>
-                    <td>85.4±0.2</td>
-                    <td>80.9±0.3</td>
-                    <td>91.5±0.2</td>
-                    <td>88.6±0.7</td>
+                    <td>69.1 <span class="std">±4.7</span></td>
+                    <td>57.6 <span class="std">±0.8</span></td>
+                    <td>63.2 <span class="std">±1.2</span></td>
+                    <td><b>66.4</b> <span class="std">±2.3</span></td>
+                    <td>82.1 <span class="std">±0.8</span></td>
+                    <td>41.7 <span class="std">±3.4</span></td>
                 </tr>
                 <tr>
-                    <td>CRT</td>
+                    <td><strong>CRT</strong></td>
                     <td>❌/✔️</td>
-                    <td>89.2±0.1</td>
-                    <td>94.1±0.1</td>
-                    <td>83.0±0.0</td>
-                    <td>80.2±0.0</td>
-                    <td>91.5±0.0</td>
-                    <td>79.1±0.1</td>
+                    <td>76.3 <span class="std">±0.8</span></td>
+                    <td>70.4 <span class="std">±0.4</span></td>
+                    <td><b>68.5</b> <span class="std">±0.0</span></td>
+                    <td>65.4 <span class="std">±0.1</span></td>
+                    <td>83.1 <span class="std">±0.0</span></td>
+                    <td><b>74.0</b> <span class="std">±0.2</span></td>
                 </tr>
                 <tr>
-                    <td>ReWeightCRT</td>
+                    <td><strong>ReWeightCRT</strong></td>
                     <td>❌/✔️</td>
-                    <td>89.4±0.3</td>
-                    <td>94.2±0.1</td>
-                    <td>83.4±0.0</td>
-                    <td>80.2±0.0</td>
-                    <td>91.3±0.1</td>
-                    <td>79.0±0.0</td>
+                    <td>76.3 <span class="std">±0.2</span></td>
+                    <td>71.1 <span class="std">±0.5</span></td>
+                    <td>68.2 <span class="std">±0.4</span></td>
+                    <td>65.3 <span class="std">±0.1</span></td>
+                    <td><b><u>85.1</u></b> <span class="std">±0.4</span></td>
+                    <td>73.9 <span class="std">±0.2</span></td>
                 </tr>
                 <tr>
-                    <td>DFR</td>
+                    <td><strong>DFR</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>92.2±0.2</td>
-                    <td>91.2±0.1</td>
-                    <td>81.3±0.0</td>
-                    <td>80.2±0.0</td>
-                    <td>90.5±0.4</td>
-                    <td>78.9±0.2</td>
+                    <td><b>89.0</b> <span class="std">±0.2</span></td>
+                    <td><b>86.3</b> <span class="std">±0.3</span></td>
+                    <td>66.5 <span class="std">±0.2</span></td>
+                    <td>63.8 <span class="std">±0.0</span></td>
+                    <td>81.5 <span class="std">±0.0</span></td>
+                    <td><b><u>75.4</u></b> <span class="std">±0.6</span></td>
                 </tr>
-                <tr>
-                    <td>ERM + DPE</td>
+                <tr class="highlight">
+                    <td><strong>ERM + DPE</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>92.5±0.2</td>
-                    <td>89.8±0.2</td>
-                    <td>82.2±0.2</td>
-                    <td>81.3±0.2</td>
-                    <td>91.2±0.1</td>
+                    <td><b><u>91.0</u></b> <span class="std">±0.4</span></td>
+                    <td><b><u>87.7</u></b> <span class="std">±0.6</span></td>
+                    <td><b><u>71.5</u></b> <span class="std">±0.6</span></td>
+                    <td><b><u>74.8</u></b> <span class="std">±0.3</span></td>
+                    <td><b>87.9</b> <span class="std">±0.7</span></td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>ERM*</td>
+                    <td><strong>ERM*</strong></td>
                     <td>❌/❌</td>
-                    <td>92.1±0.2</td>
-                    <td>94.0±0.2</td>
-                    <td>83.3±1.4</td>
-                    <td>81.9±0.2</td>
-                    <td>93.2±0.1</td>
-                    <td>79.4±0.3</td>
+                    <td>77.9 <span class="std">±3.0</span></td>
+                    <td>66.5 <span class="std">±2.6</span></td>
+                    <td>69.4 <span class="std">±1.2</span></td>
+                    <td>66.5 <span class="std">±0.7</span></td>
+                    <td>80.0 <span class="std">±0.0</span></td>
+                    <td>75.6 <span class="std">±0.4</span></td>
                 </tr>
                 <tr>
-                    <td>Group DRO</td>
+                    <td><strong>Group DRO</strong></td>
                     <td>✔️/✔️</td>
-                    <td>93.5</td>
-                    <td>92.9</td>
-                    <td>88.9</td>
-                    <td>81.4</td>
+                    <td>91.4 <span class="std">±1.1</span></td>
+                    <td>88.9 <span class="std">±2.3</span></td>
+                    <td>70.0 <span class="std">±2.0</span></td>
+                    <td><b>77.7</b> <span class="std">±1.4</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>RWG</td>
+                    <td><strong>RWG</strong></td>
                     <td>✔️/✔️</td>
-                    <td>–</td>
-                    <td>–</td>
-                    <td>–</td>
-                    <td>–</td>
+                    <td>87.6 <span class="std">±1.6</span></td>
+                    <td>84.3 <span class="std">±1.8</span></td>
+                    <td><b><u>72.0</u></b> <span class="std">±1.9</span></td>
+                    <td>69.6 <span class="std">±1.0</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>JTT</td>
+                    <td><strong>JTT</strong></td>
                     <td>❌/✔️</td>
-                    <td>93.3</td>
-                    <td>88.0</td>
-                    <td>91.1</td>
-                    <td>78.6</td>
+                    <td>86.7</td>
+                    <td>81.1</td>
+                    <td>69.3</td>
+                    <td>72.6</td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>CnC</td>
+                    <td><strong>CnC</strong></td>
                     <td>❌/✔️</td>
-                    <td>90.9±0.1</td>
-                    <td>89.9±0.5</td>
-                    <td>81.7±0.5</td>
+                    <td>88.5 <span class="std">±0.3</span></td>
+                    <td>88.8 <span class="std">±0.9</span></td>
+                    <td>68.9 <span class="std">±2.1</span></td>
                     <td>–</td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>SSA</td>
+                    <td><strong>SSA</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>92.2±0.9</td>
-                    <td>92.8±0.1</td>
-                    <td>88.2±2.0</td>
-                    <td>79.9±0.87</td>
+                    <td>89.0 <span class="std">±0.6</span></td>
+                    <td>89.8 <span class="std">±1.3</span></td>
+                    <td>69.9 <span class="std">±2.0</span></td>
+                    <td>76.6 <span class="std">±0.7</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>DFR*</td>
+                    <td><strong>DFR*</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>94.2±0.4</td>
-                    <td>91.3±0.3</td>
-                    <td>87.2±0.3</td>
-                    <td>82.1±0.2</td>
+                    <td>92.9 <span class="std">±0.2</span></td>
+                    <td>88.3 <span class="std">±1.1</span></td>
+                    <td>70.1 <span class="std">±0.8</span></td>
+                    <td>74.7 <span class="std">±0.7</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>GAP (Last Layer)</td>
+                    <td><strong>GAP (Last Layer)</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>94.6±0.2</td>
-                    <td>91.7±0.2</td>
+                    <td>93.2 <span class="std">±0.2</span></td>
+                    <td><b>90.2</b> <span class="std">±0.3</span></td>
                     <td>–</td>
-                    <td>81.9±0.0</td>
+                    <td>74.3 <span class="std">±0.2</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
                 <tr>
-                    <td>GAP (All Layer)</td>
+                    <td><strong>GAP (All Layer)</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>95.6±0.1</td>
-                    <td>91.5±0.1</td>
+                    <td><b>93.8</b> <span class="std">±0.1</span></td>
+                    <td><b>90.2</b> <span class="std">±0.3</span></td>
                     <td>–</td>
-                    <td>82.5±0.1</td>
+                    <td><b><u>77.8</u></b> <span class="std">±0.6</span></td>
                     <td>–</td>
                     <td>–</td>
                 </tr>
-                <tr style="background-color: #f9fafb;">
-                    <td>ERM* + DPE</td>
+                <tr class="highlight">
+                    <td><strong>ERM* + DPE</strong></td>
                     <td>❌/✔️✔️</td>
-                    <td>96.0±0.1</td>
-                    <td>91.9±0.3</td>
-                    <td>81.6±0.2</td>
-                    <td>81.6±0.2</td>
-                    <td>93.8±0.5</td>
-                    <td>79.0±0.2</td>
+                    <td><b><u>94.1</u></b> <span class="std">±0.4</span></td>
+                    <td><b><u>90.3</u></b> <span class="std">±0.7</span></td>
+                    <td><b>70.8</b> <span class="std">±0.8</span></td>
+                    <td>75.3 <span class="std">±0.5</span></td>
+                    <td><b><u>91.7</u></b> <span class="std">±1.3</span></td>
+                    <td><b><u>76.0</u></b> <span class="std">±0.3</span></td>
                 </tr>
                 </tbody>
             </table>
         </div>
-    </div>
+        <div class="table-box responsive-table" id="standard-accuracy">
+            <h3 style="text-align: center;">Standard Accuracy (With Attribute Annotations)</h3>
+            <p style="text-align: center; font-size: 0.9rem; margin-top: 4px; cursor: pointer;"
+               onclick="toggleAccuracyTable()">(Click to expand)</p>
 
-    <script>
-        function toggleAccuracyTable() {
-            const table = document.getElementById('accuracyTable');
-            table.style.display = table.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
+            <div id="accuracyTable" style="display: none; overflow-x: auto;">
+                <p>
+                    The table below reports average accuracy for each method across datasets.
+                </p>
+
+                <table border="1" cellpadding="8" cellspacing="0"
+                       style="border-collapse: collapse; width: 100%; font-size: 14px;">
+                    <thead style="background-color: #f3f4f6;">
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Group Info</th>
+                        <th>Waterbirds</th>
+                        <th>CelebA</th>
+                        <th>CivilComments</th>
+                        <th>MultiNLI</th>
+                        <th>MetaShift</th>
+                        <th>CheXpert</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>ERM</td>
+                        <td>❌/❌</td>
+                        <td>84.1±1.7</td>
+                        <td>95.0±0.1</td>
+                        <td>85.4±0.2</td>
+                        <td>80.9±0.3</td>
+                        <td>91.5±0.2</td>
+                        <td>88.6±0.7</td>
+                    </tr>
+                    <tr>
+                        <td>CRT</td>
+                        <td>❌/✔️</td>
+                        <td>89.2±0.1</td>
+                        <td>94.1±0.1</td>
+                        <td>83.0±0.0</td>
+                        <td>80.2±0.0</td>
+                        <td>91.5±0.0</td>
+                        <td>79.1±0.1</td>
+                    </tr>
+                    <tr>
+                        <td>ReWeightCRT</td>
+                        <td>❌/✔️</td>
+                        <td>89.4±0.3</td>
+                        <td>94.2±0.1</td>
+                        <td>83.4±0.0</td>
+                        <td>80.2±0.0</td>
+                        <td>91.3±0.1</td>
+                        <td>79.0±0.0</td>
+                    </tr>
+                    <tr>
+                        <td>DFR</td>
+                        <td>❌/✔️✔️</td>
+                        <td>92.2±0.2</td>
+                        <td>91.2±0.1</td>
+                        <td>81.3±0.0</td>
+                        <td>80.2±0.0</td>
+                        <td>90.5±0.4</td>
+                        <td>78.9±0.2</td>
+                    </tr>
+                    <tr>
+                        <td>ERM + DPE</td>
+                        <td>❌/✔️✔️</td>
+                        <td>92.5±0.2</td>
+                        <td>89.8±0.2</td>
+                        <td>82.2±0.2</td>
+                        <td>81.3±0.2</td>
+                        <td>91.2±0.1</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>ERM*</td>
+                        <td>❌/❌</td>
+                        <td>92.1±0.2</td>
+                        <td>94.0±0.2</td>
+                        <td>83.3±1.4</td>
+                        <td>81.9±0.2</td>
+                        <td>93.2±0.1</td>
+                        <td>79.4±0.3</td>
+                    </tr>
+                    <tr>
+                        <td>Group DRO</td>
+                        <td>✔️/✔️</td>
+                        <td>93.5</td>
+                        <td>92.9</td>
+                        <td>88.9</td>
+                        <td>81.4</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>RWG</td>
+                        <td>✔️/✔️</td>
+                        <td>–</td>
+                        <td>–</td>
+                        <td>–</td>
+                        <td>–</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>JTT</td>
+                        <td>❌/✔️</td>
+                        <td>93.3</td>
+                        <td>88.0</td>
+                        <td>91.1</td>
+                        <td>78.6</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>CnC</td>
+                        <td>❌/✔️</td>
+                        <td>90.9±0.1</td>
+                        <td>89.9±0.5</td>
+                        <td>81.7±0.5</td>
+                        <td>–</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>SSA</td>
+                        <td>❌/✔️✔️</td>
+                        <td>92.2±0.9</td>
+                        <td>92.8±0.1</td>
+                        <td>88.2±2.0</td>
+                        <td>79.9±0.87</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>DFR*</td>
+                        <td>❌/✔️✔️</td>
+                        <td>94.2±0.4</td>
+                        <td>91.3±0.3</td>
+                        <td>87.2±0.3</td>
+                        <td>82.1±0.2</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>GAP (Last Layer)</td>
+                        <td>❌/✔️✔️</td>
+                        <td>94.6±0.2</td>
+                        <td>91.7±0.2</td>
+                        <td>–</td>
+                        <td>81.9±0.0</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr>
+                        <td>GAP (All Layer)</td>
+                        <td>❌/✔️✔️</td>
+                        <td>95.6±0.1</td>
+                        <td>91.5±0.1</td>
+                        <td>–</td>
+                        <td>82.5±0.1</td>
+                        <td>–</td>
+                        <td>–</td>
+                    </tr>
+                    <tr style="background-color: #f9fafb;">
+                        <td>ERM* + DPE</td>
+                        <td>❌/✔️✔️</td>
+                        <td>96.0±0.1</td>
+                        <td>91.9±0.3</td>
+                        <td>81.6±0.2</td>
+                        <td>81.6±0.2</td>
+                        <td>93.8±0.5</td>
+                        <td>79.0±0.2</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <script>
+            function toggleAccuracyTable() {
+                const table = document.getElementById('accuracyTable');
+                table.style.display = table.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
 
 
-    <script>
-        function toggleAccuracyTable() {
-            const table = document.getElementById('accuracyTable');
-            table.style.display = table.style.display === 'none' ? 'block' : 'none';
-        }
-    </script>
+        <script>
+            function toggleAccuracyTable() {
+                const table = document.getElementById('accuracyTable');
+                table.style.display = table.style.display === 'none' ? 'block' : 'none';
+            }
+        </script>
 
-    <div class="card-section equation-box" id="attribute-imbalance">
-        <h3>Attribute Imbalance and Generalization</h3>
-        <p>
-            Attribute imbalance and attribute generalization remain difficult for most methods. As reported in prior
-            benchmarks, even strong methods like GroupDRO and JTT fail to show consistent gains in these scenarios.
-        </p>
-        <p>
-            DPE addresses these challenges directly. It achieves the highest WGA on both attribute-imbalanced datasets
-            like <strong>CheXpert</strong> and <strong>CivilComments</strong>, and attribute-generalization benchmarks
-            such as <strong>NICO++</strong> and <strong>Living17</strong>. By promoting diversity across prototypes, DPE
-            generalizes beyond the dominant attributes present in training.
-        </p>
-    </div>
+        <div class="card-section equation-box" id="attribute-imbalance">
+            <h3>Attribute Imbalance and Generalization</h3>
+            <p>
+                Attribute imbalance and attribute generalization remain difficult for most methods. As reported in prior
+                benchmarks, even strong methods like GroupDRO and JTT fail to show consistent gains in these scenarios.
+            </p>
+            <p>
+                DPE addresses these challenges directly. It achieves the highest WGA on both attribute-imbalanced
+                datasets
+                like <strong>CheXpert</strong> and <strong>CivilComments</strong>, and attribute-generalization
+                benchmarks
+                such as <strong>NICO++</strong> and <strong>Living17</strong>. By promoting diversity across prototypes,
+                DPE
+                generalizes beyond the dominant attributes present in training.
+            </p>
+        </div>
 
-    <div class="visual" style="text-align: center;">
-        <img src="figures/improve_on_erm.png" alt="erm*_erm"
-             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="note">
-            Worst-group improvement over ERM* when using DPE with and without subgroup annotations.
+        <div class="visual" style="text-align: center;">
+            <img src="figures/improve_on_erm.png" alt="erm*_erm"
+                 style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+            <div class="note">
+                Worst-group improvement over ERM* when using DPE with and without subgroup annotations.
+            </div>
+        </div>
+
+        <div class="card-section equation-box" id="backbone-effects">
+            <h3>Disentangling Backbone Effects</h3>
+            <p>
+                To isolate the effect of DPE from that of the feature extractor, we compare DPE on both standard
+                ERM and an enhanced ERM<sup>*</sup> backbone. DPE consistently improves WGA regardless of the backbone.
+            </p>
+            <p>
+            <p>
+                On <strong>Waterbirds</strong>, WGA improves from 69.1% (ERM) and 77.9% (ERM<sup>*</sup>) &#8594; 91.0%
+                and
+                94.1% with DPE, respectively. On <strong>CelebA</strong>, WGA increases from 57.6% &#8594; 87.7%
+                (ERM+DPE),
+                and from 66.5% &#8594; 90.3% (ERM<sup>*</sup>+DPE). Similarly, on <strong>MultiNLI</strong>, WGA
+                improves
+                from 66.4% &#8594; 74.8% and from 66.5% &#8594; 75.3% when DPE is added.
+            </p>
+            <p>
+                These results confirm that DPE’s improvements come from prototype diversification, not just better
+                representations, making it a modular enhancement applicable across training pipelines.
+            </p>
         </div>
     </div>
 
-    <div class="card-section equation-box" id="backbone-effects">
-        <h3>Disentangling Backbone Effects</h3>
+    <div class="card-section" id="diversification-ablation">
+        <h2 style="text-align: center;">Ensemble Diversification Strategies</h2>
+
         <p>
-            To isolate the effect of DPE from that of the feature extractor, we compare DPE on both standard
-            ERM and an enhanced ERM<sup>*</sup> backbone. DPE consistently improves WGA regardless of the backbone.
+            The figure below illustrates how different
+            ensemble diversification strategies impact both worst-group accuracy and balanced accuracy as the number of
+            ensemble members increases. The comparison includes three methods:
         </p>
+        <ol>
+            <li>Training each prototype on a fixed data subset (no diversification)</li>
+            <li>Training on random subsets for each ensemble member</li>
+            <li>Combining random subset selection with inter-prototype similarity loss</li>
+        </ol>
         <p>
-        <p>
-            On <strong>Waterbirds</strong>, WGA improves from 69.1% (ERM) and 77.9% (ERM<sup>*</sup>) &#8594; 91.0% and
-            94.1% with DPE, respectively. On <strong>CelebA</strong>, WGA increases from 57.6% &#8594; 87.7% (ERM+DPE),
-            and from 66.5% &#8594; 90.3% (ERM<sup>*</sup>+DPE). Similarly, on <strong>MultiNLI</strong>, WGA improves
-            from 66.4% &#8594; 74.8% and from 66.5% &#8594; 75.3% when DPE is added.
+            The combined strategy consistently yields the best worst-group accuracy across datasets. This highlights the
+            importance of combining both explicit (loss-based) and implicit (sampling-based) diversification to ensure
+            broad
+            coverage of the data distribution and robustness to subpopulation shifts.
         </p>
-        <p>
-            These results confirm that DPE’s improvements come from prototype diversification, not just better
-            representations, making it a modular enhancement applicable across training pipelines.
-        </p>
-    </div>
-</div>
 
-<div class="card-section" id="diversification-ablation">
-    <h2 style="text-align: center;">Ensemble Diversification Strategies</h2>
-
-    <p>
-        The figure below illustrates how different
-        ensemble diversification strategies impact both worst-group accuracy and balanced accuracy as the number of
-        ensemble members increases. The comparison includes three methods:
-    </p>
-    <ol>
-        <li>Training each prototype on a fixed data subset (no diversification)</li>
-        <li>Training on random subsets for each ensemble member</li>
-        <li>Combining random subset selection with inter-prototype similarity loss</li>
-    </ol>
-    <p>
-        The combined strategy consistently yields the best worst-group accuracy across datasets. This highlights the
-        importance of combining both explicit (loss-based) and implicit (sampling-based) diversification to ensure broad
-        coverage of the data distribution and robustness to subpopulation shifts.
-    </p>
-
-    <div class="visual" style="text-align: center;">
-        <img src="figures/cov_loss_ablation.jpg" alt="Effect of diversification methods"
-             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="note">Effect of different ensemble diversification methods
-            on performance with increasing ensemble size.
-        </div>
-    </div>
-</div>
-
-<div class="card-section" id="prototype-alignment">
-    <h2 style="text-align: center;">Prototype–Subgroup Alignment</h2>
-    <p>
-        To better understand the semantic structure captured by the Diversified Prototypical Ensemble (DPE), we
-        conducted an exploratory analysis on the <strong>Waterbirds</strong> dataset. For each prototype, we retrieved
-        its top-10 closest validation samples and analyzed the emerging patterns using ChatGPT. As visualized below, the
-        learned prototypes show consistent alignment with ecologically or visually meaningful subpopulations, even
-        though no subgroup labels were used during training.
-    </p>
-    <p>
-        In the <strong>Waterbirds</strong> class, the prototypes capture structured concepts such as aquatic divers,
-        large-bodied birds in flight, and compact seabirds in bamboo-heavy or terrestrial environments. In the <strong>Landbirds</strong>
-        class, the clusters reflect postural cues, background settings, and spurious correlations like songbirds
-        appearing in human-made or beach scenes.
-    </p>
-    <p>
-        These findings suggest that DPE facilitates implicit subgroup discovery through diversification, which may
-        contribute to its strong performance on worst-group accuracy.
-    </p>
-
-    <!-- Waterbirds Figure -->
-    <div class="visual" style="text-align: center;">
-        <img src="figures/supp/waterbird_prototypes_with_chatgpt_descriptions.jpg" alt="Waterbird Prototypes"
-             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="figure-caption-overview">
-            Each row shows the top-10 validation samples nearest to one
-            of the learned waterbird prototypes. Patterns include aquatic divers, birds in flight,
-            terrestrial seabirds, and upright gulls, as interpreted by ChatGPT.
+        <div class="visual" style="text-align: center;">
+            <img src="figures/cov_loss_ablation.jpg" alt="Effect of diversification methods"
+                 style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+            <div class="note">Effect of different ensemble diversification methods
+                on performance with increasing ensemble size.
+            </div>
         </div>
     </div>
 
-    <!-- Landbirds Figure -->
-    <div class="visual" style="text-align: center;">
-        <img src="figures/supp/landbird_prototypes_with_chatgpt_descriptions.jpg" alt="Landbird Prototypes"
-             style="width: 100%; max-width: 900px; border-radius: 8px;"/>
-        <div class="figure-caption-overview">
-            Each row shows the top-10 validation samples closest to a DPE
-            prototype for the Landbirds class. Learned clusters correspond to postural variation, ecological context,
-            and background-driven biases such as birds in human-made settings.
+    <div class="card-section" id="prototype-alignment">
+        <h2 style="text-align: center;">Prototype–Subgroup Alignment</h2>
+        <p>
+            To better understand the semantic structure captured by the Diversified Prototypical Ensemble (DPE), we
+            conducted an exploratory analysis on the <strong>Waterbirds</strong> dataset. For each prototype, we
+            retrieved
+            its top-10 closest validation samples and analyzed the emerging patterns using ChatGPT. As visualized below,
+            the
+            learned prototypes show consistent alignment with ecologically or visually meaningful subpopulations, even
+            though no subgroup labels were used during training.
+        </p>
+        <p>
+            In the <strong>Waterbirds</strong> class, the prototypes capture structured concepts such as aquatic divers,
+            large-bodied birds in flight, and compact seabirds in bamboo-heavy or terrestrial environments. In the
+            <strong>Landbirds</strong>
+            class, the clusters reflect postural cues, background settings, and spurious correlations like songbirds
+            appearing in human-made or beach scenes.
+        </p>
+        <p>
+            These findings suggest that DPE facilitates implicit subgroup discovery through diversification, which may
+            contribute to its strong performance on worst-group accuracy.
+        </p>
+
+        <!-- Waterbirds Figure -->
+        <div class="visual" style="text-align: center;">
+            <img src="figures/supp/waterbird_prototypes_with_chatgpt_descriptions.jpg" alt="Waterbird Prototypes"
+                 style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+            <div class="figure-caption-overview">
+                Each row shows the top-10 validation samples nearest to one
+                of the learned waterbird prototypes. Patterns include aquatic divers, birds in flight,
+                terrestrial seabirds, and upright gulls, as interpreted by ChatGPT.
+            </div>
+        </div>
+
+        <!-- Landbirds Figure -->
+        <div class="visual" style="text-align: center;">
+            <img src="figures/supp/landbird_prototypes_with_chatgpt_descriptions.jpg" alt="Landbird Prototypes"
+                 style="width: 100%; max-width: 900px; border-radius: 8px;"/>
+            <div class="figure-caption-overview">
+                Each row shows the top-10 validation samples closest to a DPE
+                prototype for the Landbirds class. Learned clusters correspond to postural variation, ecological
+                context,
+                and background-driven biases such as birds in human-made settings.
+            </div>
         </div>
     </div>
-</div>
 
-<div class="card-section limitation-section" id="limitations">
-    <h2 style="text-align: center;">Limitations</h2>
-    <p>
-        DPE introduces additional complexity due to its ensemble structure and hyperparameters, though this is offset by
-        improved robustness without requiring subgroup labels. The method remains efficient, adding only a few minutes
-        per prototype when trained on pre-extracted features. While empirical results are strong, a formal theoretical
-        explanation for why prototype diversification improves WGA is lacking. Our exploratory analysis
-        suggests semantic alignment with latent subgroups, but a rigorous understanding remains an open research
-        direction.
-    </p>
-</div>
+    <div class="card-section limitation-section" id="limitations">
+        <h2 style="text-align: center;">Limitations</h2>
+        <p>
+            DPE introduces additional complexity due to its ensemble structure and hyperparameters, though this is
+            offset by
+            improved robustness without requiring subgroup labels. The method remains efficient, adding only a few
+            minutes
+            per prototype when trained on pre-extracted features. While empirical results are strong, a formal
+            theoretical
+            explanation for why prototype diversification improves WGA is lacking. Our exploratory analysis
+            suggests semantic alignment with latent subgroups, but a rigorous understanding remains an open research
+            direction.
+        </p>
+    </div>
 
 
-<h2 id='bibtex'>BibTeX</h2>
-<pre>
+    <h2 id='bibtex'>BibTeX</h2>
+    <pre>
 @inproceedings{to2025dpe,
   title     = {Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
   author    = {To, Minh Nguyen Nhat and Wilson, Paul F R and Nguyen, Viet
@@ -1512,7 +1569,35 @@
 }
 </pre>
 
-<img src="https://visitor-badge.laobi.icu/badge?page_id=minhto2802.github.io/diversified_prototypical_ensemble" alt="visitor badge"/>
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=minhto2802.github.io/diversified_prototypical_ensemble"
+         alt="visitor badge"/>
+</main>
+<script>
+    function checkOverlap() {
+        const toc = document.getElementById('toc');
+        const main = document.getElementById('main-content');
+        const tocRect = toc.getBoundingClientRect();
+        const mainRect = main.getBoundingClientRect();
+
+        const isOverlapping = !(
+            tocRect.bottom < mainRect.top ||
+            tocRect.top > mainRect.bottom ||
+            tocRect.right < mainRect.left ||
+            tocRect.left > mainRect.right
+        );
+
+        if (isOverlapping) {
+            toc.classList.add('hidden');
+        } else {
+            toc.classList.remove('hidden');
+        }
+    }
+
+    window.addEventListener('scroll', checkOverlap);
+    window.addEventListener('resize', checkOverlap);
+    document.addEventListener('DOMContentLoaded', checkOverlap);
+</script>
 </body>
 </html>
+
 
