@@ -146,22 +146,6 @@ https://github.com/anonymous102030411/anon
 
 ---
 
-Evaluation Only
----------------
-
-Run evaluation with a pretrained ensemble:
-
-```
-python main.py \
-  --stage 1 \
-  --dataset_name CelebA \
-  --pretrained_path /checkpoint/user/.../ckpt_last.pt \
-  --train_mode freeze \
-  --eval_only
-```
-
----
-
 Citation
 --------
 
