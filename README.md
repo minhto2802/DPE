@@ -9,7 +9,7 @@ This repository contains code to reproduce the results from the ICML 2025 paper.
 - Stage-0 supervised pretraining (ERM / IsoMax)
 - Stage-1 ensemble training with diversified prototype heads
 
-Training is SLURM-compatible. See scripts for submission templates. The pretrained backbone weights will be available to downloading shortly.
+Training is SLURM-compatible. See scripts for submission templates. The pretrained backbone weights will be available for downloading shortly.
 
 ---
 
