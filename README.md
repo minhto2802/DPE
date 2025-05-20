@@ -19,8 +19,7 @@ Training is SLURM-compatible. See scripts for submission templates. The pretrain
 ```
 .
 ├── main.py                    # Unified training entry point
-├── models/                    # Model definitions
-├── utils/                     # Utilities: metrics, timer, logging
+├── utils/                     # Utilities: metrics, models, etc.
 ├── scripts/
 │   ├── train.sh               # Stage-0: single job
 │   ├── train_all.sh           # Stage-0: all datasets
