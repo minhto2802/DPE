@@ -183,3 +183,11 @@ Citation
   year      = {2025}
 }
 ```
+
+Acknowledgements
+----------------
+
+Much of the training and evaluation infrastructure in this repository was adapted from:
+
+https://github.com/YyzHarry/SubpopBench  
+We thank the authors for releasing their well-organized benchmark and codebase.
