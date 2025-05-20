@@ -1,106 +1,153 @@
 README
 ======
 
-Robust Models under Sub-Population Shift
-----------------------------------------
+📄 Paper: *Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
+Website: [https://minhto2802.github.io/diversified_prototypical_ensemble](https://minhto2802.github.io/diversified_prototypical_ensemble)
 
-This repository accompanies the paper **“Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift”** (ICML 2025).
-It contains two training stages:
+This repository contains code to reproduce the results from the ICML 2025 paper. It includes:
 
-1. **Stage-0 – Supervised ERM / IsoMax pre-training**  
-   - Script: `scripts/train.sh`  
-   - Launcher: `scripts/train_all.sh`
+- Stage-0 supervised pretraining (ERM / IsoMax)
+- Stage-1 ensemble training with diversified prototype heads
 
-2. **Stage-1 – Diversified Prototype Ensemble (DPE)**  
-   - Script: `scripts/train_pe.sh`  
-   - Launcher: `scripts/train_all_pe.sh`
+Training is SLURM-compatible. See scripts for submission templates. The pretrained backbone weights will be available to downloading shortly.
 
-The Stage-0 backbone is frozen (or optionally fine-tuned) and multiple
-prototype heads are appended. Each head is trained on a balanced subset of the
-validation data while an inter-prototype similarity penalty encourages diverse
-decision boundaries; logits are averaged at inference.
+---
 
+📦 Directory Structure
+---------------------
 
-Quick start
+```
+.
+├── main.py                    # Unified training entry point
+├── models/                    # Model definitions
+├── utils/                     # Utilities: metrics, timer, logging
+├── scripts/
+│   ├── train.sh               # Stage-0: single job
+│   ├── train_all.sh           # Stage-0: all datasets
+│   ├── train_pe.sh            # Stage-1: single job
+│   └── train_all_pe.sh        # Stage-1: all datasets
+└── logs/                      # SLURM logs
+```
+
+---
+
+🚀 Quickstart
+-------------
+
+1. **Stage-0**: Supervised pretraining on target dataset
+
+```
+sbatch scripts/train.sh \
+    --dataset_name Waterbirds \
+    --model_name resnet152 \
+    --epochs 400
+```
+
+2. **Stage-1**: Ensemble training with frozen backbone
+
+```
+sbatch scripts/train_pe.sh \
+    --dataset_name Waterbirds \
+    --pretrained_path /scratch/.../Waterbirds/*/ckpt_last.pt \
+    --epochs 20 \
+    --lr 1e-3 \
+    --cov_reg 1e5
+```
+
+To launch preconfigured jobs on multiple datasets:
+
+```
+sbatch scripts/train_all.sh
+sbatch scripts/train_all_pe.sh
+```
+
+---
+
+🧠 Code Overview
+----------------
+
+- `main.py`:
+  - Unified entry point for both stage-0 and stage-1.
+  - Supports `train_mode: full` or `freeze`.
+  - `stage=0`: trains classifier end-to-end.
+  - `stage>0`: freezes backbone, trains multiple prototype heads on class-balanced or group-aware subsets.
+
+- Core Functions:
+  - `train_model(...)`: unified training loop
+  - `evaluate_phase(...)`: logging + evaluation metrics
+  - `evaluate_ensemble_fixed_backbone(...)`: inference with prototype averaging
+  - `extract_features(...)`: pre-extract features from frozen backbone
+  - `get_pre_extracted_features(...)`: manage numpy dumps and reuse
+
+---
+
+🧪 Reproducing Results
+----------------------
+
+1. Run Stage-0 (ERM or IsoMax) on seeds {0,1,2}:
+
+```
+sbatch scripts/train.sh --seed 0 ...
+sbatch scripts/train.sh --seed 1 ...
+sbatch scripts/train.sh --seed 2 ...
+```
+
+2. For each seed, update `S_DIR` in `train_all_pe.sh` to match saved checkpoints:
+
+```
+S_DIR=/scratch/ssd004/scratch/minht/checkpoints/sd${seed}
+```
+
+Then run:
+
+```
+bash scripts/train_all_pe.sh
+```
+
+3. Collect `worst-group accuracy` from `wandb` or logs.
+
+---
+
+⚙️ Arguments of Interest
+------------------------
+
+**Stage-0**
+- `--loss_name ce|isomax`
+- `--dataset_name`
+- `--model_name`
+- `--epochs`, `--lr`
+- `--ckpt_dir`
+
+**Stage-1**
+- `--pretrained_path` (required)
+- `--stage 1`
+- `--num_stage` (number of heads)
+- `--train_mode freeze`
+- `--subsample_type group|class`
+- `--cov_reg` (inter-prototype penalty)
+- `--entropic_scale` (for IsoMax)
+
+---
+
+📌 Notes
+--------
+
+- Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
+- Logs:        `logs/<jobname>.<id>.log`
+- W&B group:   Controlled via `--wdb_group`
+
+Set `WANDB_MODE=offline` to disable logging.
+
+---
+
+📚 Citation
 -----------
 
-    # Stage-0  (example on Waterbirds)
-    sbatch scripts/train.sh --dataset_name Waterbirds --model_name resnet152 --epochs 400
-
-    # Stage-1  (uses the ckpt produced above)
-    sbatch scripts/train_pe.sh --dataset_name Waterbirds \
-        --pretrained_path /scratch/.../Waterbirds/*/ckpt_last.pt \
-        --epochs 20 --lr 1e-3 --cov_reg 1e5
-
-To reproduce the paper numbers, launch the provided “*_all*.sh” meta-scripts on
-three seeds (0/1/2). Logs are written to `logs/`, checkpoints to
-`/checkpoint/$USER/$SLURM_JOB_ID/`, and run metrics to **Weights & Biases**.
-
-
-Dependencies
-------------
-
-* Python ≥ 3.9
-* PyTorch ≥ 1.13 + CUDA 11.x
-* torchvision, numpy, pandas, seaborn, scikit-learn
-* wandb (optional)
-* Slurm scheduler with CUDA GPUs (tested on A40/RTX6000)
-
-To create an environment:
-
-    python -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt     # create this file if missing
-
-
-Project layout
---------------
-
-    .
-    ├── main.py            # Stage-1 training (prototype ensemble)
-    ├── main_v1.py         # Stage-0 training
-    ├── models/            # backbones + heads
-    ├── utils/             # timer, metrics, plotting
-    ├── scripts/
-    │   ├── train.sh       # stage-0 one run
-    │   ├── train_all.sh
-    │   ├── train_pe.sh    # stage-1 one run
-    │   └── train_all_pe.sh
-    └── logs/              # Slurm outputs
-
-
-Key code
---------
-
-- `train_model`   – unified loop (supports stage 0/1, freeze/full)
-- `evaluate_phase` – isolated validation / test logic
-- `evaluate_ensemble_fixed_backbone` – averages logits of all heads
-- `eval_model`    – feature extraction helper
-- `extract_features`, `get_pre_extracted_features` – offline numpy dumps
-
-
-Signals & resumption
---------------------
-
-Jobs are submitted with `--signal=SIGUSR1@90`; the handler in `main.py`
-checkpoints before pre-emption. Resubmit with `--pretrained_path
-/path/to/ckpt_last.pt` to resume.
-
-
-Troubleshooting
----------------
-
-- **CUDA OOM** → lower `--batch_size` or increase gradient accumulation.
-- **wandb offline** → `export WANDB_MODE=offline`.
-- **Dataset path** → set `DATA_DIR` env or `--data_dir` flag.
-
-
-Citation
---------
-
-    @inproceedings{to2025prototypicalensemble,
-      title     = {Improving Robustness to Subpopulation Shifts by Heuristic Subspace Exploration with Enhanced Diversification},
-      author    = {Minh To and collaborators},
-      booktitle = {International Conference on Machine Learning},
-      year      = {2025}
-    }
+```
+@inproceedings{to2025dpe,
+  title     = {Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
+  author    = {To, Minh Nguyen Nhat and Wilson, Paul F R and Nguyen, Viet and Harmanani, Mohamed and Cooper, Michael and Fooladgar, Fahimeh and Abolmaesumi, Purang and Mousavi, Parvin and Krishnan, Rahul},
+  booktitle = {International Conference on Machine Learning (ICML)},
+  year      = {2025}
+}
+```
