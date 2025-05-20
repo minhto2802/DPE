@@ -93,7 +93,7 @@ Key Arguments
 **Stage-1+**
 - `--stage 1`
 - `--pretrained_path`: path to ckpt from stage 0
-- `--num_stage`: number of ensemble heads (default: 4)
+- `--num_stage`: number of ensemble heads (default: 16)
 - `--cov_reg`: strength of prototype decorrelation
 - `--subsample_type`: `group` or `class` (data balancing)
 - `--entropic_scale`: IsoMax hyperparam
@@ -104,11 +104,28 @@ Key Arguments
 
 Training Tips 
 -----------------------
-
+- On W&B, the metrics of interest are in the sections with the prefix `ensemble_` (e.g. `ensemble_worst_group_acc` section)
 - Tune `--cov_reg` (e.g. 1e4–1e6) to control prototype diversity.
 - For IsoMax: `--entropic_scale` range varies between 10 to 40 depending on the datasets.
 - `--subsample_type group` when `--train_attribute yes` will do subgroup balanced subsampling, while `--train_attributes no` will do class balanced subsampling on the training set (Stage-0) or the validation set (Stage-1+). 
-- Stage-1 training typically requires 15–30 epochs.
+- Stage-1+ training typically requires 15–30 epochs.
+- Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
+- Logs:        `logs/<jobname>.<id>.log`
+- W&B group:   Controlled via `--wdb_group`
+- Set `--no_wandb` flag to disable W&B logging (useful for debugging)
+---
+
+Expected Files
+-----------------
+
+**Stage-0 Outputs**
+- `ckpt_best_acc.pt`, `ckpt_best_bal_acc.pt`, `ckpt_last.pt`
+- `feats_val.npy`, `feats_test.npy` (optional feature dumps)
+
+**Stage-1+ Outputs**
+- `prototype_ensemble_<criterion>.pt`
+- `dist_scales_<criterion>.pt`
+- W&B run logs (optional)
 ---
 
 Results
@@ -124,9 +141,10 @@ Worst-group accuracy on datasets **without subgroup annotations**:
 | ERM* + DPE (Ours)| 94.1±0.2   | 84.6±0.8 | 68.9±0.6       | 70.9±0.8  | 83.6±0.9   | 76.8±0.1  | 88.1±0.7    | 50.0±0.0 | 63.0±1.7  |
 
 
-Worst-group accuracy on datasets with **group-annotated validation**:
 
-| Algorithm            | Group Info (Train / Val) | WATERBIRDS | CELEBA    | CIVILCOMMENTS | MULTINLI | METASHIFT | CHEXPERT  |
+Worst-group accuracy on datasets **with subgroup annotation**:
+
+| Algorithm            | Group Info<br>(Train / Val) | WATERBIRDS | CELEBA    | CIVILCOMMENTS | MULTINLI | METASHIFT | CHEXPERT  |
 |----------------------|---------------------------|------------|-----------|----------------|-----------|------------|-----------|
 | ERM*                 | X / X                     | 77.9±3.0   | 66.5±2.6  | 69.4±1.2       | 66.5±0.7  | 80.0±0.0   | 75.6±0.4  |
 | Group DRO            | ✓ / ✓                     | 91.4±1.1   | 88.9±2.3  | 70.0±2.0       | 77.7±1.4  | -          | -         |
@@ -139,6 +157,9 @@ Worst-group accuracy on datasets with **group-annotated validation**:
 | GAP (All Layer)      | X / ✓✓                    | 93.8±0.1   | 90.2±0.3  | -              | 77.8±0.6  | -          | -         |
 | ERM* + DPE (ours)    | X / ✓✓                    | 94.1±0.4   | 90.3±0.7  | 70.8±0.8       | 75.3±0.5  | 91.7±1.3   | 76.0±0.3  |
 
+✗: no group info is required  
+✓: group info is required for hyperparameter tuning  
+✓✓: validation data is required for training and hyperparameter tuning
 
 
 More tables and detailed experimental breakdowns are available at:  
