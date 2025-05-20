@@ -17,13 +17,13 @@ Directory Structure
 
 ```
 .
-├── main.py                    # Unified training entry point
+├── main.py                    # Training entry point
 ├── utils/                     # Utilities: metrics, models, etc.
 ├── scripts/
 │   ├── train.sh               # Stage-0: single job
 │   ├── train_all.sh           # Stage-0: all datasets
-│   ├── train_pe.sh            # Stage-1: single job
-│   └── train_all_pe.sh        # Stage-1: all datasets
+│   ├── train_pe.sh            # Stage-1+: single job
+│   └── train_all_pe.sh        # Stage-1+: all datasets
 └── logs/                      # SLURM logs
 ```
 
@@ -41,7 +41,7 @@ sbatch scripts/train.sh \
     --epochs 400
 ```
 
-2. **Stage-1**: Ensemble training with frozen backbone
+2. **Stage-1+**: Ensemble training with frozen backbone
 
 ```
 sbatch scripts/train_pe.sh \
@@ -65,7 +65,7 @@ Code Overview
 ----------------
 
 - `main.py`:
-  - Unified entry point for both stage-0 and stage-1.
+  - Unified entry point for both stage-0 and stage-1+.
   - Supports `train_mode: full` or `freeze`.
   - `stage=0`: trains classifier end-to-end.
   - `stage>0`: freezes backbone, trains multiple prototype heads on class-balanced or group-aware subsets.
@@ -116,7 +116,7 @@ bash scripts/train_all_pe.sh
 - `--epochs`, `--lr`
 - `--ckpt_dir`
 
-**Stage-1**
+**Stage-1+**
 - `--pretrained_path` (required)
 - `--stage 1`
 - `--num_stage` (number of heads)
