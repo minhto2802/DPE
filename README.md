@@ -12,7 +12,7 @@ Training is SLURM-compatible. See scripts for submission templates. The pretrain
 
 ---
 
-📦 Directory Structure
+Directory Structure
 ---------------------
 
 ```
@@ -29,7 +29,7 @@ Training is SLURM-compatible. See scripts for submission templates. The pretrain
 
 ---
 
-🚀 Quickstart
+Quickstart
 -------------
 
 1. **Stage-0**: Supervised pretraining on target dataset
@@ -61,7 +61,7 @@ sbatch scripts/train_all_pe.sh
 
 ---
 
-🧠 Code Overview
+Code Overview
 ----------------
 
 - `main.py`:
@@ -127,18 +127,18 @@ bash scripts/train_all_pe.sh
 
 ---
 
-📌 Notes
+Notes
 --------
 
 - Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
 - Logs:        `logs/<jobname>.<id>.log`
 - W&B group:   Controlled via `--wdb_group`
 
-Set `WANDB_MODE=offline` to disable logging.
+Use `--no_wandb` to disable logging.
 
 ---
 
-📚 Citation
+Citation
 -----------
 
 ```
