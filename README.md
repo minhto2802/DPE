@@ -1,5 +1,5 @@
 # Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift
-![Diverse Prototypical Ensemble Training Pipeline](docs/figures/motivation.png)
+![Diverse Prototypical Ensemble Training Pipeline](docs/figures/embeddings_figure.png)
 
 ---
 
