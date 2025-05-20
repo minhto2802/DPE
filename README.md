@@ -82,7 +82,7 @@ Key Arguments
 
 **General**
 - `--dataset_name`: Waterbirds, CelebA, MultiNLI, etc.
-- `--model_name`: resnet50, resnet152, bert-base-uncased
+- `--model_name`: resnet50, bert-base-uncased
 - `--epochs`, `--lr`: standard optimizer config
 - `--seed`: random seed
 
@@ -106,7 +106,7 @@ Training Tips
 -----------------------
 - On W&B, the metrics of interest are in the sections with the prefix `ensemble_` (e.g. `ensemble_worst_group_acc` section)
 - Tune `--cov_reg` (e.g. 1e4–1e6) to control prototype diversity.
-- For IsoMax: `--entropic_scale` range varies between 10 to 40 depending on the datasets.
+- For IsoMax: `--entropic_scale` range varies between 10 and 40 depending on the datasets.
 - `--subsample_type group` when `--train_attribute yes` will do subgroup balanced subsampling, while `--train_attributes no` will do class balanced subsampling on the training set (Stage-0) or the validation set (Stage-1+). 
 - Stage-1+ training typically requires 15–30 epochs.
 - Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
@@ -119,12 +119,12 @@ Expected Files
 -----------------
 
 **Stage-0 Outputs**
-- `ckpt_best_acc.pt`, `ckpt_best_bal_acc.pt`, `ckpt_last.pt`
+- `ckpt_best_acc.pt`, `ckpt_best_bal_acc.pt`, *`ckpt_last.pt`* (used in the paper)
 - `feats_val.npy`, `feats_test.npy` (optional feature dumps)
 
 **Stage-1+ Outputs**
-- `prototype_ensemble_<criterion>.pt`
-- `dist_scales_<criterion>.pt`
+- `prototype_ensemble_<wga_val>.pt` (with `wga_val` corresponding to the criterion for selecting the member of the prototypical ensemble)
+- `dist_scales_<wga_val>.pt`
 - W&B run logs (optional)
 ---
 
