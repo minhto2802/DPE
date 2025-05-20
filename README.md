@@ -1,3 +1,4 @@
+# Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift
 ![Diverse Prototypical Ensemble Training Pipeline](docs/figures/motivation.png)
 
 ---
@@ -5,9 +6,7 @@
 Overview
 ========
 
-This repository contains code to reproduce results from the ICML 2025 paper:
-
-**Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**  
+This repository contains code to reproduce results from the ICML 2025 paper.  
 Summary site: https://minhto2802.github.io/diversified_prototypical_ensemble
 
 We present a simple yet effective method that improves robustness to subpopulation shifts without requiring group annotations. Our approach combines a pretrained backbone with a *diversified ensemble of prototype classifiers* trained to capture different substructure in the data.
