@@ -87,8 +87,8 @@ Key Arguments
 - `--seed`: random seed
 
 **Stage-0**
-- `--loss_name`: `ce` or `isomax`
-- `--train_mode`: `full` (default)
+- `--loss_name`: `ce` (default) or `isomax`
+- `--train_mode`: `full` (default) or `freeze`
 
 **Stage-1+**
 - `--stage 1`
@@ -126,6 +126,7 @@ Expected Files
 - `prototype_ensemble_<wga_val>.pt` (with `wga_val` corresponding to the criterion for selecting the member of the prototypical ensemble)
 - `dist_scales_<wga_val>.pt`
 - W&B run logs (optional)
+- Embeddings will be extracted and saved at the `--ckpt_dir` directory at the start of the DPE training (if not yet generated)
 ---
 
 Results
