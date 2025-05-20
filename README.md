@@ -1,3 +1,7 @@
+![Diverse Prototypical Ensemble Training Pipeline](docs/figures/motivation.png)
+
+---
+
 Overview
 ========
 
