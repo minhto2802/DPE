@@ -6,7 +6,7 @@ Website: [https://minhto2802.github.io/diversified_prototypical_ensemble](https:
 
 This repository contains code to reproduce the results from the ICML 2025 paper. It includes:
 
-- Stage-0 supervised pretraining (ERM / IsoMax)
+- Stage-0 supervised pretraining (ERM)
 - Stage-1 ensemble training with diversified prototype heads
 
 Training is SLURM-compatible. See scripts for submission templates. The pretrained backbone weights will be available for downloading shortly.
@@ -19,8 +19,7 @@ Training is SLURM-compatible. See scripts for submission templates. The pretrain
 ```
 .
 ├── main.py                    # Unified training entry point
-├── models/                    # Model definitions
-├── utils/                     # Utilities: metrics, timer, logging
+├── utils/                     # Utilities: metrics, models, etc.
 ├── scripts/
 │   ├── train.sh               # Stage-0: single job
 │   ├── train_all.sh           # Stage-0: all datasets
@@ -39,7 +38,7 @@ Training is SLURM-compatible. See scripts for submission templates. The pretrain
 ```
 sbatch scripts/train.sh \
     --dataset_name Waterbirds \
-    --model_name resnet152 \
+    --model_name resnet50 \
     --epochs 400
 ```
 
