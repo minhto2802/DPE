@@ -1,6 +1,3 @@
-README
-======
-
 📄 Paper: *Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
 Website: [https://minhto2802.github.io/diversified_prototypical_ensemble](https://minhto2802.github.io/diversified_prototypical_ensemble)
 
