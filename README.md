@@ -1,6 +1,8 @@
 📄 Paper: *Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
 Website: [https://minhto2802.github.io/diversified_prototypical_ensemble](https://minhto2802.github.io/diversified_prototypical_ensemble)
 
+Overview
+---------------------
 This repository contains code to reproduce the results from the ICML 2025 paper. It includes:
 
 - Stage-0 supervised pretraining (ERM)
