@@ -21,7 +21,6 @@
 echo train-prototypes
 
 export WANDB_RUN_ID=$SLURM_JOB_ID
-export _ENV__EXP_NAME=prototypical-ensembles_v1  #_self_diverse
 
 seed=$SLURM_ARRAY_TASK_ID
 if [ -z "$seed" ]; then

@@ -22,7 +22,6 @@
 echo train-prototypes
 
 export WANDB_RUN_ID=$SLURM_JOB_ID
-export RUN_ID=$SLURM_JOB_ID
 S_DIR=/scratch/ssd004/scratch/minht/checkpoints/sd0
 CKPT_NAME=ckpt_last
 
