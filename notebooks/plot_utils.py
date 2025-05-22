@@ -1,6 +1,9 @@
 import torch
 import numpy as np
+
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+
 from scipy.spatial import Voronoi
 from scipy.spatial import Voronoi, voronoi_plot_2d
 
@@ -33,8 +36,8 @@ def plot_voronoi_extended(vor, ax, xlim, ylim):
                     [vor.vertices[i, 1], far_point[1]], 'k--', lw=1.5)
 
 
-def plot_voronoi_with_distances(prototypes, distance_scale, X, y, resolution=500, x_range=(-0.15, 0.15),
-                                y_range=(-0.15, 0.15), num_classes=2):
+def plot_voronoi(prototypes, distance_scale, X, y, resolution=500, x_range=(-0.15, 0.15),
+                 y_range=(-0.12, 0.12), num_classes=2, set_name='Training', note=''):
     """
     Plots a Voronoi diagram where the color represents the distance from each point in the grid
     to the nearest prototype.
@@ -61,7 +64,7 @@ def plot_voronoi_with_distances(prototypes, distance_scale, X, y, resolution=500
     grid_points = np.c_[xx.ravel(), yy.ravel()].astype('float32')
 
     # Normalize distances for coloring
-    plt.figure(figsize=(8, 8), dpi=150)
+    plt.figure(figsize=(7, 9), dpi=150)
 
     # # Plot Voronoi regions
     plot_voronoi_extended(vor, plt.gca(), xlim=(x_min, x_max), ylim=(y_min, y_max))
@@ -83,15 +86,18 @@ def plot_voronoi_with_distances(prototypes, distance_scale, X, y, resolution=500
     plt.scatter(prototypes[:, 0], prototypes[:, 1],
                 c=[0, 1, 0, 1, 0, 1][:len(prototypes)],
                 cmap=plt.matplotlib.colors.ListedColormap(['#e28743', '#1e81b0']),
-                s=700, edgecolor='k', linewidths=1, marker='*')
+                s=500, edgecolor='k', linewidths=1, marker='*')
 
-    plt.xlabel('Feature 1 (X-axis)')
-    plt.ylabel('Feature 2 (Y-axis)')
-    plt.title('Voronoi Diagram')
-    plt.show()
+    plt.title(f'Voronoi Diagram\n({set_name} set{note})')
+    plt.xticks([])
+    plt.yticks([])
+
+    ax = plt.gca()
+    ax.set_aspect('equal', 'box')
 
 
-def plot_distance_to_first_class(model, X, y, resolution=500, x_range=(-0.15, 0.15), y_range=(-0.15, 0.15)):
+def plot_distance_to_first_class(model, X, y, resolution=500, x_range=(-0.15, 0.15), y_range=(-0.15, 0.15),
+                                 ax=None, set_name='Training', note=''):
     """
     Plots the data points with background color representing the distance to the first class's prototype.
 
@@ -138,16 +144,18 @@ def plot_distance_to_first_class(model, X, y, resolution=500, x_range=(-0.15, 0.
     norm = plt.Normalize(distances.min(), distances.max())
     cmap = plt.cm.jet  # Choose a suitable colormap
 
-    plt.figure(figsize=(4, 4), dpi=150)
+    if ax is None:
+        plt.figure(figsize=(4, 4), dpi=150)
+        ax = plt.gca()
 
     # Plot the distance-based coloring
-    plt.imshow(
+    ax.imshow(
         distances,
         extent=(x_min, x_max, y_min, y_max),
         origin='lower',
         cmap=cmap,
         norm=norm,
-        alpha=0.8,
+        alpha=0.9,
     )
 
     # Optionally, plot Voronoi diagram or decision boundaries
@@ -161,7 +169,7 @@ def plot_distance_to_first_class(model, X, y, resolution=500, x_range=(-0.15, 0.
             print(f"Error creating Voronoi diagram: {e}")
 
     # Plot training data
-    plt.scatter(
+    ax.scatter(
         X[:, 0], X[:, 1],
         c=y,
         cmap=plt.matplotlib.colors.ListedColormap(custom_colors[:num_classes]),
@@ -170,19 +178,25 @@ def plot_distance_to_first_class(model, X, y, resolution=500, x_range=(-0.15, 0.
         s=50,
         label='Training Data'
     )
-    plt.scatter(prototypes[:, 0], prototypes[:, 1],
-                c=['#e28743', '#1e81b0'],
-                # cmap='tab10',
-                s=500, edgecolor='w', linewidths=1, marker='*')
+    ax.scatter(prototypes[:, 0], prototypes[:, 1],
+               c=['#e28743', '#1e81b0'],
+               # cmap='tab10',
+               s=500, edgecolor='w', linewidths=1, marker='*')
 
-    plt.xlabel('Feature 1 (X-axis)')
-    plt.ylabel('Feature 2 (Y-axis)')
-    plt.title('Distance to First Class Prototype')
-    plt.grid(False)
+    ax.grid(False)
+
+    # Aesthetic cleanup
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_title(f'Distance to Class 1 Prototype\n({set_name} set{note})')
+    # ax.set_xlabel('Feature 1')
+    # ax.set_ylabel('Feature 2')
+    ax.set_aspect('equal', 'box')
+    ax.patch.set_alpha(0)
 
 
 def plot_distance_to_first_class_v1(prototypes, distance_scales, X, y, resolution=500, x_range=(-0.15, 0.15),
-                                    y_range=(-0.15, 0.15)):
+                                    y_range=(-0.15, 0.15), ax=None, set_name='Test', note=''):
     """
     Plots the data points with background color representing the distance to the first class's prototype.
 
@@ -230,12 +244,14 @@ def plot_distance_to_first_class_v1(prototypes, distance_scales, X, y, resolutio
     norm = plt.Normalize(distances.min(), distances.max())
     cmap = plt.cm.jet  # Choose a suitable colormap
 
-    fig = plt.figure(figsize=(6, 6), dpi=150)
+    if ax is None:
+        fig = plt.figure(figsize=(6, 6), dpi=150)
+        ax = plt.gca()
 
     # Plot the distance-based coloring
     num_regions = len(np.unique(distances))
     colors = ['#fde9b7', '#bbe8ee', '#f4ce87', '#8edbe5', '#eab676', '#76b5c5']
-    plt.imshow(
+    ax.imshow(
         distances,
         extent=(x_min, x_max, y_min, y_max),
         origin='lower',
@@ -246,7 +262,7 @@ def plot_distance_to_first_class_v1(prototypes, distance_scales, X, y, resolutio
     )
 
     custom_colors = ['#eab676', '#76b5c5', '#a1d99b', '#fdcdac', '#bae4b3', '#c6dbef']  # Extend as needed
-    plt.scatter(
+    ax.scatter(
         X[:, 0], X[:, 1],
         c=y,
         cmap=plt.matplotlib.colors.ListedColormap(custom_colors[:num_classes]),
@@ -255,21 +271,21 @@ def plot_distance_to_first_class_v1(prototypes, distance_scales, X, y, resolutio
         s=50,
         label='Training Data'
     )
-    plt.scatter(prototypes[:, 0], prototypes[:, 1],
+    ax.scatter(prototypes[:, 0], prototypes[:, 1],
                 c=[0, 1, 0, 1, 0, 1][:len(prototypes)],
                 cmap=plt.matplotlib.colors.ListedColormap(['#e28743', '#1e81b0']),
                 s=500, edgecolor='w', linewidths=1, marker='*')
 
     plt.grid(False)
 
-    plt.xticks([])
-    plt.yticks([])
-
-    ax = plt.gca()
-
-    # Optionally remove the spines for a cleaner look
-    for spine in ax.spines.values():
-        spine.set_visible(False)
+    # Aesthetic cleanup
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ax.set_title(f'Distance to Class 1 Prototype\n({set_name} set{note})')
+    # ax.set_xlabel('Feature 1')
+    # ax.set_ylabel('Feature 2')
+    ax.set_aspect('equal', 'box')
+    ax.patch.set_alpha(0)
 
 
 def plot_distance_to_first_class_v2(prototypes, distance_scales, X, y, resolution=500, v_min=0.15, v_max=0.15):

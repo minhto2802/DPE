@@ -12,6 +12,7 @@ from torch.utils.data import TensorDataset, DataLoader
 
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
 
 from utils import IsoMaxPlusLossFirstPart, IsoMaxPlusLossSecondPart
 
@@ -139,52 +140,73 @@ def evaluate_model(model, test_loader, device='cuda', set_name='Test'):
             correct += (predicted == gt).sum().item()
             total += gt.size(0)
     accuracy = 100 * correct / total
-    print(f"{set_name} Accuracy: {accuracy:.2f}%")
+    # print(f"{set_name} Accuracy: {accuracy:.2f}%")
     model.train()
     return correct, torch.concat(true_pos)
 
 
-def plot_clusters(X, y, title="Clustered Data", ax=None):
+def plot_clusters(X, y, title="Training Data", ax=None):
     """
-    Plots a scatter plot of the clusters and prints axis information.
+    Plots clustered data with class labels and attribute ellipses, styled to match the reference figure.
 
     Parameters:
     - X: Feature matrix (numpy array)
     - y: Labels (numpy array)
     - title: Title of the plot (string)
     """
-    if ax is None:
-        fig = plt.figure(figsize=(4, 4), dpi=150)
-        ax = plt.gca()
+    import matplotlib.pyplot as plt
+    import matplotlib.patches as patches
+    import numpy as np
 
-    colors = ['#eab676', '#76b5c5']
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(4, 4), dpi=150)
+
+    # Define colors to match reference
+    colors = ['#eab676', '#76b5c5']  # Class 2 (orange), Class 1 (blue)
     scatter = ax.scatter(X[:, 0], X[:, 1],
                          c=[colors[_] for _ in y],
                          alpha=0.6, edgecolor='k',
                          facecolor='w',
                          )
 
-    # Customize ticks (optional)
-    ax.set_xticks(np.linspace(X[:, 0].min() - X[:, 0].min() * 0.1, X[:, 0].max() + X[:, 0].min() * 0.1, 5))
-    ax.set_yticks(np.linspace(X[:, 1].min() - X[:, 1].min() * 0.1, X[:, 1].max() + X[:, 1].min() * 0.1, 5))
+    # Define dashed ellipses for attributes (manually tuned positions/sizes)
+    ellipse_specs = [
+        {"xy": (0., 0.), "width": 0.14, "height": 0.3, "angle": 0, "label": "Attribute 1", "label_offset": (0.06, 0.15)},
+        {"xy": (0, 0), "width": 0.3, "height": 0.1, "angle": 26, "label": "Attribute 2", "label_offset": (0.1, 0.09)},
+        {"xy": (0, 0), "width": 0.3, "height": 0.1, "angle": -26, "label": "Attribute 3", "label_offset": (-0.1, 0.09)},
+    ]
 
-    # Add grid
+    # Customize ticks (optional)
     ax.grid(False)
 
-    # Retrieve and print axis limits
+    for spec in ellipse_specs:
+        e = patches.Ellipse(spec["xy"], width=spec["width"], height=spec["height"],
+                            angle=spec["angle"], edgecolor='gray', facecolor='none',
+                            linestyle='dashed', linewidth=1.2)
+        ax.add_patch(e)
+        ax.text(spec["xy"][0] + spec["label_offset"][0],
+                spec["xy"][1] + spec["label_offset"][1],
+                spec["label"], fontsize=10, style='italic', ha='center', va='center')
+
+    # Aesthetic cleanup
     ax.set_xticks([])
     ax.set_yticks([])
-
-    # Set the background of the axes to transparent (optional)
+    ax.set_title(title)
+    # ax.set_xlabel('Feature 1')
+    # ax.set_ylabel('Feature 2')
+    ax.set_aspect('equal', 'box')
     ax.patch.set_alpha(0)
 
-    # Optionally remove the spines for a cleaner look
-    # for spine in ax.spines.values():
-    #     spine.set_visible(False)
+    # Define custom circular legend handles
+    legend_handles = [
+        Line2D([0], [0], marker='o', color='w', label='Class 1',
+               markerfacecolor='#76b5c5', markeredgecolor='k', markersize=8),
+        Line2D([0], [0], marker='o', color='w', label='Class 2',
+               markerfacecolor='#eab676', markeredgecolor='k', markersize=8)
+    ]
 
-    ax.set_title(title)
+    ax.legend(handles=legend_handles, loc='lower right', frameon=False)
 
-    # plt.show()
     return ax
 
 
