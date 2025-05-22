@@ -66,20 +66,6 @@ sbatch scripts/train_all.sh
 sbatch scripts/train_all_pe.sh
 ```
 
-Code Overview
-----------------
-
-- `main.py` handles both stages
-  - `stage=0`: trains backbone from scratch
-  - `stage>0`: adds diversified prototype heads (frozen backbone)
-
-Key Functions:
-- `train_model(...)`: core training loop
-- `evaluate_phase(...)`: computes val/test metrics + logs
-- `evaluate_ensemble_fixed_backbone(...)`: averages logits from heads
-- `extract_features(...)`, `get_pre_extracted_features(...)`: numpy feature interface
----
-
 Key Arguments
 ----------------
 
