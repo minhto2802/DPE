@@ -13,13 +13,20 @@ sbatch ./scripts/train.sh \
 #      --dataset_name MetaShift \
 #      --epochs 100  # 100 237
 #
+
 #sbatch ./scripts/train.sh \
-#      --dataset_name ImagenetBG \
-#      --epochs 20
-#
+#      --dataset-name ImagenetBG \
+#      --epochs -1 \
+#      --batch-size 108 \
+#      --lr 1.e-3 \
+#      --no-augmentation
+
 #sbatch ./scripts/train.sh \
-#      --dataset_name NICOpp \
-#      --epochs 70  # 50
+#      --dataset-name NICOpp \
+#      --epochs -1 \
+#      --batch-size 108 \
+#      --lr 1.e-3 \
+#      --no-augmentation
 
 #sbatch ./scripts/train.sh \
 #      --dataset_name Living17 \
@@ -30,31 +37,17 @@ sbatch ./scripts/train.sh \
 #      --epochs 30  # 30  13
 
 #sbatch ./scripts/train.sh \
-#      --dataset_name CivilCommentsFine \
-#      --epochs 6 \
-#      --batch_size 32 \
+#      --dataset-name CivilCommentsFine \
+#      --epochs -1 \
+#      --batch-size 32 \
 #      --lr 1.e-5 \
 #      --optim bert_adam \
-#      --no_augmentation
-#
+#      --no-augmentation
+
 #sbatch ./scripts/train.sh \
 #      --dataset_name MultiNLI \
 #      --epochs 4 \
 #      --batch_size 32 \
 #      --lr 1.e-5 \
 #      --optim bert_adam \
-#      --no_augmentation
-
-#sbatch ./scripts/train.sh \
-#      --dataset_name ImagenetBG \
-#      --epochs 8 \
-#      --batch_size 128 \
-#      --lr 1.e-3 \
-#      --no_augmentation
-
-#sbatch ./scripts/train.sh \
-#      --dataset_name NICOpp \
-#      --epochs 80 \
-#      --batch_size 128 \
-#      --lr 1.e-3 \
 #      --no_augmentation

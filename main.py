@@ -205,7 +205,7 @@ def train_model(
         print('-' * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ['train', 'val', 'test']:
+        for phase in ['train', 'val']:
             if (phase not in dataloaders.keys()) or (skipped_phase is not None and phase in skipped_phase):
                 continue
 
@@ -232,18 +232,11 @@ def train_model(
 
                 with torch.set_grad_enabled(phase == 'train'):
                     if stage > 0:
-                        with torch.set_grad_enabled(args.train_mode == 'full'):
-                            if feats.ndim == 1:
-                                feats = model[:-1](inputs)
-                                if args.norm_emb == 'yes':
-                                    feats = (feats - feats.mean(dim=1, keepdims=True)) / feats.std(dim=1, keepdims=True)
-                            else:
-                                feats = feats.to(device)
-
+                        feats = feats.to(device)
                         outputs = model[-1](feats)
                         clf_loss = criterion(outputs, labels)
 
-                        if isinstance(criterion, IsoMaxPlusLossSecondPart):
+                        if isinstance(criterion, IsoMaxPlusLossSecondPart) and (phase == 'train'):
                             head = model[-1]
                             n_classes = head.prototypes.shape[0]
                             wd = torch.einsum('ijk,ilk->ijl',
@@ -259,9 +252,12 @@ def train_model(
                                     cov_loss = torch.abs(cov[:, 0, 1:].sum(1).div(n_pro).mean())
                                     if cov_reg:
                                         loss = loss + cov_loss * cov_reg
-                        else:
-                            weight = model[-1].weight if args.loss_name == 'ce' else model[-1].prototypes
+                        elif (args.loss_name == 'ce') and phase == 'train':
+                            weight = model[-1].weight  # if args.loss_name == 'ce' else model[-1].prototypes
                             loss = clf_loss + args.dfr_reg * torch.norm(weight, 1)
+                        else:
+                            loss = clf_loss
+
                     else:
                         outputs = model(inputs)
                         loss = clf_loss = criterion(outputs, labels)
@@ -370,10 +366,6 @@ def train_model(
                                 ensemble_bw.append(classifier)
                             else:
                                 ensemble_bw[-1] = classifier
-
-                if phase == 'test':
-                    if worst_val_metrics['wga_test'][-1] >= best_wga_test:
-                        best_wga_test = worst_val_metrics['wga_test'][-1]
 
         print(metrics)
         if worst_val_metrics is not None:
@@ -599,7 +591,6 @@ def main(args):
             datasets['train'] = vars(dsets)[args.dataset_name](args.data_dir, 'tr', args, train_attr='no',
                                                                augmentation=not args.no_augmentation)
             print(np.unique(np.array(datasets['train'].g)[datasets['train'].idx], return_counts=True)[1])
-
         else:
             trn_split = 'va'
             for set_name in ['val', 'test']:

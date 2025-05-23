@@ -38,7 +38,7 @@ python main.py \
   --stage 1 \
   --pretrained_path $S_DIR/Waterbirds/*/${CKPT_NAME}.pt \
   --train_mode freeze \
-  --num_stage 4 \
+  --num_stage 16 \
   --lr 1.e-3 \
   --train_attr yes \
   --dataset_name Waterbirds \
