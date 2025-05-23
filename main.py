@@ -235,26 +235,26 @@ def train_model(
                         feats = feats.to(device)
                         outputs = model[-1](feats)
                         clf_loss = criterion(outputs, labels)
-
-                        if isinstance(criterion, IsoMaxPlusLossSecondPart) and (phase == 'train'):
-                            head = model[-1]
-                            n_classes = head.prototypes.shape[0]
-                            wd = torch.einsum('ijk,ilk->ijl',
-                                              [head.prototypes[:, None],
-                                               head.prototypes[:, None]]) * wd_weight
-                            wd = wd.squeeze().mean()
-                            loss = clf_loss + wd
-                            if (prototypes_ensemble is not None) and (cov_reg > 0):
-                                _prototypes = torch.concat([head.prototypes[:, None], prototypes_ensemble], dim=1)
-                                with torch.set_grad_enabled(cov_reg > 0):
-                                    n_pro, n_dim = _prototypes.shape[1:]
-                                    cov = torch.einsum('ijk,ilk->ijl', [_prototypes, _prototypes]) / (n_dim - 1)
-                                    cov_loss = torch.abs(cov[:, 0, 1:].sum(1).div(n_pro).mean())
-                                    if cov_reg:
-                                        loss = loss + cov_loss * cov_reg
-                        elif (args.loss_name == 'ce') and phase == 'train':
-                            weight = model[-1].weight  # if args.loss_name == 'ce' else model[-1].prototypes
-                            loss = clf_loss + args.dfr_reg * torch.norm(weight, 1)
+                        if phase == 'train':
+                            if isinstance(criterion, IsoMaxPlusLossSecondPart):
+                                head = model[-1]
+                                n_classes = head.prototypes.shape[0]
+                                wd = torch.einsum('ijk,ilk->ijl',
+                                                  [head.prototypes[:, None],
+                                                   head.prototypes[:, None]]) * wd_weight
+                                wd = wd.squeeze().mean()
+                                loss = clf_loss + wd
+                                if (prototypes_ensemble is not None) and (cov_reg > 0):
+                                    _prototypes = torch.concat([head.prototypes[:, None], prototypes_ensemble], dim=1)
+                                    with torch.set_grad_enabled(cov_reg > 0):
+                                        n_pro, n_dim = _prototypes.shape[1:]
+                                        cov = torch.einsum('ijk,ilk->ijl', [_prototypes, _prototypes]) / (n_dim - 1)
+                                        cov_loss = torch.abs(cov[:, 0, 1:].sum(1).div(n_pro).mean())
+                                        if cov_reg:
+                                            loss = loss + cov_loss * cov_reg
+                                else:
+                                    weight = model[-1].weight  # if args.loss_name == 'ce' else model[-1].prototypes
+                                    loss = clf_loss + args.dfr_reg * torch.norm(weight, 1)
                         else:
                             loss = clf_loss
 
@@ -303,8 +303,8 @@ def train_model(
                     run.log({'running_loss_clf': running_loss_clf / n_instances}, commit=False)
                     run.log({'running_loss_cov': running_loss_cov}, commit=False)
 
-            # Evaluation on validation and/or test sets
-            if phase != 'train':
+            # Evaluation on validation set
+            else:
                 ds = dataloaders[phase].dataset
                 all_preds = torch.concat(all_preds, dim=0).numpy()
                 res = eval_metrics(all_preds, np.array(ds.y), np.array(ds._a), np.array(ds.g))
@@ -319,53 +319,51 @@ def train_model(
                 metrics.loc[phase] = [np.round(res['overall'][k] * 100, 2) for k in metric_columns]
                 log_wandb(run, phase, res)
 
-                if phase != 'train':
-                    if worst_val_metrics is None:
-                        worst_val_metrics = {}
-                    k = f'wga_{phase}'
-                    if k not in worst_val_metrics.keys():
-                        worst_val_metrics[k] = [res['min_group']['accuracy']]
-                    else:
-                        worst_val_metrics[k].append(res['min_group']['accuracy'])
+                if worst_val_metrics is None:
+                    worst_val_metrics = {}
+                k = f'wga_{phase}'
+                if k not in worst_val_metrics.keys():
+                    worst_val_metrics[k] = [res['min_group']['accuracy']]
+                else:
+                    worst_val_metrics[k].append(res['min_group']['accuracy'])
 
                 # Validation phase metrics
-                if phase == 'val':
-                    if epoch_acc > best_acc and ckpt_path:
-                        best_acc = float(epoch_acc)
-                        if stage == 0:
-                            torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_acc.pt")
-                    epoch_bal_acc = res['overall']['balanced_acc']
-                    if epoch_bal_acc > best_bal_acc and ckpt_path:
-                        best_bal_acc = float(epoch_bal_acc)
-                        if stage == 0:
-                            torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_bal_acc.pt")
+                if epoch_acc > best_acc and ckpt_path:
+                    best_acc = float(epoch_acc)
+                    if stage == 0:
+                        torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_acc.pt")
+                epoch_bal_acc = res['overall']['balanced_acc']
+                if epoch_bal_acc > best_bal_acc and ckpt_path:
+                    best_bal_acc = float(epoch_bal_acc)
+                    if stage == 0:
+                        torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_bal_acc.pt")
 
-                    if worst_val_metrics is None:
-                        worst_val_metrics = {}
-                    for k in res['per_class'][0].keys():
-                        tmp = []
-                        if k in ['support']:
-                            continue
-                        for c in res['per_class'].keys():
-                            tmp.append(res['per_class'][c][k])
-                        if k not in worst_val_metrics.keys():
-                            worst_val_metrics[k] = [np.min(tmp)]
+                if worst_val_metrics is None:
+                    worst_val_metrics = {}
+                for k in res['per_class'][0].keys():
+                    tmp = []
+                    if k in ['support']:
+                        continue
+                    for c in res['per_class'].keys():
+                        tmp.append(res['per_class'][c][k])
+                    if k not in worst_val_metrics.keys():
+                        worst_val_metrics[k] = [np.min(tmp)]
+                    else:
+                        worst_val_metrics[k].append(np.min(tmp))
+                    if stage == 0:
+                        run.log({f'worst_val_metrics/{k}': worst_val_metrics[k][-1]}, commit=False)
+
+                if worst_val_metrics[worst_metric][-1] >= best_worst_metric:
+                    best_worst_metric = worst_val_metrics[worst_metric][-1]
+                    if stage == 0:
+                        torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_{worst_metric}.pt")
+                    if ensemble_bw is not None:
+                        assert isinstance(ensemble_bw, list)
+                        classifier = _extract_classifier(args.loss_name, model)
+                        if len(ensemble_bw) < stage:
+                            ensemble_bw.append(classifier)
                         else:
-                            worst_val_metrics[k].append(np.min(tmp))
-                        if stage == 0:
-                            run.log({f'worst_val_metrics/{k}': worst_val_metrics[k][-1]}, commit=False)
-
-                    if worst_val_metrics[worst_metric][-1] >= best_worst_metric:
-                        best_worst_metric = worst_val_metrics[worst_metric][-1]
-                        if stage == 0:
-                            torch.save(model.state_dict(), f"{ckpt_path}/ckpt_best_{worst_metric}.pt")
-                        if ensemble_bw is not None:
-                            assert isinstance(ensemble_bw, list)
-                            classifier = _extract_classifier(args.loss_name, model)
-                            if len(ensemble_bw) < stage:
-                                ensemble_bw.append(classifier)
-                            else:
-                                ensemble_bw[-1] = classifier
+                            ensemble_bw[-1] = classifier
 
         print(metrics)
         if worst_val_metrics is not None:
