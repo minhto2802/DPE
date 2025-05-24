@@ -70,7 +70,7 @@ def get_args():
 
     parser.add_argument('--model_name', default='resnet50', type=str, help='Backbone model name.')
     parser.add_argument('--pretrained_path', default=None, type=str, help='Path to pretrained model checkpoint.')
-    parser.add_argument('--pretrained_in', action='store_true', help='Use pretrained weights inside training.')
+    parser.add_argument('--pretrained_imgnet', action='store_true', help='Use pretrained weights inside training.')
     parser.add_argument('--force_saving_feats', action='store_true', help='Force re-saving extracted features.')
 
     parser.add_argument('--train_mode', type=str, default='full', choices=['full', 'freeze'],
@@ -365,18 +365,6 @@ def train_model(
                         else:
                             ensemble_bw[-1] = classifier
 
-        print(metrics)
-        if worst_val_metrics is not None:
-            df = pd.DataFrame(worst_val_metrics)
-            if len(df) > 2:
-                g = sns.heatmap(df.corr(),
-                                cmap='RdYlGn',
-                                annot=True,
-                                fmt='.3f',
-                                vmin=-1, vmax=1,
-                                cbar=False)
-                plt.close()
-
         if stage == 0:
             run.log({'stage': stage, 'epoch': epoch})
 
@@ -493,7 +481,7 @@ def extract_features(
     from torch.utils.data import DataLoader
 
     model = get_model(args.dataset_name, dataset.num_labels, args.train_mode, args.pretrained_path,
-                      loss_name='ce', model=None, pretrained_in=False, model_name=args.model_name)
+                      loss_name='ce', model=None, pretrained_imgnet=False, model_name=args.model_name)
     model.to(args.device)
 
     dataloader = DataLoader(dataset=dataset, num_workers=args.workers, batch_size=args.batch_size_eval,
@@ -615,7 +603,7 @@ def main(args):
         model = get_model(
             args.dataset_name, datasets['train'].num_labels, train_mode,
             pretrained_path, loss_name=args.loss_name, model=model,
-            pretrained_in=args.pretrained_in if stage == 0 else False)
+            pretrained_imgnet=args.pretrained_imgnet if stage == 0 else False)
         model.to(args.device)
 
         criterion = get_criterion(args.loss_name, entropic_scale=args.entropic_scale)
@@ -663,7 +651,7 @@ def main(args):
             if (ensemble is not None) and (len(ensemble) > 0):
                 assert isinstance(ensemble, list)
 
-                dist_scales = [_[1] for _ in ensemble] if args.loss_name == 'isomax' else None
+                dist_scales = [_[1].detach() for _ in ensemble] if args.loss_name == 'isomax' else None
                 ens = torch.concat([_[0] for _ in ensemble], dim=1).detach()
 
                 print(f'Evaluating ensemble {k}')
@@ -671,7 +659,8 @@ def main(args):
                     ens, dataloaders['test'], model, distance_scales=dist_scales, run=run, phase=f'test_{k}',
                     norm_emb=args.norm_emb)
                 torch.save(ens, f"{args.ckpt_dir}/prototype_ensemble_{k}.pt")
-                torch.save(dist_scales, f"{args.ckpt_dir}/dist_scales_{k}.pt")
+                if args.loss_name == 'isomax':
+                    torch.save(dist_scales, f"{args.ckpt_dir}/dist_scales_{k}.pt")
 
                 if k == args.ensemble_criterion:
                     prototype_ensemble = ens.clone()

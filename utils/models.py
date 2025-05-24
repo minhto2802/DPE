@@ -37,9 +37,9 @@ class BertFeatureWrapper(torch.nn.Module):
             return self.dropout(output.last_hidden_state[:, 0, :])
 
 
-def get_backbone(dataset_name, pretrained_in=False, model_name='resnet50'):
+def get_backbone(dataset_name, pretrained_imgnet=False, model_name='resnet50'):
     if dataset_name in IMAGE_DATASETS:
-        weights = 'IMAGENET1K_V2' if pretrained_in else None
+        weights = 'IMAGENET1K_V2' if pretrained_imgnet else None
         match model_name:
             case 'resnet50':
                 model = torchvision.models.resnet50(weights=weights)
@@ -58,7 +58,7 @@ def get_backbone(dataset_name, pretrained_in=False, model_name='resnet50'):
 
 
 def get_model(dataset_name, num_classes, train_mode='full',
-              pretrained_path=None, pretrained_in=False, loss_name='ce',
+              pretrained_path=None, pretrained_imgnet=False, loss_name='ce',
               model=None, verbose=True, resume=False,
               model_name='resnet50'):
     if resume:
@@ -73,7 +73,7 @@ def get_model(dataset_name, num_classes, train_mode='full',
         ckpt = torch.load(pretrained_path, map_location="cpu")
 
     if model is None:  # Stage 0 or training resume
-        backbone, emb_dim = get_backbone(dataset_name, pretrained_in, model_name=model_name)
+        backbone, emb_dim = get_backbone(dataset_name, pretrained_imgnet, model_name=model_name)
         if (((ckpt is not None) and ('prototypes' in [k.split('.')[-1] for k in ckpt.keys()])) or
                 (loss_name == 'isomax')):
             head = IsoMaxPlusLossFirstPart(emb_dim, num_classes)
