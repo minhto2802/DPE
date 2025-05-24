@@ -33,9 +33,19 @@
 
 sbatch ./scripts/train.sh \
       --dataset_name Living17 \
+      --epochs 100 \
+      --no_augmentation
+
+sbatch ./scripts/train.sh \
+      --dataset_name Living17 \
       --epochs 100
-#      --no_augmentation
-      # --epochs 50
+
+sbatch ./scripts/train.sh \
+      --dataset_name Living17 \
+      --epochs -1 \
+      --suffix _erm \
+      --no_augmentation
+
 
 #sbatch ./scripts/train.sh \
 #      --dataset_name CheXpertNoFinding \

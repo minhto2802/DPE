@@ -4,10 +4,10 @@
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
 #SBATCH -c 16
-#SBATCH --time 2:00:00
+##SBATCH --time 2:00:00
 ##SBATCH --qos=m4
 ##SBATCH --gres=gpu:rtx6000:1
-##SBATCH --time 24:00:00
+#SBATCH --time 24:00:00
 #SBATCH --account=deadline
 #SBATCH --qos=deadline
 #SBATCH --gres=gpu:a40:1
