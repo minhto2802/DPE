@@ -497,7 +497,7 @@ def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False)
     ax.get_legend().remove()
 
     ax.set_ylabel('')
-    ax.set_ylim([int(_df['Worst Group Accuracy'].min()), np.ceil(_df['Worst Group Accuracy'].max())])
+    ax.set_ylim([int(_df[metric].min()), np.ceil(_df[metric].max())])
 
     if show_legend:
         fig = ax.get_figure()
@@ -518,6 +518,7 @@ def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False)
         plt.tight_layout()
 
     ax.set_xticks(range(3, _df['Number of Prototypes'].max() + 1, 3))
+    ax.grid(True, which='major', linestyle='--', linewidth=0.5, alpha=0.7)
 
 
 def dict_to_df(_metrics):
