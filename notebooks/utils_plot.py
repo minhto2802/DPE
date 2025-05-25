@@ -1,11 +1,10 @@
 import torch
 import numpy as np
+import pandas as pd
+import seaborn as sns
 
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from numba.tests.test_unicode import replace_with_count_usecase
 
-from scipy.spatial import Voronoi
 from scipy.spatial import Voronoi, voronoi_plot_2d
 
 import torch.nn.functional as F
@@ -479,3 +478,56 @@ class UnNormalize(object):
             t.mul_(s).add_(m)
             # The normalize code -> t.sub_(m).div_(s)
         return tensor
+
+
+def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False):
+    if ax is None:
+        _, ax = plt.subplots(figsize=(8, 5), dpi=150)
+    _ = sns.lineplot(
+        _df,
+        x='Number of Prototypes',
+        y=metric,
+        hue='Diversification Strategy',
+        style='Diversification Strategy',
+        palette=['#dd5355', '#fe994a', '#438ac3'],
+        marker='o',
+        ax=ax,
+    )
+    ax.set_title(metric, fontsize=14)
+    ax.get_legend().remove()
+
+    ax.set_ylabel('')
+    ax.set_ylim([int(_df['Worst Group Accuracy'].min()), np.ceil(_df['Worst Group Accuracy'].max())])
+
+    if show_legend:
+        fig = ax.get_figure()
+        plt.suptitle(f'Performance on Waterbirds Dataset', weight='bold', fontsize=18)
+
+        # Extract handles and labels from one axis
+        handles, labels = ax.get_legend_handles_labels()
+        # Add shared legend to the figure
+        fig.legend(
+            handles,
+            labels,
+            loc='lower center',
+            bbox_to_anchor=(0.5, -0.1),
+            ncol=3,
+            frameon=True,
+            fontsize=14,
+        )
+        plt.tight_layout()
+
+    ax.set_xticks(range(3, _df['Number of Prototypes'].max() + 1, 3))
+
+
+def dict_to_df(_metrics):
+    _df = []
+    for k in _metrics.keys():
+        _df.append(pd.DataFrame({
+            'Worst Group Accuracy': np.array(_metrics[k][0]) * 100,
+            'Balanced Accuracy': np.array(_metrics[k][1]) * 100,
+            'Diversification Strategy': k,
+            'Number of Prototypes': np.arange(1, len(_metrics[k][0]) + 1),
+        }))
+    _df = pd.concat(_df)
+    return _df
