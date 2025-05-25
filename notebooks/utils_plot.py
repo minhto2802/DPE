@@ -3,11 +3,19 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
+from numba.tests.test_unicode import replace_with_count_usecase
 
 from scipy.spatial import Voronoi
 from scipy.spatial import Voronoi, voronoi_plot_2d
 
 import torch.nn.functional as F
+
+SET_NAME_DICT = {
+    'train_eval': 'Training Set',
+    'train': 'Training Set',
+    'val': 'Val. Set',
+    'test': 'Test Set',
+}
 
 
 def plot_voronoi_extended(vor, ax, xlim, ylim):
@@ -272,9 +280,9 @@ def plot_distance_to_first_class_v1(prototypes, distance_scales, X, y, resolutio
         label='Training Data'
     )
     ax.scatter(prototypes[:, 0], prototypes[:, 1],
-                c=[0, 1, 0, 1, 0, 1][:len(prototypes)],
-                cmap=plt.matplotlib.colors.ListedColormap(['#e28743', '#1e81b0']),
-                s=500, edgecolor='w', linewidths=1, marker='*')
+               c=[0, 1, 0, 1, 0, 1][:len(prototypes)],
+               cmap=plt.matplotlib.colors.ListedColormap(['#e28743', '#1e81b0']),
+               s=500, edgecolor='w', linewidths=1, marker='*')
 
     plt.grid(False)
 
@@ -370,9 +378,9 @@ def plot_distance_to_first_class_v2(prototypes, distance_scales, X, y, resolutio
     plt.title('Distance to Blue Prototypes')
     plt.grid(False)
 
+
 # Function to plot bars with numbers and percentages on top
 def plot_bar_with_percentage(ax, data, title):
-
     # Labels for bars
     labels = ['A', 'B', 'C', 'D']
 
@@ -383,7 +391,7 @@ def plot_bar_with_percentage(ax, data, title):
 
     total = sum(data)
     for i, (value, texture, color) in enumerate(
-        zip(data, textures + textures2, [colors[0], colors[1], colors[0], colors[1]])
+            zip(data, textures + textures2, [colors[0], colors[1], colors[0], colors[1]])
     ):
         bar = ax.bar(labels[i], value, hatch=texture, color=color, edgecolor='black')
         # Add value and percentage label
@@ -391,8 +399,12 @@ def plot_bar_with_percentage(ax, data, title):
         ax.text(
             i, value + max(data) * 0.02, percentage_text, ha='center', va='bottom'
         )
-    ax.set_title(title, fontsize=24, pad=15, weight='bold')  # Larger font size for titles
-    ax.set_ylabel('# Samples', fontsize=18)  # Increased font size for y-label
+    ax.set_title(title, fontsize=20, pad=15, weight='bold')  # Larger font size for titles
+    ax.set_ylabel('# Samples', fontsize=16)  # Increased font size for y-label
+
+    ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
+    ax.tick_params(axis='y', which='both', left=False, labelleft=False)  # Remove y-ticks
+    ax.grid(False)
 
     # Remove the box around the plot
     ax.spines['top'].set_visible(False)
@@ -403,37 +415,37 @@ def plot_bar_with_percentage(ax, data, title):
     ax.spines['bottom'].set_color('black')
 
 
-def plot_distributions(datasets, titles=('Training Set', 'Val. Set', 'Test Set'), fig_size=(12, 6), dpi=150):
+def plot_distributions(datasets, group_dict=None, fig_size=(12, 6), dpi=150,
+                       title='Subpopulation Distribution', set_name_dict=None):
     # Increase font size globally
     import matplotlib.pyplot as plt
     plt.rcParams.update({'font.size': 16})
-    # plt.rcParams['font.family'] = 'DeJavu Serif'
-    # plt.rcParams['font.serif'] = ['Times New Roman']
 
     # Create the figure and axes
-    fig, axes = plt.subplots(3, 1, figsize=fig_size, sharex=True, dpi=dpi)
+    fig, axes = plt.subplots(len(datasets.keys()), 1, figsize=fig_size, sharex=True, dpi=dpi)
+
+    if not isinstance(axes, np.ndarray):
+        axes = [axes]
 
     # Get number of samples per class (unavailable subgroup annotation) or per subgroup
     counts = []
-    for set_name in ['train', 'val', 'test']:
+    for set_name in datasets.keys():
         counts.append(np.unique(datasets[set_name].g, return_counts=True)[1])
 
-    # Plot each chart with the specified adjustments
-    for i in range(len(counts)):
-        plot_bar_with_percentage(axes[i], counts[i], titles[i])
+    # Plot each chart with percentages
+    set_name_dict = SET_NAME_DICT if set_name_dict is None else set_name_dict
+    for i, set_name in enumerate(datasets.keys()):
+        plot_bar_with_percentage(axes[i], counts[i], set_name_dict[set_name])
 
     # Set x-axis label
-    axes[2].set_xlabel('Subgroup', labelpad=20, fontsize=24)  # Renamed and moved down
-
-    # Remove x-ticks
-    for ax in axes:
-        ax.tick_params(axis='x', which='both', bottom=False, top=False, labelbottom=False)
-        ax.tick_params(axis='y', which='both', left=False, labelleft=False)  # Remove y-ticks
-        ax.grid(False)
+    if group_dict is not None:
+        axes[-1].tick_params(axis='x', which='both', labelbottom=True)
+        axes[-1].set_xticks(range(len(group_dict)))
+        axes[-1].set_xticklabels(group_dict.values(), fontsize=18)
 
     # Adjust layout for clarity
+    plt.suptitle(title, fontsize=22, weight='bold')
     plt.tight_layout()
-    plt.show()
 
 
 def show_examples(datasets, group_dict=None, set_name='val'):
@@ -445,7 +457,10 @@ def show_examples(datasets, group_dict=None, set_name='val'):
         img = UnNormalize()(img).permute(1, 2, 0).cpu().numpy()
         axes[i].imshow(img)
         axes[i].axis('off')
-        axes[i].set_title(group_dict[str(g)], fontsize=12)
+        if group_dict is not None:
+            axes[i].set_title(group_dict[str(g)], fontsize=18)
+    plt.suptitle(f'Examples of {SET_NAME_DICT[set_name]}', fontsize=22, weight='bold')
+    plt.tight_layout()
 
 
 class UnNormalize(object):

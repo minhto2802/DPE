@@ -124,16 +124,17 @@ def prob_metrics(targets, preds, label_set, return_arrays=False):
     return res
 
 
-def get_acc(preds, classes, groups):
+def get_acc(preds, classes, groups, verbose=True):
     acc = preds == classes
     acc_groups = []
     for g in np.unique(groups):
         cond = groups == g
         acc_groups.append(np.round(sum(acc[cond]) / len(acc[cond]), 3))
     avg_acc = sum(acc) / len(acc)
-    print(f'Avg ACC: {(sum(acc) / len(acc)):.3f}')
-    if len(acc_groups) < 20:
-        print(f'ACC per group: {acc_groups}')
+    if verbose:
+        print(f'Avg ACC: {(sum(acc) / len(acc)):.3f}')
+        if len(acc_groups) < 20:
+            print(f'ACC per group: {acc_groups}')
     return avg_acc, acc_groups
 
 

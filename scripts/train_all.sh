@@ -31,14 +31,14 @@
 #      --lr 1.e-3 \
 #      --no_augmentation
 
-sbatch ./scripts/train.sh \
-      --dataset_name Living17 \
-      --epochs 100 \
-      --no_augmentation
+#sbatch ./scripts/train.sh \
+#      --dataset_name Living17 \
+#      --epochs 100 \
+#      --no_augmentation
 
 sbatch ./scripts/train.sh \
       --dataset_name Living17 \
-      --epochs 100
+      --epochs 300
 
 sbatch ./scripts/train.sh \
       --dataset_name Living17 \

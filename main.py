@@ -205,7 +205,7 @@ def train_model(
         print('-' * 10)
 
         # Each epoch has a training and validation phase
-        for phase in ['train', 'val']:
+        for phase in ['train', 'val', 'test']:
             if (phase not in dataloaders.keys()) or (skipped_phase is not None and phase in skipped_phase):
                 continue
 
