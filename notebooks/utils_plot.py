@@ -386,13 +386,13 @@ def plot_bar_with_percentage(ax, data, title):
     # Define colors and textures
     textures = ['/', '/']  # Bars 1 & 2 have the same texture
     textures2 = ['\\', '\\']  # Bars 3 & 4 have the same texture
-    colors = ['#2596be', '#eab676']  # Land and Water colors
+    colors = ['#eab676', '#2596be']  # Land and Water colors
 
     total = sum(data)
     for i, (value, texture, color) in enumerate(
             zip(data, textures + textures2, [colors[0], colors[1], colors[0], colors[1]])
     ):
-        bar = ax.bar(labels[i], value, hatch=texture, color=color, edgecolor='black')
+        bar = ax.bar(labels[i], value, hatch=texture, color=color, edgecolor='black', width=0.5)
         # Add value and percentage label
         percentage_text = f"{value} ({value / total * 100:.1f}%)"
         ax.text(
@@ -440,7 +440,7 @@ def plot_distributions(datasets, group_dict=None, fig_size=(12, 6), dpi=150,
     if group_dict is not None:
         axes[-1].tick_params(axis='x', which='both', labelbottom=True)
         axes[-1].set_xticks(range(len(group_dict)))
-        axes[-1].set_xticklabels(group_dict.values(), fontsize=18)
+        axes[-1].set_xticklabels(group_dict.values(), fontsize=16)
 
     # Adjust layout for clarity
     plt.suptitle(title, fontsize=22, weight='bold')
@@ -532,3 +532,27 @@ def dict_to_df(_metrics):
         }))
     _df = pd.concat(_df)
     return _df
+
+
+def show_erm_per_group_accuracy(results, groups_dict, dataset_name='Waterbirds'):
+    """
+    Plot the per-group accuracy for the ERM model.
+    :param results: the last output of the function eval_metrics()
+    :param groups_dict:
+    :param dataset_name:
+    :return:
+    """
+    df_erm = pd.DataFrame(
+        {'Accuracy': [np.round(results['per_group'][k]['accuracy'] * 100) for k in groups_dict.keys()]})
+    df_erm['Group'] = [groups_dict[k] for k in groups_dict.keys()]
+    _, ax = plt.subplots(figsize=(8, 2), dpi=200)
+    sns.barplot(df_erm, x='Group', y='Accuracy', palette=sns.color_palette('Blues', len(df_erm['Group'].unique())),
+                hue='Group', width=0.5)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+    ax.set_ylabel('Accuracy (%)', fontsize=12)
+    ax.set_ylim(60, 101)
+    ax.set_xlabel('')
+    ax.set_yticks(range(60, 101, 10))
+    ax.grid(True, which='major', linestyle='--', linewidth=0.5, alpha=0.7, axis='y')
+    plt.title(f'ERM Per Group Accuracy on {dataset_name} Test Set', fontsize=12, weight='bold')
