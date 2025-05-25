@@ -44,7 +44,7 @@ def plot_voronoi_extended(vor, ax, xlim, ylim):
 
 
 def plot_voronoi(prototypes, distance_scale, X, y, resolution=500, x_range=(-0.15, 0.15),
-                 y_range=(-0.12, 0.12), num_classes=2, set_name='Training', note=''):
+                 y_range=(-0.125, 0.125), num_classes=2, set_name='Training', note=''):
     """
     Plots a Voronoi diagram where the color represents the distance from each point in the grid
     to the nearest prototype.
