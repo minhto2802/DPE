@@ -211,8 +211,6 @@ ablation studies, refer to the [Notebooks](#notebooks) section.
 
 # Results
 
--------------------------
-
 Worst-group accuracy on datasets **without subgroup annotations**:
 
 | Algorithm         | Waterbirds | CelebA   | CivilComments | MultiNLI | MetaShift | CheXpert | ImageNetBG | NICO++   | Living17 |
