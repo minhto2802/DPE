@@ -5,7 +5,7 @@
 ---
 
 Overview
-===
+========
 
 This repository contains the official implementation and experiments for our ICML 2025 paper:  
 **Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**  
@@ -13,11 +13,13 @@ Project summary site: https://minhto2802.github.io/diversified_prototypical_ense
 
 We propose a simple and scalable approach for improving model robustness under subpopulation shift, without relying on
 explicit group annotations. The method builds on the intuition that diverse classifiers trained on different parts of
-the data distribution can complement one another, especially when subgroups are not well represented in training.
+the data distribution can complement one another, especially when subgroup annotation is available for training.
 
 Our approach combines a pretrained backbone with a *diversified ensemble of prototype-based classifiers*, each trained
 on a different balanced subset of data. Diversity among ensemble members is further encouraged via an inter-prototype
 similarity loss, resulting in broader coverage and better generalization to underrepresented subgroups.
+We evaluate DPE on 9 real-world datasets, covering four types of subpopulation shift scenarios: *Spurious Correlations*,
+*Attribute Imbalance*, *Class Imbalance*, and *Attribute Generalization*.
 
 The training pipeline includes:
 
@@ -65,7 +67,21 @@ This section provides the steps and configuration details needed to reproduce th
 
 ---
 
-## 1. Quickstart
+## Data Preparation
+
+We follow the dataset setup instructions from [SubpopBench](https://github.com/YyzHarry/SubpopBench), which provides
+scripts and guidelines for preparing all datasets used in our experiments (e.g., Waterbirds, CelebA, MetaShift,
+MultiNLI).
+
+To prepare the data:
+
+1. Follow the instructions in the SubpopBench repository to download and preprocess each dataset.
+2. Make sure the processed datasets are stored under a common root directory (e.g., `/datasets`).
+3. Set `--data_dir` to this root directory when running the training scripts.
+
+---
+
+## Quickstart
 
 ### Stage-0 Training (ERM)
 
@@ -92,7 +108,7 @@ python main.py \
   --ckpt_dir /checkpoint \
   --loss_name isomax \
   --stage 1 \
-  --num_stage 16 \
+  --num_stages 16 \
   --epochs 20 \
   --cov_reg 1.e5 \
   --batch-size 64 \
@@ -101,9 +117,10 @@ python main.py \
   --train_attr yes \
   --train_mode freeze \
   --subsample_type group \
+  --ensemble_criterion wga_val \
+  --entropic_scale 20 \
   -ncbt \
   -sit \
-  -es 20
 ```
 
 ### Launch All Predefined Jobs
@@ -117,7 +134,7 @@ sbatch scripts/train_all_pe.sh
 
 ---
 
-## 2. Key Arguments
+## Key Arguments
 
 ### General
 
@@ -135,17 +152,19 @@ sbatch scripts/train_all_pe.sh
 
 - `--stage 1`
 - `--pretrained_path`: path to Stage-0 model checkpoint
-- `--num_stage`: number of ensemble heads (default: 16)
+- `--num_stages`: number of ensemble heads (default: 16)
 - `--cov_reg`: strength of inter-prototype similarity penalty
 - `--subsample_type`: `group` (if `--train_attr yes`) or `class` (if `--train_attr no`)
 - `--entropic_scale`: IsoMax temperature scaling factor
 - `--train_mode freeze`: freeze backbone, train only prototypes
 - `-ncbt`: disables class-balanced batch construction
 - `-sit`: enables data shuffling at each epoch
+- `--ensemble_criterion`: ensemble member selection criterion (e.g. `val_wga`: based on the best worst group accuracy on
+  the validation set)
 
 ---
 
-## 3. Training Tips
+## Training Tips
 
 - **Metric Logging**: W&B logs all ensemble-level metrics under the `ensemble_` prefix, such as
   `ensemble_worst_group_acc`.
@@ -163,7 +182,7 @@ sbatch scripts/train_all_pe.sh
 
 ---
 
-## 4. Expected Outputs
+## Expected Outputs
 
 ### Stage-0
 
