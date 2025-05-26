@@ -20,7 +20,7 @@ The training pipeline includes:
 - **Stage-0**: Supervised backbone pretraining using ERM loss.
 - **Stage-1+**: Training multiple prototype classifiers on resampled subsets to form an ensemble.
 
-> This framework is designed to be flexible and applicable in both with and without subgroup annotation.
+> This framework is designed to be flexible and applicable in both with and without subgroup annotation scenarios.
 
 
 ---
