@@ -103,17 +103,17 @@ seed=0
 #      --seed 0 \
 #      $@ # 13620512
 #
-sbatch ./scripts/train_pe.sh \
-      --dataset_name MultiNLI \
-      --epochs 20 \
-      --batch_size 256 \
-      --pretrained_path $S_DIR/MultiNLI/*/${CKPT_NAME}.pt \
-      --cov_reg 5.e6 \
-      --wd_weight 10 \
-      --lr 1.e-4 \
-      -es 30 \
-      --seed ${seed} \
-      $@
+#sbatch ./scripts/train_pe.sh \
+#      --dataset_name MultiNLI \
+#      --epochs 20 \
+#      --batch_size 256 \
+#      --pretrained_path $S_DIR/MultiNLI/*/${CKPT_NAME}.pt \
+#      --cov_reg 5.e6 \
+#      --wd_weight 10 \
+#      --lr 1.e-4 \
+#      -es 30 \
+#      --seed ${seed} \
+#      $@
 #sbatch ./scripts/train_pe.sh \
 #      --dataset_name CivilCommentsFine \
 #      --pretrained_path $S_DIR/CivilCommentsFine/*/${CKPT_NAME}.pt \

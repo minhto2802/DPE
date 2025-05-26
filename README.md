@@ -5,15 +5,19 @@
 ---
 
 Overview
-========
+===
 
 This repository contains the official implementation and experiments for our ICML 2025 paper:  
 **Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**  
 Project summary site: https://minhto2802.github.io/diversified_prototypical_ensemble
 
-We propose a simple and scalable approach for improving model robustness under subpopulation shift, without relying on explicit group annotations. The method builds on the intuition that diverse classifiers trained on different parts of the data distribution can complement one another, especially when subgroups are not well represented in training.
+We propose a simple and scalable approach for improving model robustness under subpopulation shift, without relying on
+explicit group annotations. The method builds on the intuition that diverse classifiers trained on different parts of
+the data distribution can complement one another, especially when subgroups are not well represented in training.
 
-Our approach combines a pretrained backbone with a *diversified ensemble of prototype-based classifiers*, each trained on a different balanced subset of data. Diversity among ensemble members is further encouraged via an inter-prototype similarity loss, resulting in broader coverage and better generalization to underrepresented subgroups.
+Our approach combines a pretrained backbone with a *diversified ensemble of prototype-based classifiers*, each trained
+on a different balanced subset of data. Diversity among ensemble members is further encouraged via an inter-prototype
+similarity loss, resulting in broader coverage and better generalization to underrepresented subgroups.
 
 The training pipeline includes:
 
@@ -26,61 +30,85 @@ The training pipeline includes:
 ---
 
 Notebooks
-=============================
+===
 
-We provide a collection of Jupyter notebooks under the [`notebooks/`](notebooks/) directory to illustrate key components of Diverse Prototypical Ensembles (DPE) through visualization, controlled experiments, and ablation studies. These notebooks provide a walkthrough of the motivation and implementation of our method as described in the paper, demonstrated on two standard benchmark datasets.
+We provide a collection of Jupyter notebooks under the [`notebooks/`](notebooks/) directory to illustrate key components
+of Diverse Prototypical Ensembles (DPE) through visualization, controlled experiments, and ablation studies. These
+notebooks provide a walkthrough of the motivation and implementation of our method as described in the paper,
+demonstrated on two standard benchmark datasets.
 
 - **[`00_synthetic.ipynb`](notebooks/00_synthetic.ipynb)**  
   A 2D synthetic experiment that simulates subpopulation shift under controlled conditions.  
-  This notebook visualizes the limitations of standard classifiers trained on imbalanced subgroups and demonstrates how DPE achieves better coverage and robustness through diversified prototype ensembles.
+  This notebook visualizes the limitations of standard classifiers trained on imbalanced subgroups and demonstrates how
+  DPE achieves better coverage and robustness through diversified prototype ensembles.
 
 - **[`01_waterbirds_with_attribute_annotation.ipynb`](notebooks/01_waterbirds_with_attribute_annotation.ipynb)**  
   Full pipeline demonstration of DPE on the Waterbirds dataset, using group-annotated validation data.  
-  This notebook highlights the effectiveness of training diverse classifiers on balanced group subsets, and evaluates per-group accuracy improvements over the ERM baseline.
+  This notebook highlights the effectiveness of training diverse classifiers on balanced group subsets, and evaluates
+  per-group accuracy improvements over the ERM baseline.
 
 - **[`02_celeba_without_attribute_annotation.ipynb`](notebooks/02_celeba_without_attribute_annotation.ipynb)**  
   Application of DPE to the CelebA dataset in a more realistic setting where subgroup labels are not available.  
-  It shows that even without group supervision, DPE outperforms strong baselines such as Deep Feature Reweighting (DFR) in worst-group accuracy. The notebook also illustrates that increasing the number of DFR heads does not further improve fairness, while DPE consistently improves both robustness and subgroup equity.
+  It shows that even without group supervision, DPE outperforms strong baselines such as Deep Feature Reweighting (DFR)
+  in worst-group accuracy. The notebook also illustrates that increasing the number of DFR heads does not further
+  improve fairness, while DPE consistently improves both robustness and subgroup equity.
 
-> Each notebook is self-contained and can be executed independently. These examples serve as a foundation for adapting DPE to other datasets and deployment scenarios.
+> Each notebook is self-contained and can be executed independently. These examples serve as a foundation for adapting
+> DPE to other datasets and deployment scenarios.
 
+---
 
 Reproducing the Paper Results
 =============================
 
-This section provides all the steps and configuration options needed to reproduce the experiments from our ICML 2025 paper.
+This section provides the steps and configuration details needed to reproduce the experiments from our ICML 2025 paper.
 
 ---
 
 ## 1. Quickstart
 
-### Stage-0 training (ERM)
+### Stage-0 Training (ERM)
 
-Run the following to train a supervised backbone from scratch:
-
-```
-sbatch scripts/train.sh \
-    --dataset_name Waterbirds \
-    --model_name resnet152 \
-    --epochs 400
-```
-
-### Stage-1+ training (Diversified Prototypes)
-
-Once Stage-0 is complete, launch the prototype ensemble training using the pretrained backbone:
+To fine-tune an ImageNet-pretrained ResNet-50 on the MetaShift dataset (located at `/datasets/metashift`), run:
 
 ```
-sbatch scripts/train_pe.sh \
-    --dataset_name Waterbirds \
-    --pretrained_path /scratch/.../Waterbirds/*/ckpt_last.pt \
-    --epochs 20 \
-    --lr 1e-3 \
-    --cov_reg 1e5
+python main.py \
+  --epochs 100 \
+  --loss_name ce \
+  --dataset_name MetaShift \
+  --pretrained_imgnet \
+  --ckpt_dir /checkpoint/ \
+  --data_dir /datasets
 ```
 
-### Launch All Jobs (Predefined Datasets)
+### Stage-1+ Training (Diversified Prototypes)
 
-To run all supported configurations:
+Once Stage-0 is complete, initiate prototype ensemble training using the pretrained backbone:
+
+```
+python main.py \
+  --dataset_name MetaShift \
+  --pretrained_path /checkpoint/ckpt_last.pt \
+  --ckpt_dir /checkpoint \
+  --loss_name isomax \
+  --stage 1 \
+  --num_stage 16 \
+  --epochs 20 \
+  --cov_reg 1.e5 \
+  --batch-size 64 \
+  --optim sgd \
+  --lr 1.e-3 \
+  --train_attr yes \
+  --train_mode freeze \
+  --subsample_type group \
+  -ncbt \
+  -sit \
+  -es 20
+```
+
+### Launch All Predefined Jobs
+
+To run all supported configurations for available datasets:
 
 ```
 sbatch scripts/train_all.sh
@@ -93,44 +121,45 @@ sbatch scripts/train_all_pe.sh
 
 ### General
 
-- `--dataset_name`: Waterbirds, CelebA, MultiNLI, etc.
-- `--model_name`: resnet50, bert-base-uncased
-- `--epochs`, `--lr`: training schedule and learning rate
-- `--seed`: for reproducibility
+- `--dataset_name`: e.g., Waterbirds, CelebA, MultiNLI, MetaShift
+- `--model_name`: e.g., resnet50, bert-base-uncased
+- `--epochs`, `--lr`: controls training length and learning rate
+- `--seed`: sets random seed for reproducibility
 
 ### Stage-0
 
-- `--loss_name`: `ce` (default) or `isomax`
+- `--loss_name`: `ce` (default)
 - `--train_mode`: `full` (default) or `freeze`
 
 ### Stage-1+
 
 - `--stage 1`
-- `--pretrained_path`: path to checkpoint from Stage-0
-- `--num_stage`: number of ensemble members (default: 16)
-- `--cov_reg`: strength of prototype decorrelation regularization
-- `--subsample_type`: `group` or `class` (balanced subset type)
-- `--entropic_scale`: IsoMax hyperparameter
-- `--train_mode freeze`: linear probing (recommended for Stage-1+)
-- `-ncbt`: disable class-balanced training
-- `-sit`: shuffle training samples at each epoch
+- `--pretrained_path`: path to Stage-0 model checkpoint
+- `--num_stage`: number of ensemble heads (default: 16)
+- `--cov_reg`: strength of inter-prototype similarity penalty
+- `--subsample_type`: `group` (if `--train_attr yes`) or `class` (if `--train_attr no`)
+- `--entropic_scale`: IsoMax temperature scaling factor
+- `--train_mode freeze`: freeze backbone, train only prototypes
+- `-ncbt`: disables class-balanced batch construction
+- `-sit`: enables data shuffling at each epoch
 
 ---
 
 ## 3. Training Tips
 
-- **Monitoring**: In W&B, relevant metrics are logged under keys prefixed with `ensemble_` (e.g., `ensemble_worst_group_acc`).
-- **Prototype Regularization**: Tune `--cov_reg` in the range [1e4, 1e6] to control prototype diversity.
-- **IsoMax Scaling**: Typical `--entropic_scale` values are between 10 and 40 depending on the dataset.
-- **Sampling Behavior**:
-  - `--subsample_type group` (with `--train_attribute yes`) performs subgroup-balanced sampling.
-  - `--subsample_type class` (or `--train_attribute no`) performs class-balanced sampling.
-- **Epochs**: Stage-1+ typically benefits from 15–30 epochs of training.
-- **Artifacts**:
-  - Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
-  - Logs: `logs/<jobname>.<id>.log`
-  - W&B grouping: controlled via `--wdb_group`
-- **Debug Mode**: Use `--no_wandb` to disable Weights & Biases logging.
+- **Metric Logging**: W&B logs all ensemble-level metrics under the `ensemble_` prefix, such as
+  `ensemble_worst_group_acc`.
+- **Covariance Regularization**: Tune `--cov_reg` between 1e4 and 1e6 to control prototype diversity.
+- **IsoMax Temperature**: Use `--entropic_scale` between 10 and 40 depending on dataset.
+- **Balanced Sampling**:
+    - `--subsample_type group` ensures subgroup-balanced training when `--train_attr yes`.
+    - `--subsample_type class` enables class-balanced sampling when `--train_attr no`.
+- **Training Schedule**:
+    - Stage-1+ typically converges within 15–30 epochs.
+- **Output Directory Layout**:
+    - Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
+    - Logs: `logs/<jobname>.<id>.log`
+- **Disabling W&B**: Use `--no_wandb` to turn off logging for debugging.
 
 ---
 
@@ -138,22 +167,31 @@ sbatch scripts/train_all_pe.sh
 
 ### Stage-0
 
-- `ckpt_best_acc.pt`, `ckpt_best_bal_acc.pt`, `ckpt_last.pt` (used in ensemble training)
-- `feats_val.npy`, `feats_test.npy` (optional feature dumps)
+- Model checkpoints:  
+  `ckpt_best_acc.pt`, `ckpt_best_bal_acc.pt`, `ckpt_last.pt`
+- Optional feature dumps:  
+  `feats_val.npy`, `feats_test.npy`
 
 ### Stage-1+
 
-- `prototype_ensemble_<criterion>.pt` (criterion can be `wga_val`, `last`, etc.)
-- `dist_scales_<criterion>.pt` (corresponding distance scale parameters)
-- Precomputed embeddings (automatically saved to `--ckpt_dir`)
-- W&B logs (if enabled)
+- Prototype ensembles:  
+  `prototype_ensemble_<criterion>.pt`
+- Distance scale parameters:  
+  `dist_scales_<criterion>.pt`
+- Precomputed embeddings:  
+  Auto-saved to the directory specified by `--ckpt_dir`
+- Logs and visualizations (if W&B is enabled)
 
 ---
 
-These steps and configurations are consistent with the results reported in our ICML 2025 submission. For further illustration and qualitative experiments, see the [Notebooks](#notebooks) section.
+These instructions match the setup used to produce results in our ICML 2025 paper. For additional visual analysis and
+ablation studies, refer to the [Notebooks](#notebooks) section.
 
 
-Results
+---
+
+# Results
+
 -------------------------
 
 Worst-group accuracy on datasets **without subgroup annotations**:
@@ -194,7 +232,8 @@ Citation
 Acknowledgements
 ----------------
 
-Much of the training and evaluation infrastructure in this repository was adapted from: https://github.com/YyzHarry/SubpopBench  
+Much of the training and evaluation infrastructure in this repository was adapted
+from: https://github.com/YyzHarry/SubpopBench  
 IsoMax loss function implementation was provided by https://github.com/dlmacedo/entropic-out-of-distribution-detection
 
 We thank the authors for releasing their well-organized benchmark and codebase.

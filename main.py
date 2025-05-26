@@ -53,7 +53,7 @@ def get_args():
     parser.add_argument('--num_samples', type=int, default=None, help='Total number of training samples to use.')
 
     parser.add_argument('-ncbt', '--no_class_balanced_training', action='store_true',
-                        help='Disable class-balanced training.')
+                        help='Disable class-balanced batch in training (default for stage 1).')
     parser.add_argument('--no_augmentation', action='store_true', help='Disable data augmentation.')
     parser.add_argument('--dynamic_num_samples', action='store_true', help='Enable dynamic sampling per epoch.')
     parser.add_argument('-sit', '--shuffle_in_training', action='store_true', help='Shuffle data in training set.')
@@ -64,7 +64,8 @@ def get_args():
     parser.add_argument('--data_dir', type=str, default='/scratch/ssd004/scratch/minht/datasets',
                         help='Root directory for dataset.')
     parser.add_argument('--text_arch', type=str, default='bert-base-uncased', help='Text architecture for NLP tasks.')
-    parser.add_argument('--subsample_type', type=str, default=None, help='Subsampling strategy to use.')
+    parser.add_argument('--subsample_type', type=str, default=None, help='Subsampling strategy to use.',
+                        choices=[None, 'group'])
     parser.add_argument('--eval_freq', type=int, default=1, help='Evaluation frequency (in epochs).')
     parser.add_argument('--fix_training_set', action='store_true', help='Fix training set across ensemble stages.')
 
@@ -553,7 +554,7 @@ def main(args):
 
     pprint.PrettyPrinter(indent=4).pprint(args.as_dict())
 
-    fix_random_seed(args.seed, True, True)
+    fix_random_seed(args.seed, True, False)
     prototype_ensemble = None
 
     pretrained_path = args.pretrained_path
