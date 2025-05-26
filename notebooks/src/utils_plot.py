@@ -501,7 +501,7 @@ def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False,
 
     if show_legend:
         fig = ax.get_figure()
-        plt.suptitle(f'Performance on {dataset_name} Dataset', weight='bold', fontsize=18)
+        plt.suptitle(f'Ensemble Performance on {dataset_name}', weight='bold', fontsize=18)
 
         # Extract handles and labels from one axis
         handles, labels = ax.get_legend_handles_labels()
