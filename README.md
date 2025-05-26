@@ -54,7 +54,7 @@ This section provides all the steps and configuration options needed to reproduc
 
 ## 1. Quickstart
 
-### Stage-0 training (ERM or IsoMax)
+### Stage-0 training (ERM)
 
 Run the following to train a supervised backbone from scratch:
 
