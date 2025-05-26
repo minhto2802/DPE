@@ -480,7 +480,7 @@ class UnNormalize(object):
         return tensor
 
 
-def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False):
+def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False, dataset_name='Waterbirds'):
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5), dpi=150)
     _ = sns.lineplot(
@@ -501,7 +501,7 @@ def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False)
 
     if show_legend:
         fig = ax.get_figure()
-        plt.suptitle(f'Performance on Waterbirds Dataset', weight='bold', fontsize=18)
+        plt.suptitle(f'Performance on {dataset_name} Dataset', weight='bold', fontsize=18)
 
         # Extract handles and labels from one axis
         handles, labels = ax.get_legend_handles_labels()
