@@ -65,8 +65,6 @@ Reproducing the Paper Results
 
 This section provides the steps and configuration details needed to reproduce the experiments from our ICML 2025 paper.
 
----
-
 ## Data Preparation
 
 We follow the dataset setup instructions from [SubpopBench](https://github.com/YyzHarry/SubpopBench), which provides
@@ -78,8 +76,6 @@ To prepare the data:
 1. Follow the instructions in the SubpopBench repository to download and preprocess each dataset.
 2. Make sure the processed datasets are stored under a common root directory (e.g., `/datasets`).
 3. Set `--data_dir` to this root directory when running the training scripts.
-
----
 
 ## Quickstart
 
@@ -132,8 +128,6 @@ sbatch scripts/train_all.sh
 sbatch scripts/train_all_pe.sh
 ```
 
----
-
 ## Key Arguments
 
 ### General
@@ -162,8 +156,6 @@ sbatch scripts/train_all_pe.sh
 - `--ensemble_criterion`: ensemble member selection criterion (e.g. `val_wga`: based on the best worst group accuracy on
   the validation set)
 
----
-
 ## Training Tips
 
 - **Metric Logging**: W&B logs all ensemble-level metrics under the `ensemble_` prefix, such as
@@ -179,8 +171,6 @@ sbatch scripts/train_all_pe.sh
     - Checkpoints: `/checkpoint/$USER/$SLURM_JOB_ID/ckpt_*.pt`
     - Logs: `logs/<jobname>.<id>.log`
 - **Disabling W&B**: Use `--no_wandb` to turn off logging for debugging.
-
----
 
 ## Expected Outputs
 
@@ -203,7 +193,7 @@ sbatch scripts/train_all_pe.sh
 
 ---
 
-These instructions match the setup used to produce results in our ICML 2025 paper. For additional visual analysis and
+> These instructions match the setup used to produce results in our ICML 2025 paper. For additional visual analysis and
 ablation studies, refer to the [Notebooks](#notebooks) section.
 
 
