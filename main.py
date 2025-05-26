@@ -238,7 +238,6 @@ def train_model(
                         if phase == 'train':
                             head = model[-1]
                             if isinstance(criterion, IsoMaxPlusLossSecondPart):
-                                n_classes = head.prototypes.shape[0]
                                 wd = torch.einsum('ijk,ilk->ijl',
                                                   [head.prototypes[:, None],
                                                    head.prototypes[:, None]]) * wd_weight

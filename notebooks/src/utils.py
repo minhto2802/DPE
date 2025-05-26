@@ -15,72 +15,229 @@ from utils.isomaxplus import IsoMaxPlusLossFirstPart, IsoMaxPlusLossSecondPart
 
 
 def get_pre_extracted_features(ckpt_dir: str, set_name: str) -> np.ndarray:
+    """
+    Load and normalize pre-extracted feature representations from disk.
+
+    Parameters
+    ----------
+    ckpt_dir : str
+        Path to the checkpoint directory where feature files are stored.
+    set_name : str
+        Name of the dataset split (e.g., 'train', 'val', 'test').
+
+    Returns
+    -------
+    np.ndarray
+        A (num_samples, feature_dim) array of L2-normalized features.
+    """
+    # Load memory-mapped .npy file for efficient access without full RAM loading.
     pre_extracted_feats = np.load(f'{ckpt_dir}/feats_{set_name}.npy', mmap_mode='r')
+
+    # Normalize each feature vector to zero mean and unit variance (per sample).
     pre_extracted_feats = ((pre_extracted_feats - pre_extracted_feats.mean(axis=1, keepdims=True)) /
                            pre_extracted_feats.std(axis=1, keepdims=True))
+
     return pre_extracted_feats
 
 
 def init_erm_model(ckpt_path, num_classes=2, device='cuda', model=None):
+    """
+    Initialize a pretrained ResNet50 model as an ERM backbone for feature extraction or inference.
+
+    Parameters
+    ----------
+    ckpt_path : str
+        Path to the saved model checkpoint (.pt or .pth file).
+    num_classes : int
+        Number of output classes. Default is 2 for binary classification.
+    device : str
+        Device identifier ('cuda' or 'cpu').
+    model : Optional[torch.nn.Module]
+        If provided, modifies the final classification head to match `num_classes`.
+
+    Returns
+    -------
+    model : torch.nn.Module
+        A sequential model with backbone, flattening, and classification head.
+    """
     if model is None:
+        # Load checkpoint and initialize a fresh ResNet50 base.
         ckpt = torch.load(ckpt_path, map_location="cpu")
         model = torchvision.models.resnet50()
+
+        # Remove the final classification layer to obtain the backbone.
         backbone = torch.nn.Sequential(*list(model.children())[:-1])
         emb_dim = model.fc.in_features
+
+        # Define a new classification head for the desired number of classes.
         head = nn.Linear(emb_dim, num_classes)
 
+        # Compose the full model: [backbone -> flatten -> linear head]
         model = nn.Sequential(backbone, nn.Flatten(), head)
+
+        # Load pretrained weights (including the new head, if present in ckpt).
         model.load_state_dict(ckpt, strict=True)
+
+        # Store embedding dimension for downstream use (e.g., prototype head).
         model.emb_dim = emb_dim
     else:
+        # If a model is passed, replace the head to match new num_classes.
         assert hasattr(model, "emb_dim")
         model[-1] = nn.Linear(model.emb_dim, num_classes)
+
+    # Move to specified device for inference or training.
     model.to(device)
     return model
 
 
+
 def evaluate(model, eval_loader, device='cuda'):
+    """
+    Evaluate the final classification head of a model on pre-extracted features.
+
+    Parameters
+    ----------
+    model : torch.nn.Module
+        A model with the last layer being a classifier (typically the prototype or linear head).
+    eval_loader : DataLoader
+        A PyTorch DataLoader over pre-extracted feature tensors (not raw images).
+    device : str
+        Device to run inference on. Defaults to 'cuda'.
+
+    Returns
+    -------
+    dict
+        A dictionary of performance metrics including accuracy per group, class, and attribute,
+        as computed by `eval_metrics()`.
+    """
     ds = eval_loader.dataset
     classes, attributes, groups = np.array(ds.y), np.array(ds._a), np.array(ds.g)
+
     model.eval()
     all_preds = []
+
     with torch.no_grad():
         for *_, feats in eval_loader:
             feats = feats.to(device)
-            outputs = model[-1](feats)
+            outputs = model[-1](feats)  # Assume model is [backbone, ..., head]; use head only
             all_preds.append(outputs.detach().softmax(1).cpu())
+
         all_preds = torch.concat(all_preds, dim=0).numpy()
+
+        # Compute per-group/class metrics
         res = eval_metrics(all_preds, np.array(classes), np.array(attributes), np.array(groups))
+
     return res
 
 
 def get_subsampled_train_set(
         datasets=None,
         data_dir='/scratch/ssd004/scratch/minht/datasets/',
-        attr_availability='yes', subsample_type='group',
+        attr_availability='yes',
+        subsample_type='group',
         dataset_name='Waterbirds',
         trn_split='va',
 ):
+    """
+    Initialize a subgroup-balanced or attribute-balanced training dataset.
+
+    Parameters
+    ----------
+    datasets : dict or None
+        A dictionary of pre-loaded datasets. If None, a new dict is created.
+    data_dir : str
+        Root directory of all datasets.
+    attr_availability : str
+        One of {'yes', 'no'}. Determines whether attribute information is used in subsampling.
+    subsample_type : str
+        Strategy for subsampling (e.g., 'group', 'none').
+    dataset_name : str
+        Dataset class name from `utils.datasets` (e.g., 'Waterbirds', 'CelebA').
+    trn_split : str
+        Data split to use for training (e.g., 'va' for validation-as-training).
+
+    Returns
+    -------
+    dict
+        Updated `datasets` dictionary including the subsampled 'train' split.
+    """
     if datasets is None:
         pre_extracted_feats = None
         datasets = {}
     else:
         pre_extracted_feats = datasets['val'].feats
+
     datasets['train'] = vars(dsets)[dataset_name](
-        data_dir, trn_split, None, train_attr=attr_availability, subsample_type=subsample_type,
-        pre_extracted_feats=pre_extracted_feats)
+        data_dir, trn_split, None,
+        train_attr=attr_availability,
+        subsample_type=subsample_type,
+        pre_extracted_feats=pre_extracted_feats,
+    )
+
     return datasets
 
 
+
 def get_train_loader(datasets, attr_availability='yes', batch_size=256, workers=8, dataset_name='Waterbirds'):
-    datasets = get_subsampled_train_set(datasets, attr_availability=attr_availability, dataset_name=dataset_name)
-    train_loader = DataLoader(datasets['train'], batch_size=batch_size, drop_last=True, shuffle=True,
-                              num_workers=workers, pin_memory=False)
+    """
+    Construct a PyTorch DataLoader for training with subsampled training data.
+
+    Parameters
+    ----------
+    datasets : dict
+        Dictionary of dataset splits (expects at least 'val', and will create 'train').
+    attr_availability : str
+        Whether to use attribute annotations for balancing ('yes' or 'no').
+    batch_size : int
+        Batch size for training.
+    workers : int
+        Number of parallel DataLoader workers.
+    dataset_name : str
+        Name of the dataset class (e.g., 'Waterbirds').
+
+    Returns
+    -------
+    DataLoader
+        A PyTorch DataLoader for the 'train' subset.
+    """
+    datasets = get_subsampled_train_set(
+        datasets,
+        attr_availability=attr_availability,
+        dataset_name=dataset_name
+    )
+
+    train_loader = DataLoader(
+        datasets['train'],
+        batch_size=batch_size,
+        drop_last=True,
+        shuffle=True,
+        num_workers=workers,
+        pin_memory=False
+    )
+
     return train_loader
 
 
 def init_model(ckpt_path, num_classes=2, model=None, device='cuda'):
-    """The backbone is frozen so we only load it once"""
+    """
+    Initialize or modify a ResNet-50 model with IsoMax+ classification head.
+
+    Parameters
+    ----------
+    ckpt_path : str
+        Path to the checkpoint file containing pretrained weights.
+    num_classes : int
+        Number of output classes.
+    model : torch.nn.Module or None
+        If None, a new model is initialized; otherwise, final layer is replaced.
+    device : str
+        Device to move model to.
+
+    Returns
+    -------
+    torch.nn.Module
+        A ResNet-50 backbone with a distance-based IsoMaxPlusLossFirstPart head.
+    """
     if model is None:
         ckpt = torch.load(ckpt_path, map_location="cpu")
         model = torchvision.models.resnet50()
@@ -99,8 +256,45 @@ def init_model(ckpt_path, num_classes=2, model=None, device='cuda'):
 
 
 def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
-                     epochs=20, cov_reg=5e5, wd_weight=10, device='cuda', entropic=30, lr=1e-3, stage=1, verbose=True,
-                     loss_name='isomax'):
+                     epochs=20, cov_reg=5e5, wd_weight=10, device='cuda',
+                     entropic=30, lr=1e-3, stage=1, verbose=True, loss_name='isomax'):
+    """
+    Train a single prototype head using supervised data and optionally diversify from previous heads.
+
+    Parameters
+    ----------
+    train_loader : DataLoader
+        Loader for training samples (features only).
+    val_loader : DataLoader
+        Loader for validation data (used to select best prototype).
+    model : torch.nn.Module
+        Backbone + prototype classifier head.
+    prototype_ensemble : list of tuple
+        List of previous prototype tensors and distance scales.
+    epochs : int
+        Number of training epochs.
+    cov_reg : float
+        Weight on the covariance regularization term for inter-prototype diversity.
+    wd_weight : float
+        Weight decay multiplier for L2 penalty on prototypes.
+    device : str
+        CUDA or CPU device identifier.
+    entropic : float
+        Entropic scale parameter for IsoMax loss.
+    lr : float
+        Learning rate for SGD.
+    stage : int
+        Current stage in ensemble construction.
+    verbose : bool
+        Whether to show tqdm and metrics.
+    loss_name : str
+        Either 'isomax' or 'ce'.
+
+    Returns
+    -------
+    tuple
+        Best prototype head: (prototypes, distance_scale) for IsoMax or (weights, bias) for CE.
+    """
     best_val_wga, val_wga = 0.0, 0.0
     best_val_wga_prototype = None
 
@@ -181,6 +375,23 @@ def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
 
 
 def cov_reg_scheduler_inv(cov_reg, num_stages, alpha=0.05):
+    """
+    Construct a decreasing schedule for the covariance regularization coefficient.
+
+    Parameters
+    ----------
+    cov_reg : float
+        Initial regularization strength.
+    num_stages : int
+        Number of ensemble stages.
+    alpha : float
+        Decay rate for inverse schedule.
+
+    Returns
+    -------
+    function
+        A callable that maps `stage` to regularization weight.
+    """
     scheduler = [cov_reg / (1 + alpha * _) for _ in range(num_stages)]
     scheduler = [cov_reg] + scheduler
 
@@ -195,6 +406,45 @@ def train_ensemble(init_model_func, datasets, dataloaders, init_train_loader,
                    cov_reg=5e5, random_subset=True,
                    num_stages=15, show_freq=15, seed=0, epochs=20,
                    wd_weight=10, entropic=30, lr=1e-3, loss_name='isomax'):
+    """
+    Full ensemble training loop for Diversified Prototypical Ensemble (DPE).
+
+    Parameters
+    ----------
+    init_model_func : Callable
+        Function to initialize or modify model.
+    datasets : dict
+        Dataset splits for train/val/test.
+    dataloaders : dict
+        Dataloaders for validation and test.
+    init_train_loader : Callable
+        Function to generate train DataLoader.
+    cov_reg : float
+        Initial covariance regularization weight.
+    random_subset : bool
+        Whether to randomly resample training data at each stage.
+    num_stages : int
+        Number of prototype ensemble members to train.
+    show_freq : int
+        How often to display training progress.
+    seed : int
+        Random seed.
+    epochs : int
+        Epochs per stage.
+    wd_weight : float
+        Prototype norm regularization weight.
+    entropic : float
+        IsoMax entropic scale.
+    lr : float
+        Learning rate.
+    loss_name : str
+        Either 'isomax' or 'ce'.
+
+    Returns
+    -------
+    tuple
+        Final worst-group, balanced, and detailed evaluation results.
+    """
     fix_random_seed(seed)
     full_model = None
     prototype_ensemble = []
@@ -223,7 +473,31 @@ def train_ensemble(init_model_func, datasets, dataloaders, init_train_loader,
     return ensemble_wga, ensemble_balanced_acc, res
 
 
-def evaluate_ensemble(prototype_ensemble, eval_loader, model, device='cuda', show_individuals=False, verbose=True):
+def evaluate_ensemble(prototype_ensemble, eval_loader, model,
+                      device='cuda', show_individuals=False, verbose=True):
+    """
+    Evaluate the full prototype ensemble by averaging predictions over all members.
+
+    Parameters
+    ----------
+    prototype_ensemble : list
+        List of (prototypes, distance_scale) or (weights, bias) tuples.
+    eval_loader : DataLoader
+        Test DataLoader over pre-extracted features.
+    model : torch.nn.Module
+        The model to overwrite classifier parameters for inference.
+    device : str
+        Evaluation device.
+    show_individuals : bool
+        If True, print accuracy per member.
+    verbose : bool
+        If True, display final WGA score.
+
+    Returns
+    -------
+    dict
+        Evaluation metrics including worst-group accuracy.
+    """
     dist_scales = [_[1].detach() for _ in prototype_ensemble]
     clf = torch.concat([_[0] for _ in prototype_ensemble], dim=1).detach().transpose(0, 1)
     preds_list = torch.zeros(clf.shape[0], len(eval_loader.dataset), eval_loader.dataset.num_labels)

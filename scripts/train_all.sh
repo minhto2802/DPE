@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#sbatch ./scripts/train.sh \
-#      --dataset_name Waterbirds \
-#      --model_name resnet50 \
-#      --epochs 400 \
-#      --pretrained_imgnet
+sbatch ./scripts/train.sh \
+      --dataset_name Waterbirds \
+      --model_name resnet50 \
+      --epochs 400 \
+      --pretrained_imgnet
 
 #sbatch ./scripts/train.sh \
 #      --dataset_name CelebA \
@@ -33,19 +33,8 @@
 
 #sbatch ./scripts/train.sh \
 #      --dataset_name Living17 \
-#      --epochs 100 \
-#      --no_augmentation
-
-sbatch ./scripts/train.sh \
-      --dataset_name Living17 \
-      --epochs 300
-
-sbatch ./scripts/train.sh \
-      --dataset_name Living17 \
-      --epochs -1 \
-      --suffix _erm \
-      --no_augmentation
-
+#      --epochs 400 \
+#      --pretrained_imgnet
 
 #sbatch ./scripts/train.sh \
 #      --dataset_name CheXpertNoFinding \
