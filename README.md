@@ -191,8 +191,6 @@ sbatch scripts/train_all_pe.sh
   Auto-saved to the directory specified by `--ckpt_dir`
 - Logs and visualizations (if W&B is enabled)
 
----
-
 > These instructions match the setup used to produce results in our ICML 2025 paper. For additional visual analysis and
 ablation studies, refer to the [Notebooks](#notebooks) section.
 
