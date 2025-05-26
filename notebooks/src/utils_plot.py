@@ -534,19 +534,22 @@ def dict_to_df(_metrics):
     return _df
 
 
-def show_erm_per_group_accuracy(results, groups_dict, dataset_name='Waterbirds'):
+def show_erm_per_group_accuracy(results, groups_dict, dataset_name='Waterbirds',
+                                palette=None):
     """
     Plot the per-group accuracy for the ERM model.
     :param results: the last output of the function eval_metrics()
     :param groups_dict:
     :param dataset_name:
+    :param palette:
     :return:
     """
     df_erm = pd.DataFrame(
         {'Accuracy': [np.round(results['per_group'][k]['accuracy'] * 100) for k in groups_dict.keys()]})
     df_erm['Group'] = [groups_dict[k] for k in groups_dict.keys()]
     _, ax = plt.subplots(figsize=(8, 2), dpi=200)
-    sns.barplot(df_erm, x='Group', y='Accuracy', palette=sns.color_palette('Blues', len(df_erm['Group'].unique())),
+    palette = sns.color_palette('Blues', len(df_erm['Group'].unique())) if palette is None else palette
+    sns.barplot(df_erm, x='Group', y='Accuracy', palette=palette,
                 hue='Group', width=0.5)
     plt.xticks(fontsize=10)
     plt.yticks(fontsize=10)

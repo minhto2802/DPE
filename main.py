@@ -236,8 +236,8 @@ def train_model(
                         outputs = model[-1](feats)
                         clf_loss = criterion(outputs, labels)
                         if phase == 'train':
+                            head = model[-1]
                             if isinstance(criterion, IsoMaxPlusLossSecondPart):
-                                head = model[-1]
                                 n_classes = head.prototypes.shape[0]
                                 wd = torch.einsum('ijk,ilk->ijl',
                                                   [head.prototypes[:, None],
@@ -252,9 +252,9 @@ def train_model(
                                         cov_loss = torch.abs(cov[:, 0, 1:].sum(1).div(n_pro).mean())
                                         if cov_reg:
                                             loss = loss + cov_loss * cov_reg
-                                else:
-                                    weight = model[-1].weight  # if args.loss_name == 'ce' else model[-1].prototypes
-                                    loss = clf_loss + args.dfr_reg * torch.norm(weight, 1)
+                            else:
+                                weight = head.weight  # if args.loss_name == 'ce'
+                                loss = clf_loss + args.dfr_reg * torch.norm(weight, 1)
                         else:
                             loss = clf_loss
 
