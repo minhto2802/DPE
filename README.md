@@ -148,7 +148,7 @@ sbatch scripts/train_all_pe.sh
 - `--pretrained_path`: path to Stage-0 model checkpoint
 - `--num_stages`: number of ensemble heads (default: 16)
 - `--cov_reg`: strength of inter-prototype similarity penalty
-- `--subsample_type`: `group` (if `--train_attr yes`) or `class` (if `--train_attr no`)
+- `--subsample_type`: None or `group` (subgroup-balanced subsampling if `--train_attr yes` or class-balanced subsampling if `--train_attr no`)
 - `--entropic_scale`: IsoMax temperature scaling factor
 - `--train_mode freeze`: freeze backbone, train only prototypes
 - `-ncbt`: disables class-balanced batch construction
