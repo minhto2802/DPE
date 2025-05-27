@@ -11,23 +11,20 @@ This repository contains the official implementation and experiments for our ICM
 **Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**  
 Project summary site: https://minhto2802.github.io/diversified_prototypical_ensemble
 
-We propose a simple and scalable approach for improving model robustness under subpopulation shift, without relying on
-explicit group annotations. The method builds on the intuition that diverse classifiers trained on different parts of
-the data distribution can complement one another, especially when subgroup annotation is available for training.
+Machine learning models often experience significant performance degradation when deployed under distribution shifts. A particularly important and challenging case is **subpopulation shift**, where the proportions of subgroups vary between training and deployment. Subpopulation shifts arise in many forms, including spurious correlations, attribute or class imbalance, and the presence of previously unseen attribute combinations at test time. These shifts can lead to large disparities in model performance across subgroups, making worst-group accuracy a critical metric.
 
-Our approach combines a pretrained backbone with a *diversified ensemble of prototype-based classifiers*, each trained
-on a different balanced subset of data. Diversity among ensemble members is further encouraged via an inter-prototype
-similarity loss, resulting in broader coverage and better generalization to underrepresented subgroups.
-We evaluate DPE on 9 real-world datasets, covering four types of subpopulation shift scenarios: *Spurious Correlations*,
-*Attribute Imbalance*, *Class Imbalance*, and *Attribute Generalization*.
+Existing approaches typically modify empirical risk minimization (ERM) using reweighting or group-aware strategies. However, these methods often rely on prior knowledge of subgroup structure or annotated group membership, which may not be available in practice.
 
-The training pipeline includes:
+We propose **Diverse Prototypical Ensembles (DPE)**, a simple and scalable framework that improves model robustness to subpopulation shifts without requiring group annotations. DPE replaces the standard linear classification head with an ensemble of *prototype-based classifiers*, each trained on a different balanced subset of the data. Diversity across ensemble members is promoted through an **inter-prototype similarity loss**, encouraging each classifier to attend to different regions of the feature space.
 
-- **Stage-0**: Supervised backbone pretraining using ERM loss.
-- **Stage-1+**: Training multiple prototype classifiers on resampled subsets to form an ensemble.
+We evaluate DPE on **9 real-world datasets** from computer vision, natural language, and tabular domains. Each dataset is categorized under one of four subpopulation shift types: *Spurious Correlations*, *Attribute Imbalance*, *Class Imbalance*, or *Attribute Generalization*. Across all settings, DPE achieves improved worst-group accuracy over strong baselines.
 
-> This framework is designed to be flexible and applicable in both with and without subgroup annotation scenarios.
+The training pipeline consists of:
 
+- **Stage-0**: Supervised backbone pretraining using ERM or IsoMax loss.
+- **Stage-1+**: Training a diverse ensemble of prototype classifiers on balanced resampled subsets.
+
+> This framework is designed to be flexible and applicable in both settings, with or without access to subgroup annotations.
 
 ---
 
