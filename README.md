@@ -9,7 +9,7 @@ Overview
 
 This repository contains the official implementation and experiments for our ICML 2025 paper:  
 **Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**  
-Project summary site: https://minhto2802.github.io/DPE/
+Project summary site: https://minhto2802.github.io/dpe4subpop/
 
 Machine learning models often experience significant performance degradation when deployed under distribution shifts. A particularly important and challenging case is **subpopulation shift**, where the proportions of subgroups vary between training and deployment. Subpopulation shifts arise in many forms, including spurious correlations, attribute or class imbalance, and the presence of previously unseen attribute combinations at test time. These shifts can lead to large disparities in model performance across subgroups, making worst-group accuracy a critical metric.
 
