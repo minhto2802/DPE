@@ -234,8 +234,10 @@ Citation
 Acknowledgements
 ----------------
 
-Much of the training and evaluation infrastructure in this repository was adapted
-from: https://github.com/YyzHarry/SubpopBench  
-IsoMax loss function implementation was provided by https://github.com/dlmacedo/entropic-out-of-distribution-detection
+Some of the training and evaluation infrastructure in this repository was adapted
+from: 
+- https://github.com/YyzHarry/SubpopBench  
+
+- https://github.com/dlmacedo/entropic-out-of-distribution-detection
 
 We thank the authors for releasing their well-organized benchmark and codebase.
