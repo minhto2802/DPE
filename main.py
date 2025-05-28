@@ -367,6 +367,7 @@ def train_model(
 
         if stage == 0:
             run.log({'stage': stage, 'epoch': epoch})
+        # run.log({'stage': stage, 'epoch': epoch})
 
         print(f'Best val Acc: {best_acc:4f}')
 

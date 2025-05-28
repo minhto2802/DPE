@@ -5,17 +5,17 @@ CKPT_NAME=ckpt_last
 S_DIR=/scratch/ssd004/scratch/minht/checkpoints/sd2
 seed=0
 
-#sbatch ./scripts/train_pe.sh \
-#      --dataset_name Waterbirds \
-#      --pretrained_path $S_DIR/Waterbirds/*/${CKPT_NAME}.pt \
-#      --epochs 20 \
-#      --batch_size 256 \
-#      --lr 1.e-3 \
-#      --cov_reg 5.e5 \
-#      --seed ${seed} \
-#      -es 30 \
-#      $@
-#
+sbatch ./scripts/train_pe.sh \
+      --dataset_name Waterbirds \
+      --pretrained_path $S_DIR/Waterbirds/*/${CKPT_NAME}.pt \
+      --epochs 20 \
+      --batch_size 256 \
+      --lr 1.e-3 \
+      --cov_reg 5.e5 \
+      --seed ${seed} \
+      -es 30 \
+      $@
+
 #sbatch ./scripts/train_pe.sh \
 #      --dataset_name CelebA \
 #      --pretrained_path $S_DIR/CelebA/*/${CKPT_NAME}.pt \

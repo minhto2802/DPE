@@ -1,3 +1,6 @@
+# Adapted from code by Yuzhe Yang (2023), MIT License.
+# Original: https://github.com/YyzHarry/SubpopBench
+
 import torch
 import numpy as np
 import pandas as pd

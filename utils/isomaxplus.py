@@ -1,3 +1,6 @@
+# Adapted from code by David Macêdo (2022), Apache 2.0 License.
+# Original: https://https://github.com/dlmacedo/entropic-out-of-distribution-detection
+
 import math
 
 import torch

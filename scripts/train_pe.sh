@@ -6,12 +6,12 @@
 #SBATCH -c 16
 #SBATCH --time 2:00:00
 #SBATCH --qos=m4
-#SBATCH --gres=gpu:rtx6000:1
+#SBATCH --gres=gpu:a40:1
+##SBATCH --gres=gpu:rtx6000:1
 ##SBATCH --gres=gpu:t4:1
 ##SBATCH --time 24:00:00
 ##SBATCH --account=deadline
 ##SBATCH --qos=deadline
-##SBATCH --gres=gpu:a40:1
 #SBATCH --export=ALL
 #SBATCH --output=logs/%x.%j.log
 #SBATCH --mem=16G

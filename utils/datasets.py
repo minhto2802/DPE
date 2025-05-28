@@ -1,3 +1,6 @@
+# Adapted from code by Yuzhe Yang (2023), MIT License.
+# Original: https://github.com/YyzHarry/SubpopBench
+
 import os
 import numpy as np
 import pandas as pd
@@ -603,6 +606,7 @@ class Living17(BREEDSBase):
 
 class Entity13(BREEDSBase):
     N_STEPS = 60_001
+
     def __init__(self, data_path, split, hparams, train_attr='no', subsample_type=None, duplicates=None):
         metadata = os.path.join(data_path, "breeds", "metadata_entity13.csv")
         super().__init__(metadata, split, train_attr, subsample_type, duplicates)
@@ -610,6 +614,7 @@ class Entity13(BREEDSBase):
 
 class Entity30(BREEDSBase):
     N_STEPS = 60_001
+
     def __init__(self, data_path, split, hparams, train_attr='no', subsample_type=None, duplicates=None,
                  augmentation=False, stage=None, **kwargs):
         metadata = os.path.join(data_path, "breeds", "metadata_entity30.csv")
