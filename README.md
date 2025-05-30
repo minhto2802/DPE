@@ -1,7 +1,5 @@
 # <u>D</u>iverse <u>P</u>rototypical <u>E</u>nsembles Improve Robustness to Subpopulation Shift
 
-![Diverse Prototypical Ensemble Training Pipeline](docs/figures/embeddings_figure.png)
-
 ---
 
 Overview
@@ -21,6 +19,8 @@ Overview
 
 This repository contains the official implementation and experiments for our ICML 2025 paper:  
 **Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**
+
+![Diverse Prototypical Ensemble Training Pipeline](docs/figures/embeddings_figure.png)
 
 Machine learning models often experience significant performance degradation when deployed under distribution shifts. A particularly important and challenging case is **subpopulation shift**, where the proportions of subgroups vary between training and deployment. Subpopulation shifts arise in many forms—spurious correlations, attribute or class imbalance, and previously unseen attribute combinations at test time—and can lead to large disparities in model performance across subgroups. 
 
