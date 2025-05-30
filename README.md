@@ -1,6 +1,5 @@
 # <u>D</u>iverse <u>P</u>rototypical <u>E</u>nsembles Improve Robustness to Subpopulation Shift
 
----
 
 Overview
 ========
@@ -235,7 +234,7 @@ Citation
 ```
 @inproceedings{to2025dpe,
   title     = {Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
-  author    = {Nguyen Nhat Minh To and Paul F. R. Wilson and Viet Nguyen and Mohamed Harmanani and Michael Cooper and Fahimeh Fooladgar and Purang Abolmaesumi and Parvin Mousavi and Rahul Krishnan},
+  author    = {Minh To, Paul F. R. Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper, Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan},
   booktitle = {International Conference on Machine Learning (ICML)},
   year      = {2025}
 }
