@@ -1,8 +1,8 @@
 # <u>D</u>iverse <u>P</u>rototypical <u>E</u>nsembles Improve Robustness to Subpopulation Shift
 
-
-Overview
-========
+This repository provides the official implementation and experiments for our ICML 2025 paper:  
+*Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
+by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.com/pfrwilson), and co-authors.
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.23027">
@@ -16,24 +16,33 @@ Overview
   </a>
 </p>
 
-This repository contains the official implementation and experiments for our ICML 2025 paper:  
-**Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift**
+---
+
+Overview
+========
 
 ![Diverse Prototypical Ensemble Training Pipeline](docs/figures/embeddings_figure.png)
 
-Machine learning models often experience significant performance degradation when deployed under distribution shifts. A particularly important and challenging case is **subpopulation shift**, where the proportions of subgroups vary between training and deployment. Subpopulation shifts arise in many forms—spurious correlations, attribute or class imbalance, and previously unseen attribute combinations at test time—and can lead to large disparities in model performance across subgroups. 
+Machine learning models often experience significant performance degradation when deployed under distribution shifts. A
+particularly important and challenging case is **subpopulation shift**, where the proportions of subgroups vary between
+training and deployment. Subpopulation shifts occurred in many forms, including spurious correlations, attribute or
+class
+imbalance, and previously unseen attribute combinations at test time, can lead to large disparities in model
+performance across subgroups.
 
-Existing approaches typically modify empirical risk minimization (ERM) using reweighting or group-aware strategies. However, these often rely on prior knowledge of subgroup structure or annotated group membership, which may not be available in practice.
+Existing approaches typically modify empirical risk minimization (ERM) using reweighting or group-aware strategies.
+However, these often rely on prior knowledge of subgroup structure or annotated group membership, which may not be
+available in practice.
 
-We propose **Diverse Prototypical Ensembles (DPE)**, a simple and scalable framework that improves model robustness to subpopulation shifts **without requiring group annotations**. DPE replaces the standard linear classification head with an ensemble of *prototype-based classifiers*, each trained on a different balanced subset of data. Diversity is promoted through an **inter-prototype similarity loss**, encouraging each classifier to attend to different regions of the feature space.
+We propose **Diverse Prototypical Ensembles (DPE)**, a simple and scalable framework that improves model robustness to
+subpopulation shifts **without requiring group annotations**. DPE replaces the standard linear classification head with
+an ensemble of *prototype-based classifiers*, each trained on a different balanced subset of data. Diversity is promoted
+through an **inter-prototype similarity loss**, encouraging each classifier to attend to different regions of the
+feature space.
 
-We evaluate DPE on **9 real-world datasets** across computer vision, language, and tabular domains, each under one of four subpopulation shift types: *Spurious Correlations*, *Attribute Imbalance*, *Class Imbalance*, or *Attribute Generalization*. DPE consistently improves worst-group accuracy over strong baselines.
-
-**Training Pipeline:**
-- **Stage-0**: Supervised backbone pretraining (ERM or IsoMax).
-- **Stage-1+**: Diverse prototype ensemble training on balanced resampled subsets.
-
-> This framework works both with and without access to subgroup annotations.
+We evaluate DPE on **9 real-world datasets** across computer vision, language, and tabular domains, each under one of
+four subpopulation shift types: *Spurious Correlations*, *Attribute Imbalance*, *Class Imbalance*, or *Attribute
+Generalization*. DPE consistently improves worst-group accuracy over strong baselines.
 
 ---
 
@@ -84,6 +93,13 @@ To prepare the data:
 3. Set `--data_dir` to this root directory when running the training scripts.
 
 ## Quickstart
+
+**Training Pipeline:**
+
+- **Stage-0**: Supervised backbone pretraining (ERM or IsoMax).
+- **Stage-1+**: Diverse prototype ensemble training on balanced resampled subsets.
+
+> This framework works both with and without access to subgroup annotations.
 
 ### Stage-0 Training (ERM)
 
@@ -154,7 +170,8 @@ sbatch scripts/train_all_pe.sh
 - `--pretrained_path`: path to Stage-0 model checkpoint
 - `--num_stages`: number of ensemble heads (default: 16)
 - `--cov_reg`: strength of inter-prototype similarity penalty
-- `--subsample_type`: `None` or `group` (group-balanced subsampling if `--train_attr yes` or class-balanced subsampling if `--train_attr no`)
+- `--subsample_type`: `None` or `group` (group-balanced subsampling if `--train_attr yes` or class-balanced subsampling
+  if `--train_attr no`)
 - `--entropic_scale`: IsoMax temperature scaling factor
 - `--train_mode freeze`: freeze backbone, train only prototypes
 - `-ncbt`: disables class-balanced batch construction
@@ -198,7 +215,7 @@ sbatch scripts/train_all_pe.sh
 - Logs and visualizations (if W&B is enabled)
 
 > These instructions match the setup used to produce results in our ICML 2025 paper. For additional visual analysis and
-ablation studies, refer to the [Notebooks](#notebooks) section.
+> ablation studies, refer to the [Notebooks](#notebooks) section.
 
 
 ---
@@ -244,9 +261,27 @@ Acknowledgements
 ----------------
 
 Some of the training and evaluation infrastructure in this repository was adapted
-from: 
-- https://github.com/YyzHarry/SubpopBench  
+from:
+
+- https://github.com/YyzHarry/SubpopBench
 
 - https://github.com/dlmacedo/entropic-out-of-distribution-detection
 
 We thank the authors for releasing their well-organized benchmark and codebase.
+
+
+
+<p align="left">
+  <a href="https://opensource.org/licenses/MIT">
+    <img src="https://img.shields.io/badge/license-MIT-red.svg?logo=github" alt="License: MIT">
+  </a>
+  <a href="https://github.com/minhto2802/dpe4subpop/stargazers">
+    <img src="https://img.shields.io/github/stars/minhto2802/dpe4subpop.svg?style=flat&logo=github" alt="GitHub stars">
+  </a>
+  <a href="https://github.com/minhto2802/dpe4subpop/network">
+    <img src="https://img.shields.io/github/forks/minhto2802/dpe4subpop.svg?style=flat&logo=github" alt="GitHub forks">
+  </a>
+  <a href="https://shields-visitor-count.onrender.com">
+    <img src="https://visitor-badge.laobi.icu/badge?page_id=minhto2802.dpe4subpop&style=for-the-badge" alt="Visitors">
+  </a>
+</p>
