@@ -40,10 +40,6 @@ an ensemble of *prototype-based classifiers*, each trained on a different balanc
 through an **inter-prototype similarity loss**, encouraging each classifier to attend to different regions of the
 feature space.
 
-We evaluate DPE on **9 real-world datasets** across computer vision, language, and tabular domains, each under one of
-four subpopulation shift types: *Spurious Correlations*, *Attribute Imbalance*, *Class Imbalance*, or *Attribute
-Generalization*. DPE consistently improves worst-group accuracy over strong baselines.
-
 ---
 
 Notebooks
