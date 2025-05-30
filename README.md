@@ -6,15 +6,16 @@ by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.23027">
-    <img alt="Paper" src="https://img.shields.io/badge/arXiv-2505.23027-B31B1B.svg?style=for-the-badge&logo=arxiv&logoColor=white">
-  </a>
+    <img src="https://img.shields.io/badge/arXiv-2505.23027-B31B1B.svg?style=flat-square&logo=arxiv" alt="arXiv">
+  </a>&nbsp;
   <a href="https://minhto2802.github.io/dpe4subpop/">
-    <img alt="Project Page" src="https://img.shields.io/badge/Project%20Page-DPE4Subpop-blue?style=for-the-badge">
-  </a>
+    <img src="https://img.shields.io/badge/Project%20Page-DPE4SUBPOP-blue.svg?style=flat-square" alt="Project Page">
+  </a>&nbsp;
   <a href="https://openreview.net/forum?id=qUTiOeM57J">
-    <img alt="OpenReview" src="https://img.shields.io/badge/OpenReview-ICML--2025-green?style=for-the-badge">
+    <img src="https://img.shields.io/badge/OpenReview-ICML--2025-brightgreen.svg?style=flat-square" alt="OpenReview">
   </a>
 </p>
+
 
 ---
 
@@ -249,11 +250,14 @@ Citation
 --------
 
 ```
-@inproceedings{to2025dpe,
-  title     = {Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
-  author    = {Minh To, Paul F. R. Wilson, Viet Nguyen, Mohamed Harmanani, Michael Cooper, Fahimeh Fooladgar, Purang Abolmaesumi, Parvin Mousavi, Rahul Krishnan},
-  booktitle = {International Conference on Machine Learning (ICML)},
-  year      = {2025}
+@misc{to2025diverseprototypicalensemblesimprove,
+      title={Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift}, 
+      author={Minh Nguyen Nhat To and Paul F RWilson and Viet Nguyen and Mohamed Harmanani and Michael Cooper and Fahimeh Fooladgar and Purang Abolmaesumi and Parvin Mousavi and Rahul G. Krishnan},
+      year={2025},
+      eprint={2505.23027},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2505.23027}, 
 }
 ```
 
