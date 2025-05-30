@@ -6,16 +6,15 @@ by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.23027">
-    <img src="https://img.shields.io/badge/arXiv-2505.23027-B31B1B.svg?style=flat-square&logo=arxiv" alt="arXiv">
-  </a>&nbsp;
+    <img alt="Paper" src="https://img.shields.io/badge/arXiv-2505.23027-B31B1B.svg?style=for-the-badge&logo=arxiv&logoColor=white">
+  </a>
   <a href="https://minhto2802.github.io/dpe4subpop/">
-    <img src="https://img.shields.io/badge/Project%20Page-DPE4SUBPOP-blue.svg?style=flat-square" alt="Project Page">
-  </a>&nbsp;
+    <img alt="Project Page" src="https://img.shields.io/badge/Project%20Page-DPE4Subpop-blue?style=for-the-badge">
+  </a>
   <a href="https://openreview.net/forum?id=qUTiOeM57J">
-    <img src="https://img.shields.io/badge/OpenReview-ICML--2025-brightgreen.svg?style=flat-square" alt="OpenReview">
+    <img alt="OpenReview" src="https://img.shields.io/badge/OpenReview-ICML--2025-green?style=for-the-badge">
   </a>
 </p>
-
 
 ---
 
