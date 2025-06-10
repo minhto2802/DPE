@@ -4,7 +4,7 @@ This repository provides the official implementation and experiments for our ICM
 *Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
 by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.com/pfrwilson), and co-authors.
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/University_of_British_Columbia_coat_of_arms.svg/1280px-University_of_British_Columbia_coat_of_arms.svg.png" alt="UBC Logo" height="100"/>
+  <img src="https://brand3.sites.olt.ubc.ca/files/2018/09/5NarrowLogo_ex_768.png" alt="UBC Logo" height="100"/>
   <img src="https://vectorinstitute.ai/wp-content/uploads/2021/01/VectorLogo2021_RGB.svg" alt="Vector Institute Logo" height="100"/>
 </p>
 
