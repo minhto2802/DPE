@@ -6,6 +6,10 @@ by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.
 
 <p align="center">
   <img src="https://brand3.sites.olt.ubc.ca/files/2018/09/5NarrowLogo_ex_768.png" alt="UBC Logo" style="background-color:white; padding:10px;" height="80"/>
+</p>
+
+<p align="center">
+  <img src="https://brand3.sites.olt.ubc.ca/files/2018/09/5NarrowLogo_ex_768.png" alt="UBC Logo" style="background-color:white; padding:10px;" height="80"/>
   <img src="https://vectorinstitute.ai/wp-content/uploads/2021/01/VectorLogo2021_RGB.svg" alt="Vector Institute Logo" height="100"/>
 </p>
 
