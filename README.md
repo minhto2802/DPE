@@ -1,9 +1,12 @@
-![](https://www.google.com/url?sa=i&url=https%3A%2F%2Fires.ubc.ca%2Fubc-logo%2F&psig=AOvVaw07njmLH8n5eODSLSgOcpoa&ust=1749661848380000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCODfpLms540DFQAAAAAdAAAAABAL)
 # <u>D</u>iverse <u>P</u>rototypical <u>E</u>nsembles Improve Robustness to Subpopulation Shift
 
 This repository provides the official implementation and experiments for our ICML 2025 paper:  
 *Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift*  
 by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.com/pfrwilson), and co-authors.
+<p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/7f/University_of_British_Columbia_coat_of_arms.svg/1280px-University_of_British_Columbia_coat_of_arms.svg.png" alt="UBC Logo" height="100"/>
+  <img src="https://vectorinstitute.ai/wp-content/uploads/2021/01/VectorLogo2021_RGB.svg" alt="Vector Institute Logo" height="100"/>
+</p>
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.23027">
