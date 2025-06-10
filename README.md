@@ -5,9 +5,11 @@ This repository provides the official implementation and experiments for our ICM
 by [Minh To](https://minhto2802.github.io/), [Paul F. R. Wilson](https://github.com/pfrwilson), and co-authors.
 
 <p align="center">
-  <img src="https://brand3.sites.olt.ubc.ca/files/2018/09/5NarrowLogo_ex_768.png" alt="UBC Logo" style="background-color:white; padding:10px;" height="80"/>
-  <img src="https://michener.ca/wp-content/uploads/2020/05/Vector-Institute_Logo.png" alt="Vector Institute Logo" height="100"/>
+  <img src="https://raw.githubusercontent.com/minhto2802/dpe4subpop/main/docs/figures/logo/ubc_logo_white_bg.png" alt="UBC Logo" height="80"/>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="https://raw.githubusercontent.com/minhto2802/dpe4subpop/main/docs/figures/logo/vector_logo_white_bg.png" alt="Vector Institute Logo" height="80"/>
 </p>
+
 
 <p align="center">
   <a href="https://arxiv.org/abs/2505.23027">
