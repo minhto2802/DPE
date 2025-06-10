@@ -252,14 +252,11 @@ Citation
 --------
 
 ```
-@misc{to2025diverseprototypicalensemblesimprove,
-      title={Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift}, 
-      author={Minh Nguyen Nhat To and Paul F RWilson and Viet Nguyen and Mohamed Harmanani and Michael Cooper and Fahimeh Fooladgar and Purang Abolmaesumi and Parvin Mousavi and Rahul G. Krishnan},
-      year={2025},
-      eprint={2505.23027},
-      archivePrefix={arXiv},
-      primaryClass={cs.LG},
-      url={https://arxiv.org/abs/2505.23027}, 
+@article{to2025diverse,
+  title={Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift},
+  author={To, Minh Nguyen Nhat and RWilson, Paul F and Nguyen, Viet and Harmanani, Mohamed and Cooper, Michael and Fooladgar, Fahimeh and Abolmaesumi, Purang and Mousavi, Parvin and Krishnan, Rahul G},
+  journal={arXiv preprint arXiv:2505.23027},
+  year={2025}
 }
 ```
 
