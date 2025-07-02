@@ -49,6 +49,37 @@ feature space.
 
 ---
 
+Quickstart
+==========
+```python
+import sys
+sys.path.append('..')
+
+from src.dpe import DPE
+from src.dpe.misc import fix_random_seed
+
+def main():
+    fix_random_seed(0)
+
+    dpe = DPE(
+        data_dir='/path/to/pre_extracted/features',  # Directory containing feats_val.npy and feats_test.npy
+        metadata_path='/path/to/metadata/metadata.csv',  # CSV with columns: split, y, g
+        verbose=True,
+        num_stages=5,       # Number of prototype classifiers to train
+        device='cuda',      # Set to 'cpu' or 'cuda' depending on hardware
+        emb_dim=2048,       # D: feature embedding dimension (expected feature shape: N x D)
+    )
+    dpe.fit()
+
+if __name__ == '__main__':
+    main()
+```
+
+👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class.
+
+
+---
+
 Notebooks
 ===
 
@@ -73,6 +104,12 @@ demonstrated on two standard benchmark datasets.
   in worst-group accuracy. The notebook also illustrates that increasing the number of DFR heads does not further
   improve fairness, while DPE consistently improves both robustness and subgroup equity.
 
+- **[`03_demo.ipynb`](notebooks/03_demo.ipynb)**
+A streamlined demonstration of the DPE training and evaluation workflow using the `dpe` package.  
+This notebook serves as a minimal working example to illustrate the integration of DPE into an applied training loop on the Waterbirds dataset:
+
+This notebook is intended for users who want a compact and reproducible reference for running DPE end-to-end on real-world data.
+
 > Each notebook is self-contained and can be executed independently. These examples serve as a foundation for adapting
 > DPE to other datasets and deployment scenarios.
 
@@ -95,9 +132,7 @@ To prepare the data:
 2. Make sure the processed datasets are stored under a common root directory (e.g., `/datasets`).
 3. Set `--data_dir` to this root directory when running the training scripts.
 
-## Quickstart
-
-**Training Pipeline:**
+## Training Pipeline
 
 - **Stage-0**: Supervised backbone pretraining (ERM or IsoMax).
 - **Stage-1+**: Diverse prototype ensemble training on balanced resampled subsets.
