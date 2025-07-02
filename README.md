@@ -75,7 +75,7 @@ if __name__ == '__main__':
     main()
 ```
 
-👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class. Full demonstration can also be found in [`03_demo.ipynb`](notebooks/03_demo.ipynb)
+👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class. The full demonstration can also be found in [`03_demo.ipynb`](notebooks/03_demo.ipynb)
 
 ---
 
