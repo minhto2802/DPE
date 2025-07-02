@@ -75,8 +75,7 @@ if __name__ == '__main__':
     main()
 ```
 
-👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class.
-
+👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class. Full demonstration can also be found in [`03_demo.ipynb`](notebooks/03_demo.ipynb)
 
 ---
 
@@ -107,8 +106,6 @@ demonstrated on two standard benchmark datasets.
 - **[`03_demo.ipynb`](notebooks/03_demo.ipynb)**
 A streamlined demonstration of the DPE training and evaluation workflow using the `dpe` package.  
 This notebook serves as a minimal working example to illustrate the integration of DPE into an applied training loop on the Waterbirds dataset:
-
-This notebook is intended for users who want a compact and reproducible reference for running DPE end-to-end on real-world data.
 
 > Each notebook is self-contained and can be executed independently. These examples serve as a foundation for adapting
 > DPE to other datasets and deployment scenarios.
