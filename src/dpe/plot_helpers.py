@@ -120,7 +120,12 @@ class UnNormalize(object):
         return tensor
 
 
-def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False, dataset_name='Waterbirds'):
+def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False, dataset_name='Waterbirds',
+                 palette=None):
+    if palette is None:
+        palette = ['#dd5355', '#fe994a', '#438ac3']
+    palette = palette[:len(_df['Diversification Strategy'].unique())]
+
     if ax is None:
         _, ax = plt.subplots(figsize=(8, 5), dpi=150)
     _ = sns.lineplot(
@@ -129,7 +134,7 @@ def plot_metrics(_df, metric='Worst Group Accuracy', ax=None, show_legend=False,
         y=metric,
         hue='Diversification Strategy',
         style='Diversification Strategy',
-        palette=['#dd5355', '#fe994a', '#438ac3'],
+        palette=palette,
         marker='o',
         ax=ax,
     )

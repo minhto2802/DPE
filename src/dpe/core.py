@@ -1,100 +1,214 @@
-from dataclasses import dataclass
+from functools import partial
+from collections import Counter
+from dataclasses import dataclass, field, fields
 
 import torch
-import torchvision
-from pandas.core.window.doc import kwargs_scipy
 from torch import nn
 from torch.nn import CrossEntropyLoss
 from torch.utils.data import DataLoader
 
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
-from functools import partial
 
 from . import datasets as dsets
-from .eval_helpers import eval_metrics, get_acc
-from .misc import get_scheduler_func, DummyRun, describe_dataset_splits, fix_random_seed
+from .eval_helpers import eval_metrics
+from .misc import get_scheduler_func, fix_random_seed
 from .isomaxplus import IsoMaxPlusLossFirstPart, IsoMaxPlusLossSecondPart
-from .datasets import Features
 
 
-def get_pre_extracted_features(ckpt_dir: str, set_name: str) -> np.ndarray:
+class DPE:
     """
-    Load and normalize pre-extracted feature representations from disk.
+    Diversified Prototypical Ensemble (DPE).
 
-    Parameters
-    ----------
-    ckpt_dir : str
-        Path to the checkpoint directory where feature files are stored.
-    set_name : str
-        Name of the dataset split (e.g., 'train', 'val', 'test').
-
-    Returns
-    -------
-    np.ndarray
-        A (num_samples, feature_dim) array of L2-normalized features.
+    Trains an ensemble of prototype classifiers to improve robustness under subpopulation shifts.
     """
-    # Load memory-mapped .npy file for efficient access without full RAM loading.
-    pre_extracted_feats = np.load(f'{ckpt_dir}/feats_{set_name}.npy', mmap_mode='r')
+    _meta = {
+        '__name__': 'DPE',
+        '__version__': '0.2.0',
+        '__author__': 'Minh To',
+        '__license__': 'MIT',
+        '__url__': 'https://github.com/minhto2802/dpe4subpop',
+        '__requirements__': [
+            'torch>=1.9.0',
+            'torchvision>=0.9.0',
+            'numpy>=1.19.0',
+            'pandas>=1.1.0',
+            'tqdm>=4.50.0',
+        ],
+    }
 
-    # Normalize each feature vector to zero mean and unit variance (per sample).
-    pre_extracted_feats = ((pre_extracted_feats - pre_extracted_feats.mean(axis=1, keepdims=True)) /
-                           pre_extracted_feats.std(axis=1, keepdims=True))
+    def __init__(self, *args, **kwargs):
+        self.config = Args(*args, **kwargs)
+        if self.config.seed is not None:
+            fix_random_seed(self.config.seed)
 
-    return pre_extracted_feats
+        self.datasets, self.loaders = dict(), dict()
+        self.set_loaders()
+        self.ensemble = None
+
+    def set_loaders(self, datasets=None):
+        if datasets is None:
+            self._init_dataset(**vars(self.config))
+            datasets = self.datasets
+        else:
+            self.datasets = datasets
+
+        for set_name in datasets:
+            if set_name == 'train':
+                continue
+            self.loaders[set_name] = DataLoader(
+                dataset=datasets[set_name],
+                num_workers=self.config.workers,
+                pin_memory=False,
+                batch_size=self.config.batch_size_eval,
+                shuffle=False,
+                drop_last=False
+            )
+
+    def _init_dataset(
+            self,
+            data_dir=None,
+            metadata_path=None,
+            split_map=None,
+            norm_emb=True,
+            transform=None,
+            dataset_name='Features',
+            *args, **kwargs,
+    ):
+
+        assert data_dir is not None and metadata_path is not None
+
+        split_map = {'val': 'va', 'test': 'te'} if split_map is None else split_map
+        kwargs['subsample_type'] = None
+        for split in split_map.keys():
+            features = np.load(f"{data_dir}/feats_{split}.npy")
+            if norm_emb:
+                features = ((features - features.mean(axis=1, keepdims=True)) / features.std(axis=1, keepdims=True))
+            self.datasets[split] = vars(dsets)[dataset_name](
+                data_dir=data_dir,
+                metadata_path=metadata_path,
+                split=split_map[split],
+                transform=transform,
+                pre_extracted_feats=features,
+                *args, **kwargs,
+            )
+
+    def describe_dataset_splits(self):
+        """
+        Describe the distribution of 'y' (class), 'g' (subgroup), and '_a' (attribute) for each dataset split.
+
+        Args:
+            datasets (dict): Dictionary with keys as split names ('train', 'val', 'test', etc.)
+                             and values as dataset objects with attributes 'y', 'g', '_a' (tensors or lists).
+
+        Returns:
+            pd.DataFrame: Multi-indexed DataFrame with counts for each category across splits.
+        """
+        stats = dict()
+
+        for split, dataset in self.datasets.items():
+            split_stats = {}
+            for field in ['y', 'g', '_a']:
+                values = dataset.__getattribute__(field)
+                counts = Counter(values if isinstance(values, list) else values.tolist())
+                for k, v in counts.items():
+                    split_stats[f'{field}={k}'] = v
+            stats[split] = split_stats
+
+        df = pd.DataFrame(stats).fillna(0).astype(int)
+        return df.sort_index()
+
+    def _init_shelf_model(self):
+        """
+        Initialize a shelf model with an identity head for the IsoMax+ loss.
+        This is used to train the ensemble of prototypes.
+        """
+        clf_head = nn.Sequential(nn.Identity(), nn.Identity())
+        clf_head.emb_dim = self.config.emb_dim
+        clf_head.to(self.config.device)
+        return clf_head
+
+    def fit(self) -> list:
+        clf_head = self._init_shelf_model()
+
+        *metrics, self.ensemble = _train_ensemble(
+            datasets=self.datasets,
+            dataloaders=self.loaders,
+            init_train_loader=partial(
+                _get_train_loader,
+                batch_size=self.config.batch_size_train,
+                **vars(self.config),
+            ),
+            full_model=clf_head,
+            init_model_func=partial(
+                _init_model,
+                device=self.config.device,
+                num_classes=self.datasets['val'].num_labels,
+                loss_name=self.config.loss_name,
+            ),
+            **vars(self.config),
+        )
+        return metrics
+
+    def evaluate(self, target='test') -> dict:
+        """
+        Predict using the trained ensemble on the test set.
+
+        Returns
+        -------
+        dict
+            A dictionary of performance metrics including accuracy per group, class, and attribute,
+            as computed by `eval_metrics()`.
+        """
+        assert target in self.loaders, f"Target '{target}' not found in loaders."
+
+        ds = self.loaders[target].dataset
+        classes, attributes, groups = np.array(ds.y), np.array(ds._a), np.array(ds.g)
+
+        preds = self.predict_proba(target=target).cpu().numpy()
+        res = eval_metrics(preds, classes, attributes, groups)
+        return res
+
+    def predict_proba(self, target='test', avg=True, raw_logits=False) -> torch.Tensor:
+        """
+        Predict probabilities using the trained ensemble on the test set.
+
+        Returns
+        -------
+        torch.Tensor
+            An array of predicted probabilities for each class.
+        """
+        assert self.ensemble is not None, "Model must be trained before predicting."
+
+        model = _init_model(
+            num_classes=self.datasets['val'].num_labels,
+            model=self._init_shelf_model(),
+            loss_name=self.config.loss_name,
+            device=self.config.device,
+        )
+
+        pred_list = _predict(
+            prototype_ensemble=self.ensemble,
+            eval_loader=self.loaders[target],
+            model=model,
+            device=self.config.device,
+        )
+
+        if not raw_logits:
+            pred_list = pred_list.softmax(dim=2)
+
+        if avg:
+            return pred_list.mean(0).detach()
+        return pred_list
+
+    @staticmethod
+    def help():
+        """List all arguments with their descriptions and default values."""
+        Args.help()
 
 
-def init_erm_model(ckpt_path, num_classes=2, device='cuda', model=None):
-    """
-    Initialize a pretrained ResNet50 model as an ERM backbone for feature extraction or inference.
-
-    Parameters
-    ----------
-    ckpt_path : str
-        Path to the saved model checkpoint (.pt or .pth file).
-    num_classes : int
-        Number of output classes. Default is 2 for binary classification.
-    device : str
-        Device identifier ('cuda' or 'cpu').
-    model : Optional[torch.nn.Module]
-        If provided, modifies the final classification head to match `num_classes`.
-
-    Returns
-    -------
-    model : torch.nn.Module
-        A sequential model with backbone, flattening, and classification head.
-    """
-    if model is None:
-        # Load checkpoint and initialize a fresh ResNet50 base.
-        ckpt = torch.load(ckpt_path, map_location="cpu")
-        model = torchvision.models.resnet50()
-
-        # Remove the final classification layer to obtain the backbone.
-        backbone = torch.nn.Sequential(*list(model.children())[:-1])
-        emb_dim = model.fc.in_features
-
-        # Define a new classification head for the desired number of classes.
-        head = nn.Linear(emb_dim, num_classes)
-
-        # Compose the full model: [backbone -> flatten -> linear head]
-        model = nn.Sequential(backbone, nn.Flatten(), head)
-
-        # Load pretrained weights (including the new head, if present in ckpt).
-        model.load_state_dict(ckpt, strict=True)
-
-        # Store embedding dimension for downstream use (e.g., prototype head).
-        model.emb_dim = emb_dim
-    else:
-        # If a model is passed, replace the head to match new num_classes.
-        assert hasattr(model, "emb_dim")
-        model[-1] = nn.Linear(model.emb_dim, num_classes)
-
-    # Move to specified device for inference or training.
-    model.to(device)
-    return model
-
-
-def evaluate(model, eval_loader, device='cuda'):
+def _evaluate(model, eval_loader, device='cuda'):
     """
     Evaluate the final classification head of a model on pre-extracted features.
 
@@ -133,7 +247,7 @@ def evaluate(model, eval_loader, device='cuda'):
     return res
 
 
-def get_subsampled_train_set(
+def _get_subsampled_train_set(
         datasets=None,
         trn_split='va',
         *args, **kwargs,
@@ -145,14 +259,6 @@ def get_subsampled_train_set(
     ----------
     datasets : dict or None
         A dictionary of pre-loaded datasets. If None, a new dict is created.
-    data_dir : str
-        Root directory of all datasets.
-    train_attr : str
-        One of {'yes', 'no'}. Determines whether attribute information is used in subsampling.
-    subsample_type : str
-        Strategy for subsampling (e.g., 'group', 'none').
-    dataset_name : str
-        Dataset class name from `utils.datasets` (e.g., 'Waterbirds', 'CelebA').
     trn_split : str
         Data split to use for training (e.g., 'va' for validation-as-training).
 
@@ -176,8 +282,8 @@ def get_subsampled_train_set(
     return datasets
 
 
-def get_train_loader(datasets=None, train_attr='yes', batch_size=256, workers=8, dataset_name='Waterbirds',
-                     *args, **kwargs) -> DataLoader:
+def _get_train_loader(datasets=None, train_attr=False, batch_size=256, workers=8, dataset_name='Waterbirds',
+                      *args, **kwargs) -> DataLoader:
     """
     Construct a PyTorch DataLoader for training with subsampled training data.
 
@@ -185,8 +291,8 @@ def get_train_loader(datasets=None, train_attr='yes', batch_size=256, workers=8,
     ----------
     datasets : dict
         Dictionary of dataset splits (expects at least 'val', and will create 'train').
-    train_attr : str
-        Whether to use attribute annotations for balancing ('yes' or 'no').
+    train_attr : bool
+        Whether to use attribute annotations for balancing.
     batch_size : int
         Batch size for training.
     workers : int
@@ -199,13 +305,12 @@ def get_train_loader(datasets=None, train_attr='yes', batch_size=256, workers=8,
     DataLoader
         A PyTorch DataLoader for the 'train' subset.
     """
-    datasets = get_subsampled_train_set(
+    datasets = _get_subsampled_train_set(
         datasets,
         train_attr=train_attr,
         dataset_name=dataset_name,
         *args, **kwargs,
     )
-    describe_dataset_splits(datasets)
 
     train_loader = DataLoader(
         datasets['train'],
@@ -219,18 +324,14 @@ def get_train_loader(datasets=None, train_attr='yes', batch_size=256, workers=8,
     return train_loader
 
 
-def init_model(ckpt_path=None, num_classes=2, model=None, device='cuda'):
+def _init_model(num_classes=2, model=None, loss_name='isomax', device='cuda'):
     """
-    Initialize or modify a ResNet-50 model with IsoMax+ classification head.
+    Initialize IsoMax+ classification head.
 
     Parameters
     ----------
-    ckpt_path : str
-        Path to the checkpoint file containing pretrained weights.
     num_classes : int
         Number of output classes.
-    model : torch.nn.Module or None
-        If None, a new model is initialized; otherwise, final layer is replaced.
     device : str
         Device to move model to.
 
@@ -239,27 +340,21 @@ def init_model(ckpt_path=None, num_classes=2, model=None, device='cuda'):
     torch.nn.Module
         A ResNet-50 backbone with a distance-based IsoMaxPlusLossFirstPart head.
     """
-    if model is None:
-        ckpt = torch.load(ckpt_path, map_location="cpu")
-        model = torchvision.models.resnet50()
-        backbone = torch.nn.Sequential(*list(model.children())[:-1])
-        emb_dim = model.fc.in_features
-        head = IsoMaxPlusLossFirstPart(emb_dim, num_classes)
-
-        model = nn.Sequential(backbone, nn.Flatten(), head)
-        model.load_state_dict(ckpt, strict=False)
-        model.emb_dim = emb_dim
-    else:
-        assert hasattr(model, "emb_dim")
+    assert hasattr(model, "emb_dim")
+    if loss_name == 'isomax':
         model[-1] = IsoMaxPlusLossFirstPart(model.emb_dim, num_classes)
+    elif loss_name == 'ce':
+        model[-1] = nn.Linear(model.emb_dim, num_classes)
+    else:
+        raise ValueError(f"Unsupported loss name: {loss_name}")
     model.to(device)
     return model
 
 
-def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
-                     epochs=20, cov_reg=5e5, wd_weight=10, device='cuda',
-                     entropic=30, lr=1e-3, stage=1, verbose=True, loss_name='isomax', optim='sgd',
-                     scheduler='none', *args, **kwargs):
+def _train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
+                      epochs=20, cov_reg=5e5, wd_weight=10, device='cuda',
+                      entropic=30, lr=1e-3, loss_name='isomax', optim='sgd',
+                      scheduler='none', weight_decay=0.0, *args, **kwargs):
     """
     Train a single prototype head using supervised data and optionally diversify from previous heads.
 
@@ -285,16 +380,14 @@ def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
         Entropic scale parameter for IsoMax loss.
     lr : float
         Learning rate for SGD.
-    stage : int
-        Current stage in ensemble construction.
-    verbose : bool
-        Whether to show tqdm and metrics.
     loss_name : str
         Either 'isomax' or 'ce'.
     optim : str
         Either 'adam' or 'sgd'.
     scheduler : str
         ['none', 'onecycle']
+    weight_decay : float
+        Weight decay for the optimizer.
 
     Returns
     -------
@@ -310,9 +403,9 @@ def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
         criterion = CrossEntropyLoss(reduction='mean')
     match optim:
         case 'sgd':
-            optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9)
+            optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9, weight_decay=weight_decay)
         case 'adam':
-            optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.0)
+            optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
 
     scheduler = get_scheduler_func(
         scheduler, lr, epochs, len(train_loader))(optimizer)
@@ -320,8 +413,7 @@ def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
     if len(prototype_ensemble) > 0:
         prototype_ensemble = torch.concat([_[0] for _ in prototype_ensemble], dim=1).detach()
 
-    pbar = tqdm(range(epochs), desc=f'[Stage {stage}]')
-    for epoch in pbar:
+    for epoch in range(epochs):
         model.train()
         running_loss, running_clf, running_cov, running_correct, total = 0.0, 0.0, 0.0, 0, 0
 
@@ -366,7 +458,7 @@ def train_prototypes(train_loader, val_loader, model, prototype_ensemble=(),
             running_correct += correct
             total += labels.size(0)
 
-        val_wga = evaluate(model, val_loader, device=device)['min_group']['accuracy']
+        val_wga = _evaluate(model, val_loader, device=device)['min_group']['accuracy']
         if val_wga >= best_val_wga:
             best_val_wga = val_wga
             if loss_name == 'isomax':
@@ -411,7 +503,7 @@ def cov_reg_scheduler_inv(cov_reg, num_stages, alpha=0.05):
     return cov_reg_schedule
 
 
-def train_ensemble(
+def _train_ensemble(
         init_model_func,
         datasets,
         dataloaders,
@@ -419,11 +511,10 @@ def train_ensemble(
         cov_reg=5e5,
         random_subset=True,
         num_stages=15,
-        show_freq=15,
         full_model=None,
         optim='sgd',
         alpha=0.1,
-        run=None,
+        eval_freq=-1,
         *args, **kwargs
 ):
     """
@@ -445,10 +536,9 @@ def train_ensemble(
         Whether to randomly resample training data at each stage.
     num_stages : int
         Number of prototype ensemble members to train.
-    show_freq : int
-        How often to display training progress.
+    eval_freq : int
+        Frequency of online evaluation of the ensemble during training. -1 means no online eval.
     alpha : covariance decay
-    run : covariance scheduler
     full_model : nn.Module, could be nn.Sequential(nn.Identity(), nn.Identity()) if no backbone is not required,
                 or nn.Sequential(backbone, nn.Identity()) otherwise.
     optim: 'sgd' or 'adam'.
@@ -458,11 +548,12 @@ def train_ensemble(
     tuple
         Final worst-group, balanced, and detailed evaluation results.
     """
-    run = DummyRun() if run is None else run
     prototype_ensemble = []
+    res = None
     ensemble_wga, ensemble_acc, ensemble_balanced_acc = [], [], []
-    _train_prototypes = partial(
-        train_prototypes,
+
+    train_prototypes = partial(
+        _train_prototypes,
         val_loader=dataloaders['val'],
         optim=optim,
         *args, **kwargs
@@ -470,35 +561,29 @@ def train_ensemble(
     cv_scheduler = cov_reg_scheduler_inv(cov_reg, num_stages, alpha=alpha)
     train_loader = init_train_loader(datasets)
 
-    for stage in range(1, num_stages + 1):
-        verbose = stage % show_freq == 0 or stage == 1 or stage == num_stages
-        if verbose:
-            print(describe_dataset_splits({k: dataloaders[k].dataset for k in dataloaders.keys()}))
+    pbar = tqdm(range(1, num_stages + 1), desc=f'[Training]')
+
+    for stage in pbar:
+        pbar.set_description(f'[Stage {stage}]')
 
         full_model = init_model_func(model=full_model)
-        prototype_ensemble.append(_train_prototypes(
+        prototype_ensemble.append(train_prototypes(
             train_loader, model=full_model,
-            prototype_ensemble=prototype_ensemble, stage=stage,
+            prototype_ensemble=prototype_ensemble,
             cov_reg=cv_scheduler(stage),
         ))
-        res = evaluate_ensemble(
-            prototype_ensemble,
-            dataloaders['test'],
-            full_model,
-            device=kwargs['device'],
-            verbose=verbose
-        )
-        ensemble_wga.append(res['min_group']['accuracy'])
-        ensemble_acc.append(res['overall']['accuracy'])
-        ensemble_balanced_acc.append(res['overall']['balanced_acc'])
+        if (eval_freq > 0) and (stage % eval_freq == 0 or stage == num_stages):
+            res = _evaluate_ensemble(prototype_ensemble, dataloaders['test'], full_model, device=kwargs['device'])
 
-        run.log({
-            "dpe_test/stage": stage,
-            "dpe_test/cv_scheduler": cv_scheduler(stage),
-            "dpe_test/worst_group_accuracy": ensemble_wga[-1] * 100,
-            "dpe_test/accuracy": ensemble_acc[-1] * 100,
-            "dpe_test/balanced_accuracy": ensemble_balanced_acc[-1] * 100
-        })
+            ensemble_wga.append(res['min_group']['accuracy'])
+            ensemble_acc.append(res['overall']['accuracy'])
+            ensemble_balanced_acc.append(res['overall']['balanced_acc'])
+
+            pbar.set_postfix({
+                'wga': f"{ensemble_wga[-1] * 100:.1f}",
+                'acc': f"{ensemble_acc[-1] * 100:.1f}",
+                'bacc': f"{ensemble_balanced_acc[-1] * 100:.1f}",
+            })
 
         if stage <= num_stages + 1 and random_subset:
             train_loader = init_train_loader(datasets)
@@ -506,11 +591,9 @@ def train_ensemble(
     return ensemble_wga, ensemble_balanced_acc, res, prototype_ensemble
 
 
-def evaluate_ensemble(prototype_ensemble, eval_loader, model,
-                      device='cuda', show_individuals=False, verbose=True):
+def _predict(prototype_ensemble, eval_loader, model, device='cuda'):
     """
-    Evaluate the full prototype ensemble by averaging predictions over all members.
-
+    Predict using a trained prototype ensemble on pre-extracted features.
     Parameters
     ----------
     prototype_ensemble : list
@@ -520,28 +603,16 @@ def evaluate_ensemble(prototype_ensemble, eval_loader, model,
     model : torch.nn.Module
         The model to overwrite classifier parameters for inference.
     device : str
-        Evaluation device.
-    show_individuals : bool
-        If True, print accuracy per member.
-    verbose : bool
-        If True, display final WGA score.
+        Evaluation device."""
 
-    Returns
-    -------
-    dict
-        Evaluation metrics including worst-group accuracy.
-    """
     dist_scales = [_[1].detach() for _ in prototype_ensemble]
     clf = torch.concat([_[0] for _ in prototype_ensemble], dim=1).detach().transpose(0, 1)
     preds_list = torch.zeros(clf.shape[0], len(eval_loader.dataset), eval_loader.dataset.num_labels)
 
-    ds = eval_loader.dataset
-    classes, attributes, groups = np.array(ds.y), np.array(ds._a), np.array(ds.g)
-
     position = 0
 
     with torch.no_grad():
-        for *_, feats in tqdm(eval_loader, leave=False):
+        for *_, feats in eval_loader:
             feats = feats.to(device)
 
             for i, weight in enumerate(clf):
@@ -555,128 +626,99 @@ def evaluate_ensemble(prototype_ensemble, eval_loader, model,
                 preds_list[i][position:position + feats.shape[0]] = model(feats.squeeze())
             position += feats.shape[0]
 
-    if show_individuals:
-        for i in range(preds_list.shape[0] - 1, -1, -1):
-            preds = preds_list[i].softmax(1).argmax(1).numpy()
-            get_acc(preds, classes, groups)
+    return preds_list
 
-    get_acc(preds_list.softmax(2).mean(0).argmax(1).numpy(), classes, groups, verbose=verbose)
 
-    preds = preds_list.softmax(2).mean(0).detach().cpu().numpy()
-    res = eval_metrics(preds, classes, attributes, groups)
-    if verbose:
-        print(f"Ensemble WGA: {res['min_group']['accuracy'] * 100:.1f}")
+def _evaluate_ensemble(prototype_ensemble, loader, full_model, device='cuda'):
+    """
+    Evaluate the prototype ensemble on a dataset.
+    Parameters
+    ----------
+    prototype_ensemble: list
+        List of (prototypes, distance_scale) or (weights, bias) tuples.
+    loader DataLoader
+        DataLoader for the dataset to evaluate on.
+    full_model: torch.nn.Module
+        The model to overwrite classifier parameters for inference.
+    device: str
+        Device to run inference on (e.g., 'cuda' or 'cpu').
+    Returns
+    -------
+    dict
+        A dictionary of performance metrics including accuracy per group, class, and attribute,
+        as computed by `eval_metrics()`.
+    """
+
+    ds = loader.dataset
+    classes, attributes, groups = np.array(ds.y), np.array(ds._a), np.array(ds.g)
+
+    pred_list = _predict(
+        prototype_ensemble,
+        loader,
+        full_model,
+        device=device,
+    )
+    pred_list = pred_list.softmax(dim=2).mean(0).detach().cpu().numpy()
+    res = eval_metrics(pred_list, classes, attributes, groups)
+
     return res
 
 
 @dataclass(frozen=True)
 class Args:
-    data_dir: str = ""
-    metadata_path: str = ""
-    num_classes: int = None
-    norm_emb: bool = True
-    dataset_name: str = 'Features'
-    device: str = 'cuda'
-    workers: int = 0
-    batch_size_train: int = 256
-    batch_size_eval: int = 256
-    train_attr: str = 'no'
-    seed: int = 42
-    epochs: int = 20
-    lr: float = 1e-3
-    multi_class: bool = False  # requires column 'yy' in the metadata
-    num_stages: int = 15
-    emb_dim: int = 2048
-    split_map: dict = None
-    scheduler: str = 'none'
-    cov_reg: float = 5e4
-    entropic: int = 30
-    show_freq: int = 10
-    optim: str = 'sgd'
-    trn_split: str = 'va'
-    loss_name: str = 'isomax'  # ce
-    subsample_type: str = 'group'
-    verbose: bool = False
-    alpha: float = 0.05
-    # d_model: int = 256
-    # ff_dim: int = 1024
+    data_dir: str = field(default="",
+                          metadata={"help": "Path to the directory containing features (e.g., .npy files)."})
+    metadata_path: str = field(default="", metadata={"help": "Path to the metadata CSV or JSON file."})
+    num_classes: int = field(default=None, metadata={"help": "Number of classes in the dataset."})
+    norm_emb: bool = field(default=True, metadata={"help": "Whether to normalize pre-extracted features (per sample)."})
 
+    dataset_name: str = field(default='Features',
+                              metadata={"help": "Name of the dataset class to use (e.g., 'Waterbirds')."})
+    device: str = field(default='cuda',
+                        metadata={"help": "Device to use for training and inference (e.g., 'cuda' or 'cpu')."})
+    workers: int = field(default=0, metadata={"help": "Number of DataLoader workers."})
 
-class DPE:
-    def __init__(self, *args, **kwargs):
-        self.config = Args(*args, **kwargs)
-        self.datasets, self.loaders = dict(), dict()
-        self.set_loaders()
-        self.ensemble = None
+    batch_size_train: int = field(default=256, metadata={"help": "Batch size for training."})
+    batch_size_eval: int = field(default=256, metadata={"help": "Batch size for evaluation (val/test)."})
 
-    def set_loaders(self, datasets=None):
-        if datasets is None:
-            self._init_dataset(**vars(self.config))
-            datasets = self.datasets
-        else:
-            self.datasets = datasets
+    train_attr: bool = field(default=False, metadata={
+        "help": "Use attribute labels (if available) to construct balanced training sets."})
+    seed: int = field(default=None, metadata={"help": "Random seed for reproducibility."})
 
-        for set_name in datasets:
-            if set_name == 'train':
-                continue
-            self.loaders[set_name] = DataLoader(
-                dataset=datasets[set_name],
-                num_workers=self.config.workers,
-                pin_memory=False,
-                batch_size=self.config.batch_size_eval,
-                shuffle=False,
-                drop_last=False
-            )
-        if self.config.verbose:
-            describe_dataset_splits(datasets)
+    epochs: int = field(default=20, metadata={"help": "Number of epochs to train each prototype classifier."})
+    lr: float = field(default=1e-3, metadata={"help": "Learning rate for optimizer."})
 
-    def _init_dataset(
-            self,
-            data_dir=None,
-            metadata_path=None,
-            split_map=None,
-            norm_emb=True,
-            transform=None,
-            dataset_name='Features',
-            *args, **kwargs,
-    ):
+    multi_class: bool = field(default=False, metadata={
+        "help": "Enable multi-class (instead of binary) classification using `yy` in metadata."})
+    num_stages: int = field(default=15, metadata={"help": "Number of ensemble members (stages) to train."})
+    emb_dim: int = field(default=2048, metadata={"help": "Embedding dimension of the backbone features."})
 
-        assert data_dir is not None and metadata_path is not None
+    split_map: dict = field(default=None,
+                            metadata={"help": "Mapping from split names (e.g., {'val': 'va', 'test': 'te'})."})
+    scheduler: str = field(default='none',
+                           metadata={"help": "Learning rate scheduler to use (e.g., 'none', 'onecycle')."})
 
-        split_map = {'val': 'va', 'test': 'te'} if split_map is None else split_map
-        kwargs['subsample_type'] = None
-        for split in split_map.keys():
-            features = np.load(f"{data_dir}/feats_{split}.npy")
-            if norm_emb:
-                features = ((features - features.mean(axis=1, keepdims=True)) / features.std(axis=1, keepdims=True))
-            self.datasets[split] = vars(dsets)[dataset_name](
-                data_dir=data_dir,
-                metadata_path=metadata_path,
-                split=split_map[split],
-                transform=transform,
-                pre_extracted_feats=features,
-                *args, **kwargs,
-            )
+    cov_reg: float = field(default=5e4, metadata={
+        "help": "Initial coefficient for covariance regularization (prototype diversity)."})
+    entropic: int = field(default=30, metadata={"help": "Entropic scale for IsoMax loss."})
+    show_freq: int = field(default=10, metadata={"help": "Logging frequency (in epochs)."})
 
-    def fit(self):
-        clf_head = nn.Sequential(nn.Identity(), nn.Identity())
-        clf_head.emb_dim = self.config.emb_dim
-        clf_head.to(self.config.device)
+    optim: str = field(default='sgd', metadata={"help": "Optimizer to use (either 'sgd' or 'adam')."})
+    trn_split: str = field(default='va',
+                           metadata={"help": "Data split to use as training set for prototype learning (e.g., 'va')."})
+    loss_name: str = field(default='isomax', metadata={"help": "Loss function: 'isomax' or 'ce' (cross-entropy)."})
 
-        *metrics, self.ensemble = train_ensemble(
-            datasets=self.datasets,
-            dataloaders=self.loaders,
-            init_train_loader=partial(
-                get_train_loader,
-                batch_size=self.config.batch_size_train,
-                **vars(self.config),
-            ),
-            full_model=clf_head,
-            init_model_func=partial(
-                init_model,
-                device=self.config.device,
-                num_classes=self.datasets['val'].num_labels,
-            ),
-            **vars(self.config),
-        )
-        return metrics
+    subsample_type: str = field(default='group',
+                                metadata={"help": "Subsampling strategy: e.g., 'group', 'attribute', or 'none'."})
+    alpha: float = field(default=0.05, metadata={"help": "Decay factor for covariance regularization scheduler."})
+    eval_freq: int = field(default=-1, metadata={
+        "help": "How often to evaluate ensemble online. -1 disables intermediate evaluation."})
+
+    @classmethod
+    def help(cls):
+        print("Available configuration parameters:\n")
+        for f in fields(cls):
+            name = f.name
+            default = f.default
+            help_text = f.metadata.get("help", "")
+            print(f"  {name} (default: {default})\n    → {help_text}\n")

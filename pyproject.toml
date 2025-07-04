@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dpe"
+version = "0.2.0"
+description = "Diverse Prototypical Ensembles Improve Robustness to Subpopulation Shift"
+readme = "README.md"
+license = "MIT"           # SPDX expression, no braces/table
+license-files = ["LICENSE"]
+authors = [{name="Minh To", email="tnnhatminh@gmail.com"}]
+requires-python = ">=3.7"
+dependencies = [
+  "torch>=1.9",
+  "numpy",
+  "scikit-learn",
+]
+
+[project.urls]
+Homepage = "https://github.com/minhto2802/dpe4subpop"

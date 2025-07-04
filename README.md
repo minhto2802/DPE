@@ -47,35 +47,49 @@ an ensemble of *prototype-based classifiers*, each trained on a different balanc
 through an **inter-prototype similarity loss**, encouraging each classifier to attend to different regions of the
 feature space.
 
----
+--- 
 
-Quickstart
-==========
-```python
-import sys
-sys.path.append('..')
+## 🚀 Installation
 
-from src.dpe import DPE
-from src.dpe.misc import fix_random_seed
+First, make sure you have an up-to-date packaging environment:
+
+```bash
+python3 -m pip install --upgrade pip setuptools wheel
+```
+
+Then install `dpe` directly from PyPI:
+
+```bash
+pip install dpe
+```
+
+## 🎯 Quick Demo
+
+```python 
+from dpe import DPE
 
 def main():
-    fix_random_seed(0)
-
     dpe = DPE(
-        data_dir='/path/to/pre_extracted/features',  # Directory containing feats_val.npy and feats_test.npy
-        metadata_path='/path/to/metadata/metadata.csv',  # CSV with columns: split, y, g
-        verbose=True,
-        num_stages=5,       # Number of prototype classifiers to train
-        device='cuda',      # Set to 'cpu' or 'cuda' depending on hardware
-        emb_dim=2048,       # D: feature embedding dimension (expected feature shape: N x D)
+        data_dir='/path/to/pre-extracted-features/folder',
+        metadata_path='/path/to/metadata.csv',
+        num_stages=2,
+        device='cuda',
+        eval_freq=1,
+        train_attr='no',
+        seed=0,
     )
     dpe.fit()
+    print("Demo completed successfully!")
 
 if __name__ == '__main__':
     main()
 ```
+**Note:** The structure of `/path/to/pre-extracted-features/folder` must include the following files:
+- `feats_val.npy`
+- `feats_test.npy`
 
-👉 **See the full list of available arguments** in `src/dpe/core.py`, inside the `Args` class. The full demonstration can also be found in [`03_demo.ipynb`](notebooks/03_demo.ipynb)
+👉 For a full list of configurable options, refer to the `Args` class inside `src/dpe/core.py`.  
+👉 A step-by-step demonstration is available in `notebooks/03_demo.ipynb`.
 
 ---
 
@@ -140,7 +154,7 @@ To prepare the data:
 
 To fine-tune an ImageNet-pretrained ResNet-50 on the MetaShift dataset (located at `/datasets/metashift`), run:
 
-```
+```bash
 python main.py \
   --epochs 100 \
   --loss_name ce \
@@ -154,7 +168,7 @@ python main.py \
 
 Once Stage-0 is complete, initiate prototype ensemble training using the pretrained backbone:
 
-```
+```bash
 python main.py \
   --dataset_name MetaShift \
   --pretrained_path /checkpoint/ckpt_last.pt \

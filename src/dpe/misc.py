@@ -1,50 +1,7 @@
 import random
-from collections import Counter
 
 import torch
-
 import numpy as np
-import pandas as pd
-
-
-def describe_dataset_splits(datasets):
-    """
-    Describe the distribution of 'y' (class), 'g' (subgroup), and '_a' (attribute) for each dataset split.
-
-    Args:
-        datasets (dict): Dictionary with keys as split names ('train', 'val', 'test', etc.)
-                         and values as dataset objects with attributes 'y', 'g', '_a' (tensors or lists).
-
-    Returns:
-        pd.DataFrame: Multi-indexed DataFrame with counts for each category across splits.
-    """
-    stats = dict()
-
-    for split, dataset in datasets.items():
-        split_stats = {}
-        for field in ['y', 'g', '_a']:
-            values = dataset.__getattribute__(field)
-            counts = Counter(values if isinstance(values, list) else values.tolist())
-            for k, v in counts.items():
-                split_stats[f'{field}={k}'] = v
-        stats[split] = split_stats
-
-    df = pd.DataFrame(stats).fillna(0).astype(int)
-    return df.sort_index()
-
-
-class DummyRun:
-    def __init__(self):
-        ...
-
-    def __call__(self, *args, **kwargs):
-        ...
-
-    def log(self, *args, **kwargs):
-        ...
-
-    def finish(self, *args, **kwargs):
-        ...
 
 
 def get_scheduler_func(scheduler, lr, epochs, steps_per_epoch=None, pct_start=0.01):

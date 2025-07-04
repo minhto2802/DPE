@@ -18,7 +18,7 @@ class SubpopDataset:
     }
     EVAL_SPLITS = ['te']  # Default, subclasses may override
 
-    def __init__(self, data_dir, split, metadata_path, transform=None, train_attr='yes', subsample_type=None,
+    def __init__(self, data_dir, split, metadata_path, transform=None, train_attr=False, subsample_type=None,
                  dynamic_num_samples=False, pre_extracted_feats=None, num_classes=None,
                  multiclass=False, *args, **kwargs):
 
@@ -35,7 +35,7 @@ class SubpopDataset:
             df['subgroup'] = df.y.astype(str) + df.a.astype(str)
             df = subsample(
                 df,
-                target=class_target if train_attr == 'no' else 'subgroup',
+                target=class_target if not train_attr else 'subgroup',
                 target_split=0 if split == 'tr' else 1,
                 dynamic_num_samples=dynamic_num_samples,
             )
